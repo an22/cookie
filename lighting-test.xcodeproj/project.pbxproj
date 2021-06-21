@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		7A22DE442680B21C00E8E9B8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A22DE432680B21C00E8E9B8 /* main.cpp */; };
+		7A22DE4D2680B3CC00E8E9B8 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A22DE4C2680B3CC00E8E9B8 /* OpenGL.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		7A22DE502680BBB800E8E9B8 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A22DE4F2680BBB800E8E9B8 /* libglfw.3.3.dylib */; };
+		7A22DE532680C59700E8E9B8 /* libGLEW.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A22DE522680C59700E8E9B8 /* libGLEW.2.2.0.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +28,11 @@
 /* Begin PBXFileReference section */
 		7A22DE402680B21C00E8E9B8 /* lighting-test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "lighting-test"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A22DE432680B21C00E8E9B8 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		7A22DE4C2680B3CC00E8E9B8 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		7A22DE4F2680BBB800E8E9B8 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = ../../../../usr/local/Cellar/glfw/3.3.4/lib/libglfw.3.3.dylib; sourceTree = "<group>"; };
+		7A22DE522680C59700E8E9B8 /* libGLEW.2.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.2.2.0.dylib; path = ../../../../usr/local/Cellar/glew/2.2.0_1/lib/libGLEW.2.2.0.dylib; sourceTree = "<group>"; };
+		7A22DE592680FE1600E8E9B8 /* vertex.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = vertex.glsl; sourceTree = "<group>"; };
+		7A22DE5A2680FE2D00E8E9B8 /* fragment.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = fragment.glsl; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +40,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A22DE532680C59700E8E9B8 /* libGLEW.2.2.0.dylib in Frameworks */,
+				7A22DE502680BBB800E8E9B8 /* libglfw.3.3.dylib in Frameworks */,
+				7A22DE4D2680B3CC00E8E9B8 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,8 +54,10 @@
 			children = (
 				7A22DE422680B21C00E8E9B8 /* lighting-test */,
 				7A22DE412680B21C00E8E9B8 /* Products */,
+				7A22DE4B2680B3CC00E8E9B8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 		7A22DE412680B21C00E8E9B8 /* Products */ = {
 			isa = PBXGroup;
@@ -58,8 +71,20 @@
 			isa = PBXGroup;
 			children = (
 				7A22DE432680B21C00E8E9B8 /* main.cpp */,
+				7A22DE592680FE1600E8E9B8 /* vertex.glsl */,
+				7A22DE5A2680FE2D00E8E9B8 /* fragment.glsl */,
 			);
 			path = "lighting-test";
+			sourceTree = "<group>";
+		};
+		7A22DE4B2680B3CC00E8E9B8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7A22DE522680C59700E8E9B8 /* libGLEW.2.2.0.dylib */,
+				7A22DE4F2680BBB800E8E9B8 /* libglfw.3.3.dylib */,
+				7A22DE4C2680B3CC00E8E9B8 /* OpenGL.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -240,6 +265,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/glfw/3.3.4/lib,
+					/usr/local/Cellar/glew/2.2.0_1/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -248,6 +279,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/glfw/3.3.4/lib,
+					/usr/local/Cellar/glew/2.2.0_1/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
