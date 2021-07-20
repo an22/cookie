@@ -41,6 +41,10 @@
 		7A22DEA2268E2FC300E8E9B8 /* FramerateInfo.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FramerateInfo.hpp; sourceTree = "<group>"; };
 		7A22DEA52691DFA100E8E9B8 /* ShaderManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderManager.cpp; sourceTree = "<group>"; };
 		7A22DEA62691DFA100E8E9B8 /* ShaderManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ShaderManager.hpp; sourceTree = "<group>"; };
+		7A22DEAB2693AF1200E8E9B8 /* Cube.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Cube.hpp; sourceTree = "<group>"; };
+		7A22DEB02694C71200E8E9B8 /* SceneSettings.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SceneSettings.hpp; sourceTree = "<group>"; };
+		7A22DEB62694D9BB00E8E9B8 /* Scene.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Scene.hpp; sourceTree = "<group>"; };
+		7A22DEB92694F48000E8E9B8 /* SceneObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SceneObject.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,11 +82,15 @@
 		7A22DE422680B21C00E8E9B8 /* lighting-test */ = {
 			isa = PBXGroup;
 			children = (
+				7A22DEB82694F46700E8E9B8 /* base */,
+				7A22DEAF2694C62000E8E9B8 /* animation */,
+				7A22DEA92693AF0300E8E9B8 /* draw */,
 				7A22DE93268E2C3F00E8E9B8 /* shader */,
 				7A22DE91268E2C0B00E8E9B8 /* struct */,
 				7A22DE90268E2C0B00E8E9B8 /* util */,
 				7A22DE8A268E2BB400E8E9B8 /* errors */,
 				7A22DE432680B21C00E8E9B8 /* main.cpp */,
+				7A22DEB62694D9BB00E8E9B8 /* Scene.hpp */,
 			);
 			path = "lighting-test";
 			sourceTree = "<group>";
@@ -118,6 +126,7 @@
 			children = (
 				7A22DEA0268E2EEB00E8E9B8 /* BufferStorage.hpp */,
 				7A22DEA2268E2FC300E8E9B8 /* FramerateInfo.hpp */,
+				7A22DEB02694C71200E8E9B8 /* SceneSettings.hpp */,
 			);
 			path = struct;
 			sourceTree = "<group>";
@@ -147,6 +156,29 @@
 				7A22DE9E268E2EB700E8E9B8 /* vertex.glsl */,
 			);
 			path = vertex;
+			sourceTree = "<group>";
+		};
+		7A22DEA92693AF0300E8E9B8 /* draw */ = {
+			isa = PBXGroup;
+			children = (
+				7A22DEAB2693AF1200E8E9B8 /* Cube.hpp */,
+			);
+			path = draw;
+			sourceTree = "<group>";
+		};
+		7A22DEAF2694C62000E8E9B8 /* animation */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = animation;
+			sourceTree = "<group>";
+		};
+		7A22DEB82694F46700E8E9B8 /* base */ = {
+			isa = PBXGroup;
+			children = (
+				7A22DEB92694F48000E8E9B8 /* SceneObject.hpp */,
+			);
+			path = base;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -329,7 +361,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				HEADER_SEARCH_PATHS = /usr/local/include;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					"/Users/antiufieievmichael/Guides/lighting-test/extras",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/glfw/3.3.4/lib,
@@ -344,7 +379,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				HEADER_SEARCH_PATHS = /usr/local/include;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					"/Users/antiufieievmichael/Guides/lighting-test/extras",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/glfw/3.3.4/lib,
