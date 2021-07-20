@@ -9,9 +9,8 @@
 
 GLuint ShaderManager::createShaderProgram() {
 	GLErrorHandler errorHandler;
-	auto vertex = loadShaderFrom(errorHandler, "/Users/antiufieievmichael/Guides/lighting-test/lighting-test/shader/vertex/vertex.glsl", GL_VERTEX_SHADER);
+	auto vertex = loadShaderFrom(errorHandler, "/Users/antiufieievmichael/Guides/lighting-test/lighting-test/shader/vertex/24cubes.glsl", GL_VERTEX_SHADER);
 	auto fragment = loadShaderFrom(errorHandler, "/Users/antiufieievmichael/Guides/lighting-test/lighting-test/shader/fragment/fragment.glsl", GL_FRAGMENT_SHADER);
-	
 	GLuint vfProgram = glCreateProgram();
 	glAttachShader(vfProgram, vertex);
 	glAttachShader(vfProgram, fragment);

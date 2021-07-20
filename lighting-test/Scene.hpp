@@ -22,8 +22,8 @@ private:
 	SceneSettings* sceneSettings;
 	FramerateInfo framerate;
 	BufferStorage bufferStorage;
-	GLuint renderingProgram, mvLoc, projLoc;
-	glm::mat4 vMat, mvMat;
+	GLuint renderingProgram, mvLoc, projLoc,vLoc,tFactLoc;
+	glm::mat4 vMat;
 	Cube cube;
 	
 	GLFWwindow* windRef;
@@ -32,14 +32,13 @@ private:
 		glClear(GL_DEPTH_BUFFER_BIT);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glUseProgram(renderingProgram);
-		mvLoc = glGetUniformLocation(renderingProgram, "mv_matrix");
 		projLoc = glGetUniformLocation(renderingProgram, "proj_matrix");
+		vLoc = glGetUniformLocation(renderingProgram, "v_matrix");
+		tFactLoc = glGetUniformLocation(renderingProgram, "timeFactor");
 		
-		vMat = glm::translate(glm::mat4(1.0f), -1.0f * sceneSettings->cameraPos);
-		mvMat = vMat * cube.getModelMat();
-		
-		glUniformMatrix4fv(mvLoc, 1, GL_FALSE, glm::value_ptr(mvMat));
+		glUniformMatrix4fv(vLoc, 1, GL_FALSE, glm::value_ptr(vMat));
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(sceneSettings->perspectiveMx));
+		glUniform1f(tFactLoc, (float) currentTime);
 		
 		glBindBuffer(GL_ARRAY_BUFFER, bufferStorage.vbo[0]);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
@@ -47,7 +46,7 @@ private:
 		
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LEQUAL);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glDrawArraysInstanced(GL_TRIANGLES, 0, 36, 100000);
 	}
 public:
 	
@@ -61,6 +60,7 @@ public:
 		windRef = window;
 		renderingProgram = ShaderManager::createShaderProgram();
 		sceneSettings = new SceneSettings(0.0f, 0.0f, 8.0f, window, 1.0472f, 0.1f, 1000.0f);
+		vMat = glm::translate(glm::mat4(1.0f), -1.0f * sceneSettings->cameraPos);
 		glGenVertexArrays(static_cast<int>(bufferStorage.arrayObjectsSize), bufferStorage.vao);
 		glBindVertexArray(bufferStorage.vao[0]);
 		glGenBuffers(static_cast<int>(bufferStorage.bufferObjectsSize), bufferStorage.vbo);
