@@ -8,6 +8,8 @@
 #ifndef Component_h
 #define Component_h
 
+namespace cookie {
 class Component {};
+}
 
 #endif /* Component_h */

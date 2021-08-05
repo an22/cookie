@@ -10,11 +10,13 @@
 
 #include "PlatformSpecificData.hpp"
 
+namespace cookie {
 class BufferStorage {
+protected:
+	size_t bufferSize;
 	
-	std::size_t bufferSize;
-	
-	BufferStorage(std::size_t bufferSize) {
+public:
+	BufferStorage(size_t bufferSize) {
 		this->bufferSize = bufferSize;
 	}
 	
@@ -23,11 +25,12 @@ class BufferStorage {
 	
 	
 	virtual void saveToBuffer(
-							  std::size_t size,
+							  size_t size,
 							  const void* memory,
 							  int32_t usage,
 							  PlatformSpecificData* data
-							  ) const;
+							  ) const = 0;
 };
+}
 
 #endif /* BufferStorage_hpp */

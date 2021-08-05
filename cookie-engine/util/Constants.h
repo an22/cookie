@@ -16,8 +16,10 @@ enum class CgAPI {
 	DirectX
 };
 
-CgAPI CURRENT_CG_API = CgApi.OpenGL;
+void init(CgAPI api = CgAPI::OpenGL);
 
-};
+void destroy();
+
+}
 
 #endif /* Constants_h */

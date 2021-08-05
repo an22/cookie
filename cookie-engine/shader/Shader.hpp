@@ -15,22 +15,19 @@
 #include <sstream>
 #include <iostream>
 
+namespace cookie {
 
 class Shader {
 public:
-	// the program ID
-	unsigned int ID;
 	
-	// constructor reads and builds the shader
-	Shader(const std::string & vertexPath, const std::string & fragmentPath);
-	
-	virtual ~Shader();
+	virtual ~Shader() {};
 	// use/activate the shader
-	virtual void use();
+	virtual void use() {};
 	// utility uniform functions
-	virtual void setBool(const std::string &name, bool value) const;
-	virtual void setInt(const std::string &name, int value) const;
-	virtual void setFloat(const std::string &name, float value) const;
+	virtual void setBool(const std::string &name, bool value) const = 0;
+	virtual void setInt(const std::string &name, int32_t value) const = 0;
+	virtual void setFloat(const std::string &name, float value) const = 0;
+	//TODO add more utility functions
 };
-
+}
 #endif /* Shader_hpp */

@@ -13,7 +13,10 @@
 #include <string>
 #include <vector>
 #include "Component.h"
+#include "BufferStorage.hpp"
 #include "Shader.hpp"
+
+namespace cookie {
 
 struct Vertex {
 	glm::vec3 position;
@@ -22,28 +25,39 @@ struct Vertex {
 };
 
 struct Texture {
-	unsigned int id;
+	uint32_t id;
 	std::string type;
 };
 
-class Mesh : Component {
+class Mesh : public Component {
+private:
+	
+	BufferStorage bufferStorage; //TODO provide storage
+	
+	void setupMesh() {
+		//TODO
+	}
+	
 public:
 	// mesh data
-	std::vector<Vertex>       vertices;
-	std::vector<unsigned int> indices;
-	std::vector<Texture>      textures;
+	std::vector<Vertex>   vertices;
+	std::vector<uint32_t> indices;
+	std::vector<Texture>  textures;
 	
-	Mesh(std::vector<Vertex> &vertices, std::vector<unsigned int> &indices, std::vector<Texture> &textures);
-
-	void draw(Shader &shader);
+	Mesh(std::vector<Vertex> &vertices, std::vector<uint32_t> &indices, std::vector<Texture> &textures) {
+		this->vertices = vertices;
+		this->indices = indices;
+		this->textures = textures;
+		setupMesh();
+	}
 	
-	virtual ~Mesh();
-private:
-	//  render data
-	unsigned int VAO, VBO, EBO;
+	virtual ~Mesh() {}
 	
-	void setupMesh();
+	void draw(Shader &shader) {
+		//TODO draw mesh
+	}
 };
 
+}
 
 #endif /* Mesh_hpp */

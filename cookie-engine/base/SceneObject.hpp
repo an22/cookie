@@ -14,7 +14,7 @@
 #include <typeinfo>
 #include <type_traits>
 #include "Component.h"
-
+namespace cookie {
 class SceneObject {
 private:
 	bool is_static = true;
@@ -61,8 +61,6 @@ public:
 		return is_static;
 	}
 	
-	//region virtual
-	
 	virtual void transform(const glm::mat4 &transformation) {
 		if (is_static) {
 			return;
@@ -86,8 +84,8 @@ public:
 	
 	virtual ~SceneObject() {}
 	
-	//endregion virtual
 };
+}
 
 
 #endif /* SceneObject_hpp */

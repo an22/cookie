@@ -8,8 +8,12 @@
 #ifndef PlatformSpecificData_hpp
 #define PlatformSpecificData_hpp
 
-#include <stdio.h>
+namespace cookie {
 
-struct PlatformSpecificData {};
+struct PlatformSpecificData {
+	
+	virtual ~PlatformSpecificData() {}
+};
+}
 
 #endif /* PlatformSpecificData_hpp */

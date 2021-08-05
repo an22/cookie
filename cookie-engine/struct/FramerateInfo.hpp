@@ -10,23 +10,28 @@
 
 #include <GLFW/glfw3.h>
 #include <iostream>
-#endif /* FramerateInfo_h */
+#include "Time.h"
+
+namespace cookie {
 
 class FramerateInfo {
 private:
+	Time* time; // TODO provide time instance
 	double lastTimestamp = 0.0;
 	
 public:
-	ushort framerate = 0;
+	uint8_t framerate = 0;
 	double framerateTimestamp = 0.0;
+	double frameTime = 0.0;
 	
 	void invalidateFrameRate() {
 		framerate++;
+		frameTime = time->getProgramTime();
 		if(lastTimestamp == 0.0) {
-			lastTimestamp = glfwGetTime();
+			lastTimestamp = frameTime;
 			return;
 		}
-		framerateTimestamp = glfwGetTime();
+		framerateTimestamp = frameTime;
 		if(framerateTimestamp - lastTimestamp >= 1.0) {
 			std::cout << framerate << std::endl;
 			framerate = 0;
@@ -34,3 +39,6 @@ public:
 		}
 	}
 };
+}
+
+#endif /* FramerateInfo_h */
