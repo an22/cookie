@@ -15,16 +15,12 @@ class OpenGLPlatformSpecificData : public cookie::PlatformSpecificData {
 private:
 	GLFWwindow* window = nullptr;
 public:
-	GLFWwindow* getWindow() {
-		return window;
-	}
+	virtual int32_t width();
+	virtual int32_t height();
 	
-	void setWindow(GLFWwindow* window) {
-		this->window = window;
-	}
-	
-	virtual ~OpenGLPlatformSpecificData() {
-		
-	}
+	GLFWwindow* getWindow();
+	void setWindow(GLFWwindow* window);
+
+	virtual ~OpenGLPlatformSpecificData();
 };
 #endif /* OpenGLPlatformSpecificData_h */

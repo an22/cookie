@@ -11,6 +11,7 @@
 #include "FramerateInfo.hpp"
 #include "SceneSettings.hpp"
 #include "Cube.hpp"
+#include "Cookie.h"
 
 namespace cookie {
 class Scene {
@@ -50,7 +51,10 @@ public:
 		delete sceneSettings;
 	}
 	
-	void init(){
+	void init() {
+		auto width = cookie::engine->platformData->width();
+		auto height = cookie::engine->platformData->height();
+		sceneSettings = new SceneSettings(width, height, 0.0f, 0.0f, 8.0f, 1.0472f, 0.1f, 1000.0f);
 //		windRef = window;
 //		renderingProgram = ShaderManager::createShaderProgram();
 //		sceneSettings = new SceneSettings(0.0f, 0.0f, 8.0f, window, 1.0472f, 0.1f, 1000.0f);

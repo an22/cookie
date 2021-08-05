@@ -1,12 +1,11 @@
 //
 //  main.cpp
-//  lighting-test
+// cookie-engine
 //
 //  Created by Antiufieiev Michael on 21.06.2021.
 //
 #include "Scene.hpp"
-#include <iostream>
-#include "Constants.h"
+#include "Cookie.h"
 
 int main(int argc, const char * argv[]) {
 	cookie::init();

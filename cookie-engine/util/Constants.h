@@ -10,16 +10,6 @@
 
 namespace cookie {
 
-enum class CgAPI {
-	OpenGL,
-	Vulkan,
-	DirectX
-};
-
-void init(CgAPI api = CgAPI::OpenGL);
-
-void destroy();
-
 }
 
 #endif /* Constants_h */

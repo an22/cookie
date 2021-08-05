@@ -16,28 +16,17 @@ namespace cookie {
 
 class FramerateInfo {
 private:
-	Time* time; // TODO provide time instance
-	double lastTimestamp = 0.0;
+	std::unique_ptr<Time> time;
+	double lastTimestamp;
 	
 public:
-	uint8_t framerate = 0;
-	double framerateTimestamp = 0.0;
-	double frameTime = 0.0;
+	uint32_t framerate;
+	double framerateTimestamp;
+	double frameTime;
 	
-	void invalidateFrameRate() {
-		framerate++;
-		frameTime = time->getProgramTime();
-		if(lastTimestamp == 0.0) {
-			lastTimestamp = frameTime;
-			return;
-		}
-		framerateTimestamp = frameTime;
-		if(framerateTimestamp - lastTimestamp >= 1.0) {
-			std::cout << framerate << std::endl;
-			framerate = 0;
-			lastTimestamp = framerateTimestamp;
-		}
-	}
+	FramerateInfo();
+	
+	void invalidateFrameRate();
 };
 }
 

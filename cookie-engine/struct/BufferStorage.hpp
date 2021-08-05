@@ -20,8 +20,7 @@ public:
 		this->bufferSize = bufferSize;
 	}
 	
-	virtual ~BufferStorage() {
-	}
+	virtual ~BufferStorage() {}
 	
 	
 	virtual void saveToBuffer(

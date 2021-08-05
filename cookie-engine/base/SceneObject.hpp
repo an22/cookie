@@ -1,6 +1,6 @@
 //
 //  SceneObject_hpp
-//  lighting-test
+//  cookie-engine
 //
 //  Created by Antiufieiev Michael on 06.07.2021.
 //
@@ -9,80 +9,44 @@
 #define SceneObject_hpp
 
 #include <glm/glm.hpp>
+#include <memory>
 #include <unordered_map>
 #include <typeindex>
-#include <typeinfo>
-#include <type_traits>
 #include "Component.h"
+
 namespace cookie {
 class SceneObject {
 private:
 	bool is_static = true;
 	
+	std::unordered_map<std::type_index, std::unique_ptr<Component>> components;
+	
 	glm::vec3 position;
 	glm::mat4 modelMat;
-	
-	std::unordered_map<std::type_index, std::unique_ptr<Component>> components;
 public:
 	
-	SceneObject() {
-		
-	}
-	
-	SceneObject(glm::vec3 pos) {
-		setPosition(pos);
-	}
-	
-	SceneObject(float x, float y, float z) {
-		setPosition(x, y, z);
-	}
+	SceneObject();
+	SceneObject(glm::vec3 pos);
+	SceneObject(float x, float y, float z);
+	virtual ~SceneObject() = 0;
 	
 	template <class ComponentType>
-	void addComponent(std::unique_ptr<ComponentType> component) {
-		static_assert(std::is_base_of<Component, ComponentType>::value, "type parameter of this class must derive from Component class");
-		components[typeid(ComponentType)] = component;
-	}
+	void addComponent(std::unique_ptr<ComponentType> component);
 	
 	template <class ComponentType>
-	ComponentType& removeComponent(std::type_index key) {
-		return static_cast<ComponentType>(components.extract(key));
-	}
+	ComponentType& removeComponent(std::type_index key);
 	
 	template <class ComponentType>
-	ComponentType& getComponent() {
-		return static_cast<ComponentType>(components[typeid(ComponentType)]);
-	}
+	ComponentType& getComponent();
 	
-	const glm::mat4& getModelMat() {
-		return modelMat;
-	}
+	const glm::mat4& getModelMat();
 	
-	bool isStatic() {
-		return is_static;
-	}
+	bool isStatic();
 	
-	virtual void transform(const glm::mat4 &transformation) {
-		if (is_static) {
-			return;
-		}
-		modelMat = transformation * modelMat;
-	}
-	
-	virtual void setStatic(bool isStatic) {
-		this->is_static = isStatic;
-	}
-	
-	virtual void setPosition(const glm::vec3 &position) {
-		this->position = position;
-		modelMat = glm::translate(glm::mat4(1.0f), position);
-	}
-	
-	virtual void setPosition(float x, float y, float z) {
-		this->position = glm::vec3(x, y, z);
-		modelMat = glm::translate(glm::mat4(1.0f), position);
-	}
-	
-	virtual ~SceneObject() {}
+	virtual void transform(const glm::mat4 &transformation);
+	virtual void setStatic(bool isStatic);
+	virtual void setPosition(const glm::vec3 &position);
+	virtual void setPosition(float x, float y, float z);
 	
 };
 }

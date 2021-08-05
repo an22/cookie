@@ -32,11 +32,9 @@ struct Texture {
 class Mesh : public Component {
 private:
 	
-	BufferStorage bufferStorage; //TODO provide storage
+	std::unique_ptr<BufferStorage> bufferStorage; //TODO provide storage
 	
-	void setupMesh() {
-		//TODO
-	}
+	void setupMesh();
 	
 public:
 	// mesh data
@@ -44,18 +42,11 @@ public:
 	std::vector<uint32_t> indices;
 	std::vector<Texture>  textures;
 	
-	Mesh(std::vector<Vertex> &vertices, std::vector<uint32_t> &indices, std::vector<Texture> &textures) {
-		this->vertices = vertices;
-		this->indices = indices;
-		this->textures = textures;
-		setupMesh();
-	}
+	Mesh(std::vector<Vertex> &vertices, std::vector<uint32_t> &indices, std::vector<Texture> &textures);
 	
 	virtual ~Mesh() {}
 	
-	void draw(Shader &shader) {
-		//TODO draw mesh
-	}
+	void draw(Shader &shader);
 };
 
 }

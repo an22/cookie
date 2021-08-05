@@ -7,16 +7,8 @@
 
 #include <stdio.h>
 #include "Constants.h"
-#include "Cookie.h"
 
 namespace cookie {
 
-void init(CgAPI api) {// TODO change to Vulkan
-	engine = new Cookie(api);
-}
-
-void destroy() {
-	delete engine;
-}
 
 }

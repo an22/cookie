@@ -20,6 +20,11 @@
 		7A4D8ED326BB4ED500A56E39 /* OpenGLInitializer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A4D8ED126BB4ED500A56E39 /* OpenGLInitializer.cpp */; };
 		7A4D8ED926BC4F3D00A56E39 /* Constants.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A4D8ED826BC4F3D00A56E39 /* Constants.cpp */; };
 		7A4D8EDC26BC56C400A56E39 /* Cookie.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A4D8EDB26BC56C400A56E39 /* Cookie.cpp */; };
+		7A4D8EE226BC77B600A56E39 /* SceneObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A4D8EE126BC77B600A56E39 /* SceneObject.cpp */; };
+		7A4D8EE526BC824200A56E39 /* OpenGLPlatformSpecificData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A4D8EE426BC824200A56E39 /* OpenGLPlatformSpecificData.cpp */; };
+		7A4D8EE826BC988B00A56E39 /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A4D8EE726BC988B00A56E39 /* Mesh.cpp */; };
+		7A4D8EEB26BC9A1700A56E39 /* FramerateInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A4D8EEA26BC9A1700A56E39 /* FramerateInfo.cpp */; };
+		7A4D8EEE26BC9C3400A56E39 /* SceneSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A4D8EED26BC9C3400A56E39 /* SceneSettings.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -75,6 +80,11 @@
 		7A4D8ED626BC432F00A56E39 /* OpenGLPlatformSpecificData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenGLPlatformSpecificData.h; sourceTree = "<group>"; };
 		7A4D8ED826BC4F3D00A56E39 /* Constants.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Constants.cpp; path = "cookie-engine/util/Constants.cpp"; sourceTree = SOURCE_ROOT; };
 		7A4D8EDB26BC56C400A56E39 /* Cookie.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Cookie.cpp; sourceTree = "<group>"; };
+		7A4D8EE126BC77B600A56E39 /* SceneObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SceneObject.cpp; sourceTree = "<group>"; };
+		7A4D8EE426BC824200A56E39 /* OpenGLPlatformSpecificData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLPlatformSpecificData.cpp; sourceTree = "<group>"; };
+		7A4D8EE726BC988B00A56E39 /* Mesh.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Mesh.cpp; sourceTree = "<group>"; };
+		7A4D8EEA26BC9A1700A56E39 /* FramerateInfo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FramerateInfo.cpp; sourceTree = "<group>"; };
+		7A4D8EED26BC9C3400A56E39 /* SceneSettings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SceneSettings.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,7 +144,6 @@
 				7A4D8E8626B9A53A00A56E39 /* shader */,
 				7A4D8E9126B9A53A00A56E39 /* errors */,
 				7A4D8E9426B9A53A00A56E39 /* draw */,
-				7A4D8E9726B9A53A00A56E39 /* Scene.hpp */,
 				7A4D8E9826B9A53A00A56E39 /* base */,
 				7A4D8EB726BB3CBC00A56E39 /* Cookie.h */,
 				7A4D8EDB26BC56C400A56E39 /* Cookie.cpp */,
@@ -147,6 +156,7 @@
 			children = (
 				7A4D8E8126B9A53A00A56E39 /* Mesh.hpp */,
 				7A4D8EAC26B9B3EB00A56E39 /* Component.h */,
+				7A4D8EE726BC988B00A56E39 /* Mesh.cpp */,
 			);
 			path = component;
 			sourceTree = "<group>";
@@ -158,6 +168,8 @@
 				7A4D8E8426B9A53A00A56E39 /* FramerateInfo.hpp */,
 				7A4D8E8526B9A53A00A56E39 /* SceneSettings.hpp */,
 				7A4D8EA526B9A7C900A56E39 /* PlatformSpecificData.hpp */,
+				7A4D8EEA26BC9A1700A56E39 /* FramerateInfo.cpp */,
+				7A4D8EED26BC9C3400A56E39 /* SceneSettings.cpp */,
 			);
 			path = struct;
 			sourceTree = "<group>";
@@ -212,8 +224,10 @@
 		7A4D8E9826B9A53A00A56E39 /* base */ = {
 			isa = PBXGroup;
 			children = (
+				7A4D8E9726B9A53A00A56E39 /* Scene.hpp */,
 				7A4D8E9926B9A53A00A56E39 /* SceneObject.hpp */,
 				7A4D8EB826BB3E3C00A56E39 /* Initializer.h */,
+				7A4D8EE126BC77B600A56E39 /* SceneObject.cpp */,
 			);
 			path = base;
 			sourceTree = "<group>";
@@ -226,6 +240,7 @@
 				7A4D8EC626BB49AF00A56E39 /* shader */,
 				7A4D8EBC26BB41CF00A56E39 /* time */,
 				7A4D8ED626BC432F00A56E39 /* OpenGLPlatformSpecificData.h */,
+				7A4D8EE426BC824200A56E39 /* OpenGLPlatformSpecificData.cpp */,
 			);
 			path = "opengl-api";
 			sourceTree = "<group>";
@@ -363,7 +378,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A4D8E9C26B9A53A00A56E39 /* ShaderManager.cpp in Sources */,
+				7A4D8EEB26BC9A1700A56E39 /* FramerateInfo.cpp in Sources */,
+				7A4D8EE526BC824200A56E39 /* OpenGLPlatformSpecificData.cpp in Sources */,
+				7A4D8EEE26BC9C3400A56E39 /* SceneSettings.cpp in Sources */,
 				7A4D8ED926BC4F3D00A56E39 /* Constants.cpp in Sources */,
+				7A4D8EE226BC77B600A56E39 /* SceneObject.cpp in Sources */,
+				7A4D8EE826BC988B00A56E39 /* Mesh.cpp in Sources */,
 				7A4D8EC326BB450800A56E39 /* CookieFactory.cpp in Sources */,
 				7A4D8EDC26BC56C400A56E39 /* Cookie.cpp in Sources */,
 				7A4D8E9D26B9A53A00A56E39 /* GLErrorHandler.cpp in Sources */,

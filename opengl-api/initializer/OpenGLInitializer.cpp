@@ -27,7 +27,7 @@ void OpenGLInitializer::initGraphicsAPIResources() const {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwSetErrorCallback(errorCallback);
 	GLFWwindow* window = glfwCreateWindow(600, 600, "LightingTest", NULL, NULL);
-	auto platformData = dynamic_cast<OpenGLPlatformSpecificData&>(*cookie::engine->platformData);
+	auto& platformData = dynamic_cast<OpenGLPlatformSpecificData&>(*cookie::engine->platformData);
 	platformData.setWindow(window);
 	glfwMakeContextCurrent(window);
 	if(glewInit() != GLEW_OK) exit(EXIT_FAILURE);
@@ -35,7 +35,7 @@ void OpenGLInitializer::initGraphicsAPIResources() const {
 }
 
 void OpenGLInitializer::destroyGraphicsAPIResources() const {
-	auto platformData = dynamic_cast<OpenGLPlatformSpecificData&>(*cookie::engine->platformData);
+	auto& platformData = dynamic_cast<OpenGLPlatformSpecificData&>(*cookie::engine->platformData);
 	glfwDestroyWindow(platformData.getWindow());
 	glfwTerminate();
 }

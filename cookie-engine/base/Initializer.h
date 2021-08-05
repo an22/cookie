@@ -16,7 +16,7 @@ public:
 	virtual void initGraphicsAPIResources() const = 0;
 	virtual void destroyGraphicsAPIResources() const = 0;
 	
-	~Initializer() {
+	virtual ~Initializer() {
 	}
 };
 }
