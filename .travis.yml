@@ -5,9 +5,7 @@ language: cpp
 compiler: gcc
 
 os:
-  - windows
   - linux
-  - osx
 
 addons:
   apt:
@@ -23,4 +21,4 @@ script:
   - export CC=/usr/bin/gcc-6
   - export CXX=/usr/bin/g++-6
   - gcc -v && g++ -v && cmake --version
-  - cmake --build /cmake-build-debug --target cookie-engine -- -j 6
+  - cmake --build $TRAVIS_BUILD_DIR --target cookie-engine -- -j 6
