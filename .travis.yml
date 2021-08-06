@@ -1,21 +1,27 @@
-language: cpp
-matrix:
-    
-  include:
-    - os: osx
-      osx_image: xcode12
-      env:
-        - MATRIX_EVAL="brew install gcc && CC=gcc-7 && CXX=g++-7"
-      compiler: gcc
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-7
-      env:
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+dist: trusty
+sudo: required
 
-before_install:
-    - eval "${MATRIX_EVAL}"
+language: cpp
+compiler: gcc
+
+os:
+  - windows
+  - linux
+  - osx
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-6
+      - g++-6
+      - cmake
+before_script: cd cookie-engine
+script:
+  - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
+  - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
+  - export CC=/usr/bin/gcc-6
+  - export CXX=/usr/bin/g++-6
+  - gcc -v && g++ -v && cmake --version
+  - cmake --build /Users/antiufieievmichael/Guides/cookie-engine/cmake-build-debug --target cookie-engine -- -j 6
