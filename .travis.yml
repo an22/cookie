@@ -14,7 +14,7 @@ addons:
     packages:
       - gcc-6
       - g++-6
-      - cmake
+      - cmake-3.2.0
 script:
   - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
   - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
