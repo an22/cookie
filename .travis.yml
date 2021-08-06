@@ -21,4 +21,5 @@ script:
   - export CC=/usr/bin/gcc-6
   - export CXX=/usr/bin/g++-6
   - gcc -v && g++ -v && cmake --version
+  - cmake --configure
   - cmake --build $TRAVIS_BUILD_DIR --target cookie-engine -- -j 6
