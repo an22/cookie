@@ -15,10 +15,12 @@ addons:
       - gcc-6
       - g++-6
       - cmake
+before_install:
+  - sudo apt-get update
+  - sudo apt-get -y install cmake-3.2.0
 script:
   - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
   - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
-  - sudo apt-get upgrade
   - export CC=/usr/bin/gcc-6
   - export CXX=/usr/bin/g++-6
   - gcc -v && g++ -v && cmake --version
