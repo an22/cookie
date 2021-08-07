@@ -40,30 +40,33 @@ jobs:
             COMPILER: g++-6
             LINKER: g++-6
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+          uses: actions/checkout@v2
+          with:
+            submodules: recursive
       - name: Install dependencies Ubuntu
         if: runner.os == 'Linux'
-        run:
-          - sudo apt-get -y install libxrandr-dev
-          - sudo apt-get -y install libxinerama-dev
-          - sudo apt-get -y install libxcursor-dev
-          - sudo apt-get -y install libxi-dev
-          - sudo apt-get -y install libglew-dev
-          - sudo apt-get -y install gcc-6 g++-6
-          - sudo apt-get -y install freeglut3-dev
-          - sudo apt-get -y install libglew-dev
-          - sudo apt-get -y install libglm-dev
-          - sudo apt-get -y install libglfw3-dev
+        run: |
+          sudo apt-get -y install libxrandr-dev
+          sudo apt-get -y install libxinerama-dev
+          sudo apt-get -y install libxcursor-dev
+          sudo apt-get -y install libxi-dev
+          sudo apt-get -y install libglew-dev
+          sudo apt-get -y install gcc-6 g++-6
+          sudo apt-get -y install freeglut3-dev
+          sudo apt-get -y install libglew-dev
+          sudo apt-get -y install libglm-dev
+          sudo apt-get -y install libglfw3-dev
       - name: Setup GCC Ubuntu
         if: runner.os == 'Linux'
-        run:
-          - sudo rm /usr/bin/gcc
-          - sudo rm /usr/bin/g++
-          - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
-          - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
-          - export CC=/usr/bin/gcc-6
-          - export CXX=/usr/bin/g++-6
-          - gcc -v && g++ -v && cmake --version
+        run: |
+          sudo rm /usr/bin/gcc
+          sudo rm /usr/bin/g++
+          sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
+          sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
+          export CC=/usr/bin/gcc-6
+          export CXX=/usr/bin/g++-6
+          gcc -v && g++ -v && cmake --version
       - name: Configure CMake
         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
         # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
