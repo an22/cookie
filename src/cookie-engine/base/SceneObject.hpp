@@ -26,7 +26,7 @@ private:
 public:
 	
 	SceneObject();
-	SceneObject(glm::vec3 pos);
+	explicit SceneObject(glm::vec3 pos);
 	SceneObject(float x, float y, float z);
 	virtual ~SceneObject() = 0;
 	
@@ -34,14 +34,14 @@ public:
 	void addComponent(std::unique_ptr<ComponentType> component);
 	
 	template <class ComponentType>
-	ComponentType& removeComponent(std::type_index key);
+	ComponentType& removeComponent();
 	
 	template <class ComponentType>
 	ComponentType& getComponent();
 	
 	const glm::mat4& getModelMat();
 	
-	bool isStatic();
+	[[nodiscard]] bool isStatic() const;
 	
 	virtual void transform(const glm::mat4 &transformation);
 	virtual void setStatic(bool isStatic);
