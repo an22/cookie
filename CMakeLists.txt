@@ -58,4 +58,4 @@ target_link_libraries(cookie-engine PRIVATE GLEW::GLEW)
 add_subdirectory(lib/glm EXCLUDE_FROM_ALL)
 target_link_libraries(cookie-engine PRIVATE glm)
 
-target_compile_features(cookie-engine PRIVATE cxx_std_17)
+target_compile_features(cookie-engine PUBLIC cxx_std_17)

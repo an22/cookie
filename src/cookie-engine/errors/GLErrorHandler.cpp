@@ -39,7 +39,7 @@ void GLErrorHandler::printProgramLog(int prog) {
 
 bool GLErrorHandler::checkOpenGLError() {
 	bool foundError = false;
-	int glErr = glGetError();
+	GLenum glErr = glGetError();
 	while (glErr != GL_NO_ERROR) {
 		std::cout << "glError: " << glErr << std::endl;
 		foundError = true;
