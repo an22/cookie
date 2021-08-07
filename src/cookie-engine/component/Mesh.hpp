@@ -8,10 +8,10 @@
 #ifndef Mesh_hpp
 #define Mesh_hpp
 
-#include <stdio.h>
 #include <glm/glm.hpp>
 #include <string>
 #include <vector>
+#include <memory>
 #include "Component.hpp"
 #include "BufferStorage.hpp"
 #include "Shader.hpp"
@@ -44,7 +44,7 @@ public:
 	
 	Mesh(std::vector<Vertex> &vertices, std::vector<uint32_t> &indices, std::vector<Texture> &textures);
 	
-	virtual ~Mesh() {}
+	virtual ~Mesh() = default;
 	
 	void draw(Shader &shader);
 };
