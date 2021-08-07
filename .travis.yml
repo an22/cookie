@@ -18,7 +18,7 @@ addons:
 before_install:
   - sudo apt-get -y install libxrandr-dev
   - sudo apt-get -y install libxinerama-dev
-  - sudo apt-get -y install libxcursor
+  - sudo apt-get -y install libxcursor-dev
 install:
   # first we create a directory for the CMake binaries
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
