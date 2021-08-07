@@ -48,7 +48,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt update
-          sudo apt-get -y install g++-6
+          sudo apt-get -y install g++-7
           sudo apt-get -y install libxrandr-dev
           sudo apt-get -y install libxinerama-dev
           sudo apt-get -y install libxcursor-dev
@@ -63,10 +63,10 @@ jobs:
         run: |
           sudo rm /usr/bin/gcc
           sudo rm /usr/bin/g++
-          sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
-          sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
-          export CC=/usr/bin/gcc-6
-          export CXX=/usr/bin/g++-6
+          sudo ln -s /usr/bin/gcc-7 /usr/local/bin/gcc
+          sudo ln -s /usr/bin/g++-7 /usr/local/bin/g++
+          export CC=/usr/bin/gcc-7
+          export CXX=/usr/bin/g++-7
           gcc -v && g++ -v && cmake --version
       - name: Configure CMake
         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
