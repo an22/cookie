@@ -15,6 +15,8 @@ addons:
       - gcc-6
       - g++-6
       - cmake
+before_install:
+  - sudo apt-get -y install libxrandr-dev
 install:
   # first we create a directory for the CMake binaries
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
@@ -31,6 +33,7 @@ install:
   - PATH=${DEPS_DIR}/cmake-install:${DEPS_DIR}/cmake-install/bin:$PATH
   # don't forget to switch back to the main build directory once you are done
   - cd ${TRAVIS_BUILD_DIR}
+  - libxrandr-dev
 before_script:
   # create a build folder for the out-of-source build
   - mkdir build
