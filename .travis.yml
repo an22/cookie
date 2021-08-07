@@ -25,7 +25,6 @@ before_install:
   - sudo apt-get -y install freeglut3-dev
   - sudo apt-get -y install libglew-dev
   - sudo apt-get -y install libglm-dev
-  - sudo apt-get -y install libglfw3
   - sudo apt-get -y install libglfw3-dev
 install:
   # first we create a directory for the CMake binaries
