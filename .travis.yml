@@ -47,6 +47,8 @@ before_script:
   # top-level CMakeLists.txt is located at '..'
   - cmake ..
 script:
+  - rm /usr/bin/gcc
+  - rm /usr/bin/g++
   - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
   - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
   - export CC=/usr/bin/gcc-6
