@@ -47,7 +47,8 @@ jobs:
       - name: Install dependencies Ubuntu
         if: runner.os == 'Linux'
         run: |
-          sudo apt-get -y install gcc-6 g++-6
+          sudo apt update
+          sudo apt-get -y install g++-6
           sudo apt-get -y install libxrandr-dev
           sudo apt-get -y install libxinerama-dev
           sudo apt-get -y install libxcursor-dev
