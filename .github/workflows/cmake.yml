@@ -59,12 +59,12 @@ jobs:
           sudo apt-get -y install libglm-dev
           sudo apt-get -y install libglfw3-dev
       - name: Install dependencies macOS
-          if: runner.os == 'macOS'
-          run: |
-            brew install freeglut
-            brew install glew
-            brew install glfw
-            brew install glm
+        if: runner.os == 'macOS'
+        run: |
+          brew install freeglut
+          brew install glew
+          brew install glfw
+          brew install glm
       - name: Setup GCC Ubuntu
         if: runner.os == 'Linux'
         run: |
