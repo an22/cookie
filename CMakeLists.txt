@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.20)
 project(cookie-engine VERSION 0.0.1)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
@@ -20,7 +19,7 @@ add_executable(cookie-engine src/main.cpp
         src/cookie-engine/util/Constants.cpp
         src/cookie-engine/Cookie.cpp
         src/factory/CookieFactory.cpp
-        ${CMAKE_SOURCE_DIR}/src/opengl-api/OpenGLPlatformSpecificData.cpp
+        src/opengl-api/OpenGLPlatformSpecificData.cpp
         src/opengl-api/buffer/OpenGLBufferStorage.cpp
         src/opengl-api/initializer/OpenGLInitializer.cpp
         src/opengl-api/shader/OpenGLShader.cpp
@@ -44,18 +43,11 @@ target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/opengl-a
 target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/opengl-api/shader)
 target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/opengl-api/time)
 
-# glfw
-add_subdirectory(lib/glfw-3.3.4 EXCLUDE_FROM_ALL)
-target_link_libraries(cookie-engine PRIVATE glfw ${GLFW_LIBRARIES})
-
-# glew
+find_package(OpenGL REQUIRED)
+target_link_libraries(cookie-engine PRIVATE ${OPENGL_LIBRARIES})
 find_package(GLEW REQUIRED)
-add_subdirectory(lib/glew)
-include_directories(glew/include)
 target_link_libraries(cookie-engine PRIVATE GLEW::GLEW)
-
-# glm
-add_subdirectory(lib/glm EXCLUDE_FROM_ALL)
-target_link_libraries(cookie-engine PRIVATE glm)
-
-target_compile_features(cookie-engine PUBLIC cxx_std_17)
+find_package(glfw3 REQUIRED)
+target_link_libraries(cookie-engine PRIVATE glfw)
+find_package(GLM REQUIRED)
+target_link_libraries(cookie-engine PRIVATE ${GLM_LIBRARIES})
