@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - develop
+      - refaactoring
       - releases/**
   pull_request:
     branches:
