@@ -7,6 +7,7 @@
 
 #ifndef ShaderManager_hpp
 #define ShaderManager_hpp
+
 #include <GL/glew.h>
 #include <iostream>
 #include <string>
@@ -18,8 +19,7 @@ class ShaderManager {
 
 public:
     static GLuint createShaderProgram();
-    static GLuint loadShaderFrom(GLErrorHandler& errorHandler, std::string path, GLenum shaderType);
-
+    static GLuint loadShaderFrom(GLErrorHandler &errorHandler, std::string path, GLenum shaderType);
 };
 
 #endif /* ShaderManager_hpp */

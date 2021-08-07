@@ -5,11 +5,11 @@
 //  Created by Antiufieiev Michael on 03.08.2021.
 //
 
-#ifndef Constants_h
-#define Constants_h
+#ifndef Constants_hpp
+#define Constants_hpp
 
 namespace cookie {
 
 }
 
-#endif /* Constants_h */
+#endif /* Constants_hpp */

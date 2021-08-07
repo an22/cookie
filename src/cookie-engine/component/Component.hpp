@@ -5,11 +5,12 @@
 //  Created by Antiufieiev Michael on 03.08.2021.
 //
 
-#ifndef Component_h
-#define Component_h
+#ifndef Component_hpp
+#define Component_hpp
 
 namespace cookie {
-class Component {};
+    class Component {
+    };
 }
 
-#endif /* Component_h */
+#endif /* Component_hpp */

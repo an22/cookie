@@ -11,8 +11,8 @@
 #include "Initializer.hpp"
 
 class OpenGLInitializer : public cookie::Initializer {
-	void initGraphicsAPIResources() const override;
-	void destroyGraphicsAPIResources() const override;
+    void initGraphicsAPIResources() const override;
+    void destroyGraphicsAPIResources() const override;
 };
 
 #endif /* OpenGLInitializer_hpp */

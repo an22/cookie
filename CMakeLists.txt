@@ -23,7 +23,9 @@ add_executable(cookie-engine src/main.cpp
         src/opengl-api/buffer/OpenGLBufferStorage.cpp
         src/opengl-api/initializer/OpenGLInitializer.cpp
         src/opengl-api/shader/OpenGLShader.cpp
-        src/opengl-api/time/OpenGLTime.cpp)
+        src/opengl-api/time/OpenGLTime.cpp
+        src/cookie-engine/struct/BufferStorage.cpp
+        src/cookie-engine/base/Scene.cpp)
 
 target_include_directories(cookie-engine PUBLIC ${GLEW_INCLUDE_DIRS})
 target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/lib/glew/include)

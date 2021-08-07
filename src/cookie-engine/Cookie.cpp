@@ -9,22 +9,22 @@
 #include "Cookie.hpp"
 
 namespace cookie {
-Cookie* engine = nullptr;
+    Cookie *engine = nullptr;
 
-void init(CgAPI api) {
-	engine = new Cookie(api);
-	engine->initializer->initGraphicsAPIResources();
-}
+    void init(CgAPI api) {
+        engine = new Cookie(api);
+        engine->initializer->initGraphicsAPIResources();
+    }
 
-void destroy() {
-	delete engine;
-}
+    void destroy() {
+        delete engine;
+    }
 
-CgAPI Cookie::CURRENT_CG_API = CgAPI::OpenGL;
+    CgAPI Cookie::CURRENT_CG_API = CgAPI::OpenGL;
 
-Cookie::Cookie(CgAPI api) {
-	CURRENT_CG_API = api;
-	platformData = CookieFactory::createPlatformSpecificContainer();
-	initializer = CookieFactory::provideInitializer();
-}
+    Cookie::Cookie(CgAPI api) {
+        CURRENT_CG_API = api;
+        platformData = CookieFactory::createPlatformSpecificContainer();
+        initializer = CookieFactory::provideInitializer();
+    }
 }

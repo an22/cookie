@@ -10,15 +10,14 @@
 
 namespace cookie {
 
-class Time{
-	
-	
-public:
-	
-	Time() {}
-	virtual ~Time() {}
-	virtual double getProgramTime() = 0;
-	virtual double getFrameTime() = 0;
-};
+    class Time {
+
+    public:
+
+        Time() = default;
+        virtual ~Time() = default;
+        virtual double getProgramTime() = 0;
+        virtual double getFrameTime() = 0;
+    };
 }
 #endif /* Time_h */

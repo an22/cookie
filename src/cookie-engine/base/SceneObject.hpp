@@ -15,40 +15,40 @@
 #include "Component.hpp"
 
 namespace cookie {
-class SceneObject {
-private:
-	bool is_static = true;
-	
-	std::unordered_map<std::type_index, std::unique_ptr<Component>> components;
-	
-	glm::vec3 position;
-	glm::mat4 modelMat;
-public:
-	
-	SceneObject();
-	explicit SceneObject(glm::vec3 pos);
-	SceneObject(float x, float y, float z);
-	virtual ~SceneObject() = 0;
-	
-	template <class ComponentType>
-	void addComponent(std::unique_ptr<ComponentType> component);
-	
-	template <class ComponentType>
-	ComponentType& removeComponent();
-	
-	template <class ComponentType>
-	ComponentType& getComponent();
-	
-	const glm::mat4& getModelMat();
-	
-	[[nodiscard]] bool isStatic() const;
-	
-	virtual void transform(const glm::mat4 &transformation);
-	virtual void setStatic(bool isStatic);
-	virtual void setPosition(const glm::vec3 &position);
-	virtual void setPosition(float x, float y, float z);
-	
-};
+    class SceneObject {
+    private:
+        bool is_static = true;
+
+        std::unordered_map<std::type_index, std::unique_ptr<Component>> components;
+
+        glm::vec3 position{};
+        glm::mat4 modelMat{};
+    public:
+
+        explicit SceneObject(glm::vec3 pos);
+        SceneObject();
+        SceneObject(float x, float y, float z);
+        virtual ~SceneObject() = 0;
+
+        const glm::mat4 &getModelMat();
+
+        [[nodiscard]] bool isStatic() const;
+
+        virtual void transform(const glm::mat4 &transformation);
+        virtual void setStatic(bool isStatic);
+        virtual void setPosition(const glm::vec3 &position);
+        virtual void setPosition(float x, float y, float z);
+
+        template<class ComponentType>
+        void addComponent(std::unique_ptr<ComponentType> component);
+
+        template<class ComponentType>
+        ComponentType &removeComponent();
+
+        template<class ComponentType>
+        ComponentType &getComponent();
+
+    };
 }
 
 

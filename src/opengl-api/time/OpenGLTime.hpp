@@ -12,12 +12,12 @@
 #include "Time.hpp"
 
 class OpenGLTime : public cookie::Time {
-	
+
 public:
-	virtual double getProgramTime() override;
-	virtual double getFrameTime() override;
-	
-	~OpenGLTime() override = default;
+    virtual double getProgramTime() override;
+    virtual double getFrameTime() override;
+
+    ~OpenGLTime() override = default;
 };
 
 #endif /* OpenGLTime_hpp */

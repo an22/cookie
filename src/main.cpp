@@ -7,10 +7,10 @@
 #include "Scene.hpp"
 #include "Cookie.hpp"
 
-int main(int argc, const char * argv[]) {
-	cookie::init();
-	cookie::Scene scene;
-	scene.init();
-	scene.startLoop();
-	return 0;
+int main() {
+    cookie::init();
+    cookie::Scene scene;
+    scene.init();
+    scene.startLoop();
+    return 0;
 }
