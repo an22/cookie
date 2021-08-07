@@ -41,9 +41,9 @@ jobs:
             LINKER: g++-6
     steps:
       - name: Checkout
-          uses: actions/checkout@v2
-          with:
-            submodules: recursive
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
       - name: Install dependencies Ubuntu
         if: runner.os == 'Linux'
         run: |
