@@ -45,8 +45,6 @@ before_script:
   - cd build
   # run cmake; here we assume that the project's
   # top-level CMakeLists.txt is located at '..'
-  - cmake ..
-script:
   - rm /usr/bin/gcc
   - rm /usr/bin/g++
   - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
@@ -54,4 +52,6 @@ script:
   - export CC=/usr/bin/gcc-6
   - export CXX=/usr/bin/g++-6
   - gcc -v && g++ -v && cmake --version
+  - cmake ..
+script:
   - make
