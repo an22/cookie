@@ -11,24 +11,23 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <memory>
-#include "Time.hpp"
+#include "platform_abstracts/Time.hpp"
 
 namespace cookie {
 
-class FramerateInfo {
-private:
-	std::unique_ptr<Time> time;
-	double lastTimestamp;
-	
-public:
-	uint32_t framerate;
-	double framerateTimestamp;
-	double frameTime;
-	
-	FramerateInfo();
-	
-	void invalidateFrameRate();
-};
+    class FramerateInfo {
+    private:
+        std::unique_ptr<Time> time;
+
+    public:
+        uint32_t framerate;
+        double framerateTimestamp;
+        double frameTime;
+        double lastTimestamp;
+
+        FramerateInfo();
+        void invalidateFrameRate();
+    };
 }
 
-#endif /* FramerateInfo_h */
+#endif /* FramerateInfo_hpp */

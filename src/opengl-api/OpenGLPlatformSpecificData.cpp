@@ -9,27 +9,25 @@
 #include "GLFW/glfw3.h"
 
 int32_t OpenGLPlatformSpecificData::width() {
-	if(_width == 0) {
-		glfwGetWindowSize(window, &_width, &_height);
-	}
-	return _width;
+    if (_width == 0) {
+        glfwGetWindowSize(window, &_width, &_height);
+    }
+    return _width;
 }
 
 int32_t OpenGLPlatformSpecificData::height() {
-	if(_height == 0) {
-		glfwGetWindowSize(window, &_width, &_height);
-	}
-	return _height;
+    if (_height == 0) {
+        glfwGetWindowSize(window, &_width, &_height);
+    }
+    return _height;
 }
 
-GLFWwindow* OpenGLPlatformSpecificData::getWindow() {
-	return window;
+GLFWwindow *OpenGLPlatformSpecificData::getWindow() {
+    return window;
 }
 
-void OpenGLPlatformSpecificData::setWindow(GLFWwindow* window) {
-	this->window = window;
+void OpenGLPlatformSpecificData::setWindow(GLFWwindow *newWindow) {
+    window = newWindow;
 }
 
-OpenGLPlatformSpecificData::~OpenGLPlatformSpecificData() {
-	
-}
+OpenGLPlatformSpecificData::~OpenGLPlatformSpecificData() = default;

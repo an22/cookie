@@ -5,37 +5,40 @@
 //  Created by Antiufieiev Michael on 05.08.2021.
 //
 
-#ifndef Cookie_h
-#define Cookie_h
+#ifndef Cookie_hpp
+#define Cookie_hpp
+
 #include "CookieFactory.hpp"
 #include "CookieConstants.hpp"
 #include <memory>
+#include "Scene.hpp"
 
 namespace cookie {
 
-enum class CgAPI {
-	OpenGL,
-	Vulkan,
-	DirectX
-};
+    enum class CgAPI {
+        OpenGL,
+        Vulkan,
+        DirectX
+    };
 
-void init(CgAPI api = CgAPI::OpenGL);
+    void init(CgAPI api = CgAPI::OpenGL);
+    void setScene(std::unique_ptr<Scene> scene);
+    void destroy();
 
-void destroy();
+    class Cookie {
+    public:
 
-class Cookie {
-public:
-	
-	static CgAPI CURRENT_CG_API;
-	
-	std::unique_ptr<PlatformSpecificData> platformData;
-	std::unique_ptr<Initializer> initializer;
+        static CgAPI CURRENT_CG_API;
 
-	Cookie(CgAPI api);
-	
-};
+        std::unique_ptr<PlatformSpecificData> platformData;
+        std::unique_ptr<Initializer> initializer;
+        std::unique_ptr<Scene> currentScene;
 
-extern Cookie* engine;
+        explicit Cookie(CgAPI api);
+
+    };
+
+    extern Cookie *engine;
 
 }
-#endif /* Cookie_h */
+#endif /* Cookie_hpp */

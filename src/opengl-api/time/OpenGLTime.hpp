@@ -9,15 +9,15 @@
 #define OpenGLTime_hpp
 
 #include <stdio.h>
-#include "Time.hpp"
+#include "platform_abstracts/Time.hpp"
 
 class OpenGLTime : public cookie::Time {
-	
+
 public:
-	virtual double getProgramTime() override;
-	virtual double getFrameTime() override;
-	
-	~OpenGLTime() override = default;
+    virtual double getProgramTime() override;
+    virtual double getFrameTime() override;
+
+    ~OpenGLTime() override = default;
 };
 
 #endif /* OpenGLTime_hpp */

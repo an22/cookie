@@ -6,20 +6,49 @@
 //
 
 #include "Mesh.hpp"
+#include "CookieFactory.hpp"
+#include "DrawUtils.h"
+#include <utility>
 
 namespace cookie {
-Mesh::Mesh(std::vector<Vertex> &vertices, std::vector<uint32_t> &indices, std::vector<Texture> &textures)  {
-	this->vertices = vertices;
-	this->indices = indices;
-	this->textures = textures;
-	setupMesh();
-}
 
-void Mesh::setupMesh() {
-	
-}
+    Mesh::Mesh(std::unique_ptr<MeshData> meshData) : meshData(std::move(meshData)),
+                                                     bufferStorage(CookieFactory::provideBufferStorage()) {
+        std::unique_ptr<PlatformSpecificBufferData> data = CookieFactory::provideBufferData(BufferType::VERTEX_BUFFER);
+        bufferStorage->saveToBuffer(*this->meshData, std::move(data));
+    }
 
-void Mesh::draw(Shader &shader) {
-	//TODO draw mesh
-}
+    Mesh::Mesh(
+            const std::vector<Vertex> &vertices,
+            const std::vector<uint32_t> &indices,
+            const std::vector<Texture> &textures
+    ) : meshData(std::make_unique<MeshData>(vertices, indices, textures)),
+        bufferStorage(CookieFactory::provideBufferStorage()) {
+        std::unique_ptr<PlatformSpecificBufferData> data = CookieFactory::provideBufferData(BufferType::VERTEX_BUFFER);
+        bufferStorage->saveToBuffer(*this->meshData, std::move(data));
+    }
+
+    Mesh::Mesh(const std::string &path) : bufferStorage(CookieFactory::provideBufferStorage()) {
+    }
+
+    const std::vector<Vertex> &Mesh::getVertices() const {
+        return meshData->vertices;
+    }
+
+    const std::vector<uint32_t> &Mesh::getIndices() const {
+        return meshData->indices;
+    }
+
+    const std::vector<Texture> &Mesh::getTextures() const {
+        return meshData->textures;
+    }
+    void Mesh::onPreDraw(Shader &shader) {
+        shader.use();
+        bufferStorage->bind();
+    }
+
+    void Mesh::onPreDraw(Material &material) {
+        material.onPreDraw();
+        bufferStorage->bind();
+    }
 }

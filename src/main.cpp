@@ -6,11 +6,16 @@
 //
 #include "Scene.hpp"
 #include "Cookie.hpp"
+#include <memory>
 
-int main(int argc, const char * argv[]) {
-	cookie::init();
-	cookie::Scene scene;
-	scene.init();
-	scene.startLoop();
-	return 0;
+int main() {
+    try {
+        cookie::init();
+        cookie::setScene(std::make_unique<cookie::Scene>());
+        cookie::engine->currentScene->startLoop();
+        cookie::destroy();
+    } catch (std::exception &e) {
+
+    }
+    return 0;
 }
