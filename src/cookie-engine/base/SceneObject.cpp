@@ -24,25 +24,6 @@ namespace cookie {
 
     SceneObject::~SceneObject() = default;
 
-    template<class ComponentType>
-    void SceneObject::addComponent(std::unique_ptr<ComponentType> component) {
-        static_assert(std::is_base_of<Component, ComponentType>::value,
-                      "type parameter of this class must derive from Component class");
-        components[typeid(ComponentType)] = component;
-    }
-
-    template<class ComponentType>
-    ComponentType &SceneObject::removeComponent() {
-        auto component = std::move(components[typeid(ComponentType)]);
-        components.erase(typeid(ComponentType));
-        return dynamic_cast<ComponentType>(component);
-    }
-
-    template<class ComponentType>
-    ComponentType &SceneObject::getComponent() {
-        return dynamic_cast<ComponentType>(components[typeid(ComponentType)]);
-    }
-
     const glm::mat4 &SceneObject::getModelMat() {
         return modelMat;
     }

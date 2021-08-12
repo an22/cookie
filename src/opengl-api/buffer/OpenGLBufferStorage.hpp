@@ -8,22 +8,30 @@
 #ifndef OpenGLBufferStorage_hpp
 #define OpenGLBufferStorage_hpp
 
-#include <stdio.h>
+#include <GL/glew.h>
 #include "BufferStorage.hpp"
-#include "PlatformSpecificData.hpp"
+#include "PlatformSpecificBufferData.h"
+#include "OpenGLPSBufferData.h"
 
 class OpenGLBufferStorage : public cookie::BufferStorage {
+private:
+    GLuint vao;
+    GLuint vbo;
+
+    std::unique_ptr<OpenGLPSBufferData> bufferData;
+
 public:
     explicit OpenGLBufferStorage(size_t bufferSize);
 
+
+    void bind() override;
     void saveToBuffer(
             size_t size,
             const void *memory,
-            int32_t usage,
-            cookie::PlatformSpecificData *data
-    ) const override;
+            std::unique_ptr<cookie::PlatformSpecificBufferData> data
+    ) override;
 
-    ~OpenGLBufferStorage() override = default;
+    ~OpenGLBufferStorage() override;
 };
 
 #endif /* OpenGLBufferStorage_hpp */

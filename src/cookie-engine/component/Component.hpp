@@ -10,6 +10,8 @@
 
 namespace cookie {
     class Component {
+    public:
+        virtual ~Component() = default;
     };
 }
 

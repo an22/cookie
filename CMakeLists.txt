@@ -13,7 +13,6 @@ add_executable(cookie-engine src/main.cpp
         src/cookie-engine/base/SceneObject.cpp
         src/cookie-engine/component/Mesh.cpp
         src/cookie-engine/errors/GLErrorHandler.cpp
-        src/cookie-engine/shader/ShaderManager.cpp
         src/cookie-engine/struct/FramerateInfo.cpp
         src/cookie-engine/struct/SceneSettings.cpp
         src/cookie-engine/util/Constants.cpp
@@ -24,8 +23,8 @@ add_executable(cookie-engine src/main.cpp
         src/opengl-api/initializer/OpenGLInitializer.cpp
         src/opengl-api/shader/OpenGLShader.cpp
         src/opengl-api/time/OpenGLTime.cpp
-        src/cookie-engine/struct/BufferStorage.cpp
-        src/cookie-engine/base/Scene.cpp)
+        src/cookie-engine/platform_abstracts/BufferStorage.cpp
+        src/cookie-engine/base/Scene.cpp src/util/Util.cpp src/util/Util.h src/cookie-engine/platform_abstracts/DrawUtils.cpp src/cookie-engine/platform_abstracts/DrawUtils.h src/opengl-api/draw/OpenGLDrawUtils.cpp src/opengl-api/draw/OpenGLDrawUtils.h src/cookie-engine/platform_abstracts/Shader.cpp src/cookie-engine/draw/Cube.cpp src/cookie-engine/platform_abstracts/PlatformSpecificBufferData.h src/opengl-api/buffer/OpenGLPSBufferData.cpp src/opengl-api/buffer/OpenGLPSBufferData.h src/cookie-engine/component/Material.cpp src/cookie-engine/component/Material.h)
 
 target_include_directories(cookie-engine PUBLIC ${GLEW_INCLUDE_DIRS})
 target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/lib/glew/include)
@@ -38,7 +37,9 @@ target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/cookie-e
 target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/cookie-engine/struct)
 target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/cookie-engine/time)
 target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/cookie-engine/util)
+target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/cookie-engine/platform_abstracts)
 target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/factory)
+target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/util)
 target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/opengl-api)
 target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/opengl-api/buffer)
 target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/opengl-api/initializer)

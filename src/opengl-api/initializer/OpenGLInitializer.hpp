@@ -8,7 +8,7 @@
 #ifndef OpenGLInitializer_hpp
 #define OpenGLInitializer_hpp
 
-#include "Initializer.hpp"
+#include "platform_abstracts/Initializer.hpp"
 
 class OpenGLInitializer : public cookie::Initializer {
     void initGraphicsAPIResources() const override;

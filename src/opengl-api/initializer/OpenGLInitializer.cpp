@@ -25,7 +25,7 @@ void OpenGLInitializer::initGraphicsAPIResources() const {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwSetErrorCallback(errorCallback);
-    GLFWwindow *window = glfwCreateWindow(600, 600, "LightingTest", nullptr, nullptr);
+    GLFWwindow *window = glfwCreateWindow(600, 600, "EngineTest", nullptr, nullptr);
     auto &platformData = dynamic_cast<OpenGLPlatformSpecificData &>(*cookie::engine->platformData);
     platformData.setWindow(window);
     glfwMakeContextCurrent(window);

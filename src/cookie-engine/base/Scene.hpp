@@ -9,7 +9,7 @@
 
 #include <glm/glm.hpp>
 #include <memory>
-#include "ShaderManager.hpp"
+#include <DrawUtils.h>
 #include "FramerateInfo.hpp"
 #include "SceneSettings.hpp"
 #include "Cube.hpp"
@@ -19,6 +19,7 @@ namespace cookie {
     class Scene {
     private:
         std::unique_ptr<SceneSettings> sceneSettings;
+        std::unique_ptr<DrawUtils> drawUtils;
         FramerateInfo framerate;
         glm::mat4 vMat;
         Cube cube;
@@ -30,7 +31,6 @@ namespace cookie {
         Scene();
         ~Scene();
 
-        void init();
         void startLoop();
     };
 }

@@ -5,10 +5,10 @@
 //  Created by Antiufieiev Michael on 05.08.2021.
 //
 
-#ifndef OpenGLPlatformSpecificData_h
-#define OpenGLPlatformSpecificData_h
+#ifndef OpenGLPlatformSpecificData_hpp
+#define OpenGLPlatformSpecificData_hpp
 
-#include "PlatformSpecificData.hpp"
+#include "platform_abstracts/PlatformSpecificData.hpp"
 #include "GLFW/glfw3.h"
 
 class OpenGLPlatformSpecificData : public cookie::PlatformSpecificData {
@@ -25,4 +25,4 @@ public:
     ~OpenGLPlatformSpecificData() override;
 };
 
-#endif /* OpenGLPlatformSpecificData_h */
+#endif /* OpenGLPlatformSpecificData_hpp */

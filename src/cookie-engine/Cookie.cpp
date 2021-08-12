@@ -5,7 +5,6 @@
 //  Created by Antiufieiev Michael on 05.08.2021.
 //
 
-#include <stdio.h>
 #include "Cookie.hpp"
 
 namespace cookie {

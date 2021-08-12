@@ -8,9 +8,13 @@
 #include "Cookie.hpp"
 
 int main() {
-    cookie::init();
-    cookie::Scene scene;
-    scene.init();
-    scene.startLoop();
+    try {
+        cookie::init();
+        cookie::Scene scene;
+        scene.startLoop();
+        cookie::destroy();
+    }catch (std::exception& e) {
+
+    }
     return 0;
 }

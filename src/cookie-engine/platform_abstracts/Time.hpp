@@ -5,8 +5,8 @@
 //  Created by Antiufieiev Michael on 04.08.2021.
 //
 
-#ifndef Time_h
-#define Time_h
+#ifndef Time_hpp
+#define Time_hpp
 
 namespace cookie {
 
@@ -20,4 +20,4 @@ namespace cookie {
         virtual double getFrameTime() = 0;
     };
 }
-#endif /* Time_h */
+#endif /* Time_hpp */

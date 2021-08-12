@@ -12,6 +12,7 @@
 #include <memory>
 #include <unordered_map>
 #include <typeindex>
+#include <DrawUtils.h>
 #include "Component.hpp"
 
 namespace cookie {
@@ -39,14 +40,26 @@ namespace cookie {
         virtual void setPosition(const glm::vec3 &position);
         virtual void setPosition(float x, float y, float z);
 
-        template<class ComponentType>
-        void addComponent(std::unique_ptr<ComponentType> component);
+        virtual void draw(DrawUtils &utils, glm::mat4 &viewMatrix, glm::mat4 &projMatrix) = 0;
 
         template<class ComponentType>
-        ComponentType &removeComponent();
+        void addComponent(std::unique_ptr<ComponentType> component) {
+            static_assert(std::is_base_of<Component, ComponentType>::value,
+                          "type parameter of this class must derive from Component class");
+            components[typeid(ComponentType)] = std::move(component);
+        }
 
         template<class ComponentType>
-        ComponentType &getComponent();
+        ComponentType &removeComponent() {
+            auto component = std::move(components[typeid(ComponentType)]);
+            components.erase(typeid(ComponentType));
+            return dynamic_cast<ComponentType>(component);
+        }
+
+        template<class ComponentType>
+        ComponentType &getComponent() {
+            return dynamic_cast<ComponentType&>(*components[typeid(ComponentType)]);
+        }
 
     };
 }

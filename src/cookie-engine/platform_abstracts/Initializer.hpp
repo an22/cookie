@@ -5,8 +5,8 @@
 //  Created by Antiufieiev Michael on 05.08.2021.
 //
 
-#ifndef Initializer_h
-#define Initializer_h
+#ifndef Initializer_hpp
+#define Initializer_hpp
 
 namespace cookie {
     class Initializer {
@@ -18,4 +18,4 @@ namespace cookie {
         virtual void destroyGraphicsAPIResources() const = 0;
     };
 }
-#endif /* Initializer_h */
+#endif /* Initializer_hpp */

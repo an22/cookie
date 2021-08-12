@@ -9,7 +9,7 @@
 #define OpenGLTime_hpp
 
 #include <stdio.h>
-#include "Time.hpp"
+#include "platform_abstracts/Time.hpp"
 
 class OpenGLTime : public cookie::Time {
 

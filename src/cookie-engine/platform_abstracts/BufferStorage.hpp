@@ -9,7 +9,8 @@
 #define BufferStorage_hpp
 
 #include <cstdio>
-#include "PlatformSpecificData.hpp"
+#include <memory>
+#include "PlatformSpecificBufferData.h"
 
 namespace cookie {
     class BufferStorage {
@@ -20,12 +21,12 @@ namespace cookie {
         explicit BufferStorage(size_t bufferSize);
         virtual ~BufferStorage();
 
+        virtual void bind() = 0;
         virtual void saveToBuffer(
                 size_t size,
                 const void *memory,
-                int32_t usage,
-                PlatformSpecificData *data
-        ) const = 0;
+                std::unique_ptr<PlatformSpecificBufferData> data
+        ) = 0;
     };
 }
 

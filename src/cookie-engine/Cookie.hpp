@@ -5,8 +5,8 @@
 //  Created by Antiufieiev Michael on 05.08.2021.
 //
 
-#ifndef Cookie_h
-#define Cookie_h
+#ifndef Cookie_hpp
+#define Cookie_hpp
 
 #include "CookieFactory.hpp"
 #include "CookieConstants.hpp"
@@ -38,4 +38,4 @@ namespace cookie {
     extern Cookie *engine;
 
 }
-#endif /* Cookie_h */
+#endif /* Cookie_hpp */

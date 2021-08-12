@@ -8,48 +8,62 @@
 #ifndef Cube_hpp
 #define Cube_hpp
 
+#include "Mesh.hpp"
+#include "Time.hpp"
+#include "CookieFactory.hpp"
 #include "SceneObject.hpp"
 
 namespace cookie {
     class Cube : public SceneObject {
-
+    private:
+        std::unique_ptr<Time> time = CookieFactory::provideTimeManager();
     public:
-        Cube(float x, float y, float z) : SceneObject(x, y, z) {
-        }
-
-        static const int meshSize = 108;
+        Cube(float x, float y, float z);
 
         ~Cube() override = default;
 
-        static float *genMesh() {
-            auto *mesh = new float[meshSize]{
-                    -1.0f, 1.0f, -1.0f, -1.0f,
-                    -1.0f, -1.0f, 1.0f, -1.0f,
-                    -1.0f, 1.0f, -1.0f, -1.0f,
-                    1.0f, 1.0f, -1.0f, -1.0f,
-                    1.0f, -1.0f, 1.0f, -1.0f,
-                    -1.0f, 1.0f, -1.0f, 1.0f,
-                    1.0f, 1.0f, -1.0f, 1.0f,
-                    -1.0f, 1.0f, 1.0f, 1.0f,
-                    1.0f, 1.0f, 1.0f, -1.0f,
-                    1.0f, -1.0f, 1.0f, -1.0f,
-                    -1.0f, 1.0f, 1.0f, 1.0f,
-                    1.0f, -1.0f, -1.0f, 1.0f,
-                    -1.0f, 1.0f, 1.0f, 1.0f,
-                    1.0f, 1.0f, -1.0f, -1.0f,
-                    1.0f, -1.0f, -1.0f, -1.0f,
-                    -1.0f, 1.0f, 1.0f, -1.0f,
-                    -1.0f, -1.0f, -1.0f, 1.0f,
-                    -1.0f, -1.0f, 1.0f, 1.0f,
-                    -1.0f, -1.0f, 1.0f, 1.0f,
-                    -1.0f, 1.0f, 1.0f, -1.0f,
-                    -1.0f, 1.0f, -1.0f, -1.0f,
-                    -1.0f, -1.0f, -1.0f, -1.0f,
-                    -1.0f, 1.0f, -1.0f, 1.0f,
-                    -1.0f, 1.0f, 1.0f, -1.0f,
-                    1.0f, 1.0f, 1.0f, 1.0f,
-                    1.0f, 1.0f, -1.0f, 1.0f,
-                    1.0f, -1.0f, 1.0f, -1.0f
+        void draw(DrawUtils &utils, glm::mat4 &viewMatrix, glm::mat4 &projMatrix) override;
+
+        static const int meshSize = 36;
+
+        static Vertex *genMesh() {
+            auto *mesh = new Vertex[meshSize]{
+                    Vertex(glm::vec3(-1.0f, 1.0f, -1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(1.0f, 1.0f, -1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(-1.0f, 1.0f, -1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(1.0f, -1.0f, 1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(1.0f, 1.0f, -1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(1.0f, -1.0f, 1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(1.0f, 1.0f, -1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(1.0f, -1.0f, 1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(-1.0f, 1.0f, 1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(-1.0f, 1.0f, 1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(-1.0f, 1.0f, -1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(-1.0f, 1.0f, 1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(1.0f, -1.0f, 1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(-1.0f, 1.0f, -1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(1.0f, 1.0f, -1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(-1.0f, 1.0f, 1.0f), glm::vec3(), glm::vec2()),
+                    Vertex(glm::vec3(-1.0f, 1.0f, -1.0), glm::vec3(), glm::vec2())
             };
             return mesh;
         }
