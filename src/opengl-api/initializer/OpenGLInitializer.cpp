@@ -13,6 +13,11 @@
 #include <cstdlib>
 #include <iostream>
 
+void windowReshapeCallback(GLFWwindow* window, int newWidth, int newHeight) {
+    glViewport(0, 0, newWidth, newHeight); // sets screen region associated with framebuffer
+    cookie::engine->currentScene->getSettings().onWindowResized(newWidth, newHeight);
+}
+
 void errorCallback(int code, const char *description) {
     //TODO proper error handling
     std::cout << description << std::endl;
@@ -26,6 +31,7 @@ void OpenGLInitializer::initGraphicsAPIResources() const {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwSetErrorCallback(errorCallback);
     GLFWwindow *window = glfwCreateWindow(600, 600, "EngineTest", nullptr, nullptr);
+    glfwSetFramebufferSizeCallback(window, windowReshapeCallback);
     auto &platformData = dynamic_cast<OpenGLPlatformSpecificData &>(*cookie::engine->platformData);
     platformData.setWindow(window);
     glfwMakeContextCurrent(window);

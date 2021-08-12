@@ -34,5 +34,8 @@ void OpenGLDrawUtils::drawArrays(int32_t from, int32_t to) {
     glDrawArrays(GL_TRIANGLES, from, to);
 }
 void OpenGLDrawUtils::drawElements(uint32_t size) {
-    glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, nullptr);
+    glDrawElementsInstanced(GL_TRIANGLES, size, GL_UNSIGNED_INT, nullptr, 100000);
+}
+void OpenGLDrawUtils::cullFace() {
+    glEnable(GL_CULL_FACE);
 }

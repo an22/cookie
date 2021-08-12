@@ -13,7 +13,6 @@
 #include "FramerateInfo.hpp"
 #include "SceneSettings.hpp"
 #include "Cube.hpp"
-#include "Cookie.hpp"
 
 namespace cookie {
     class Scene {
@@ -32,6 +31,7 @@ namespace cookie {
         ~Scene();
 
         void startLoop();
+        SceneSettings& getSettings();
     };
 }
 

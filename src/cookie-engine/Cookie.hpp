@@ -11,6 +11,7 @@
 #include "CookieFactory.hpp"
 #include "CookieConstants.hpp"
 #include <memory>
+#include "Scene.hpp"
 
 namespace cookie {
 
@@ -21,6 +22,7 @@ namespace cookie {
     };
 
     void init(CgAPI api = CgAPI::OpenGL);
+    void setScene(std::unique_ptr<Scene> scene);
     void destroy();
 
     class Cookie {
@@ -30,6 +32,7 @@ namespace cookie {
 
         std::unique_ptr<PlatformSpecificData> platformData;
         std::unique_ptr<Initializer> initializer;
+        std::unique_ptr<Scene> currentScene;
 
         explicit Cookie(CgAPI api);
 

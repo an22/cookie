@@ -14,11 +14,15 @@
 namespace cookie {
     struct SceneSettings {
         uint32_t width, height;
-        float aspectRatio;
+        float aspectRatio{};
         glm::vec3 cameraPos;
-        glm::mat4 perspectiveMx;
+        glm::mat4 perspectiveMx{};
+        float FOV;
+        float nearZ;
+        float farZ;
 
         SceneSettings(uint32_t width, uint32_t height, float x, float y, float z, float fov, float nearZ, float farZ);
+        void onWindowResized(uint32_t newWidth, uint32_t newHeight);
     };
 }
 
