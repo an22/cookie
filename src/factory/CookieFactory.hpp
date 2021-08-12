@@ -25,7 +25,7 @@ public:
             const std::string &vertexPath,
             const std::string &fragmentPath
     );
-    static std::unique_ptr<cookie::BufferStorage> provideBufferStorage(size_t bufferSize);
+    static std::unique_ptr<cookie::BufferStorage> provideBufferStorage();
     static std::unique_ptr<cookie::Initializer> provideInitializer();
     static std::unique_ptr<cookie::DrawUtils> provideDrawUtils();
     static std::unique_ptr<cookie::PlatformSpecificBufferData> provideBufferData(cookie::BufferType bufferType);

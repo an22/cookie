@@ -5,7 +5,7 @@
 #include "Scene.hpp"
 
 namespace cookie {
-    Scene::Scene() : cube(0.0f, -2.0f, 0.0f) {
+    Scene::Scene() : cube(2.0f, 2.0f, 0.0f), cube2(1.0, 3.0f, 0.0f) {
         auto width = cookie::engine->platformData->width();
         auto height = cookie::engine->platformData->height();
         drawUtils = CookieFactory::provideDrawUtils();
@@ -21,16 +21,17 @@ namespace cookie {
         drawUtils->clearBuffers();
         drawUtils->enableDepthTest();
         cube.draw(*drawUtils, vMat, sceneSettings->perspectiveMx);
-        drawUtils->drawInstanced(0,36,10000);
     }
 
     void Scene::startLoop() {
         framerate.invalidateFrameRate();
+        double last = framerate.frameTime;
         while (!drawUtils->shouldCloseWindow()) {
-            display(framerate.frameTime, framerate.frameTime - framerate.framerateTimestamp);
             framerate.invalidateFrameRate();
+            display(framerate.frameTime, framerate.frameTime - last);
             drawUtils->swapBuffers();
             drawUtils->listenInputEvents();
+            last = framerate.frameTime;
         }
     }
 }

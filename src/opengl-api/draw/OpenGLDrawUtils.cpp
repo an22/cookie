@@ -13,8 +13,8 @@ bool OpenGLDrawUtils::shouldCloseWindow() {
     return glfwWindowShouldClose(platformData.getWindow());
 }
 void OpenGLDrawUtils::clearBuffers() {
-    glClear(GL_DEPTH_BUFFER_BIT);
     glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_DEPTH_BUFFER_BIT);
 }
 void OpenGLDrawUtils::listenInputEvents() {
     auto &platformData = dynamic_cast<OpenGLPlatformSpecificData &>(*cookie::engine->platformData);
@@ -27,10 +27,12 @@ void OpenGLDrawUtils::enableDepthTest() {
     glEnable(GL_DEPTH);
     glDepthFunc(GL_LEQUAL);
 }
-
 void OpenGLDrawUtils::drawInstanced(int32_t first, int32_t size, int32_t times) {
     glDrawArraysInstanced(GL_TRIANGLES, first, size, times);
 }
-void OpenGLDrawUtils::enableVertexAttribute(int32_t attrib) {
-    glEnableVertexAttribArray(attrib);
+void OpenGLDrawUtils::drawArrays(int32_t from, int32_t to) {
+    glDrawArrays(GL_TRIANGLES, from, to);
+}
+void OpenGLDrawUtils::drawElements(uint32_t size) {
+    glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, nullptr);
 }

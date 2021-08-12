@@ -15,19 +15,19 @@
 
 class OpenGLBufferStorage : public cookie::BufferStorage {
 private:
-    GLuint vao;
-    GLuint vbo;
+    GLuint vao{};
+    GLuint vboVertex{};
+    GLuint vboIndex{};
 
     std::unique_ptr<OpenGLPSBufferData> bufferData;
 
 public:
-    explicit OpenGLBufferStorage(size_t bufferSize);
+    explicit OpenGLBufferStorage();
 
 
     void bind() override;
     void saveToBuffer(
-            size_t size,
-            const void *memory,
+            const cookie::MeshData &meshData,
             std::unique_ptr<cookie::PlatformSpecificBufferData> data
     ) override;
 

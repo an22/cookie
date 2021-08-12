@@ -10,21 +10,19 @@
 
 #include <cstdio>
 #include <memory>
+#include "MeshStruct.h"
 #include "PlatformSpecificBufferData.h"
 
 namespace cookie {
     class BufferStorage {
-    protected:
-        size_t bufferSize;
 
     public:
-        explicit BufferStorage(size_t bufferSize);
+        explicit BufferStorage();
         virtual ~BufferStorage();
 
         virtual void bind() = 0;
         virtual void saveToBuffer(
-                size_t size,
-                const void *memory,
+                const MeshData &meshData,
                 std::unique_ptr<PlatformSpecificBufferData> data
         ) = 0;
     };

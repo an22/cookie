@@ -8,6 +8,7 @@
 #include "SceneObject.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include <type_traits>
+#include <Mesh.hpp>
 
 namespace cookie {
     SceneObject::SceneObject() {
@@ -16,7 +17,7 @@ namespace cookie {
     }
 
     SceneObject::SceneObject(glm::vec3 pos) : position(pos) {
-        modelMat = glm::translate(glm::mat4(), pos);
+        modelMat = glm::translate(glm::mat4(1), pos);
     }
 
     SceneObject::SceneObject(float x, float y, float z) : SceneObject(glm::vec3(x, y, z)) {
@@ -51,5 +52,20 @@ namespace cookie {
     void SceneObject::setPosition(float x, float y, float z) {
         this->position = glm::vec3(x, y, z);
         modelMat = glm::translate(glm::mat4(1.0f), position);
+    }
+    void SceneObject::draw(cookie::DrawUtils &utils, glm::mat4 &viewMatrix, glm::mat4 &projMatrix) {
+        auto mesh = getComponent<Mesh>();
+        auto shader = getComponent<Shader>();
+        if (!mesh) return;
+        if (!shader) return;
+        auto mvMatrix = viewMatrix * modelMat;
+        shader->setMatrix4("mv_matrix", mvMatrix);
+        shader->setMatrix4("proj_matrix", projMatrix);
+        mesh->onPreDraw(*shader);
+        if (!mesh->getIndices().empty()) {
+            utils.drawElements(mesh->getIndices().size());
+        } else {
+            utils.drawArrays(0, mesh->getVertices().size());
+        }
     }
 }

@@ -13,12 +13,16 @@
 #include <unordered_map>
 #include <typeindex>
 #include <DrawUtils.h>
+#include <Time.hpp>
+#include <CookieFactory.hpp>
 #include "Component.hpp"
 
 namespace cookie {
     class SceneObject {
     private:
-        bool is_static = true;
+        std::unique_ptr<Time> time = CookieFactory::provideTimeManager();
+    protected:
+        bool is_static = false;
 
         std::unordered_map<std::type_index, std::unique_ptr<Component>> components;
 
@@ -40,7 +44,7 @@ namespace cookie {
         virtual void setPosition(const glm::vec3 &position);
         virtual void setPosition(float x, float y, float z);
 
-        virtual void draw(DrawUtils &utils, glm::mat4 &viewMatrix, glm::mat4 &projMatrix) = 0;
+        virtual void draw(DrawUtils &utils, glm::mat4 &viewMatrix, glm::mat4 &projMatrix);
 
         template<class ComponentType>
         void addComponent(std::unique_ptr<ComponentType> component) {
@@ -57,8 +61,12 @@ namespace cookie {
         }
 
         template<class ComponentType>
-        ComponentType &getComponent() {
-            return dynamic_cast<ComponentType&>(*components[typeid(ComponentType)]);
+        ComponentType *getComponent() {
+            auto item = components.find(typeid(ComponentType));
+            if(item != components.end()) {
+                return dynamic_cast<ComponentType*>(item->second.get());
+            }
+            return nullptr;
         }
 
     };

@@ -12,45 +12,43 @@
 
 namespace cookie {
 
+    Mesh::Mesh(std::unique_ptr<MeshData> meshData) : meshData(std::move(meshData)),
+                                                     bufferStorage(CookieFactory::provideBufferStorage()) {
+        std::unique_ptr<PlatformSpecificBufferData> data = CookieFactory::provideBufferData(BufferType::VERTEX_BUFFER);
+        bufferStorage->saveToBuffer(*this->meshData, std::move(data));
+    }
+
     Mesh::Mesh(
             const std::vector<Vertex> &vertices,
             const std::vector<uint32_t> &indices,
             const std::vector<Texture> &textures
-    ) {
+    ) : meshData(std::make_unique<MeshData>(vertices, indices, textures)),
+        bufferStorage(CookieFactory::provideBufferStorage()) {
         std::unique_ptr<PlatformSpecificBufferData> data = CookieFactory::provideBufferData(BufferType::VERTEX_BUFFER);
-        bufferStorage = CookieFactory::provideBufferStorage(1);
-        bufferStorage->saveToBuffer(vertices.size(), vertices.data(), std::move(data));
+        bufferStorage->saveToBuffer(*this->meshData, std::move(data));
     }
 
-    Mesh::Mesh(const std::string &path) {
-        //TODO asset importer
+    Mesh::Mesh(const std::string &path) : bufferStorage(CookieFactory::provideBufferStorage()) {
     }
+
     const std::vector<Vertex> &Mesh::getVertices() const {
-        return vertices;
-    }
-    const std::vector<uint32_t> &Mesh::getIndices() const {
-        return indices;
-    }
-    const std::vector<Texture> &Mesh::getTextures() const {
-        return textures;
+        return meshData->vertices;
     }
 
+    const std::vector<uint32_t> &Mesh::getIndices() const {
+        return meshData->indices;
+    }
+
+    const std::vector<Texture> &Mesh::getTextures() const {
+        return meshData->textures;
+    }
     void Mesh::onPreDraw(Shader &shader) {
         shader.use();
         bufferStorage->bind();
     }
 
-    void Mesh::onPreDraw(Material &shader) {
-        shader.onPreDraw();
+    void Mesh::onPreDraw(Material &material) {
+        material.onPreDraw();
         bufferStorage->bind();
     }
-
-    Vertex::Vertex(
-            const glm::vec3 &position,
-            const glm::vec3 &normal,
-            const glm::vec2 &texCoords
-    ) : position(position), normal(normal), texCoords(texCoords) {
-    }
-
-    Texture::Texture(uint32_t id, std::string type) : id(id), type(std::move(type)) {}
 }

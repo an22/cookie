@@ -42,10 +42,10 @@ std::unique_ptr<cookie::Shader> CookieFactory::provideShader(
     }
 }
 
-std::unique_ptr<cookie::BufferStorage> CookieFactory::provideBufferStorage(size_t bufferSize) {
+std::unique_ptr<cookie::BufferStorage> CookieFactory::provideBufferStorage() {
     switch (cookie::Cookie::CURRENT_CG_API) {
         case cookie::CgAPI::OpenGL:
-            return std::unique_ptr<cookie::BufferStorage>(new OpenGLBufferStorage(bufferSize));
+            return std::unique_ptr<cookie::BufferStorage>(new OpenGLBufferStorage());
             //TODO case Vulkan:
             //TODO case DirectX:
         default:

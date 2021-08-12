@@ -50,17 +50,7 @@ GLuint OpenGLShader::loadShaderFrom(const std::string &path, GLenum shaderType) 
         throw std::runtime_error("Shader compilation failed");
     }
     return shader;
-} //		projLoc = glGetUniformLocation(renderingProgram, "proj_matrix");
-//		vLoc = glGetUniformLocation(renderingProgram, "v_matrix");
-//		tFactLoc = glGetUniformLocation(renderingProgram, "timeFactor");
-//
-//		glUniformMatrix4fv(vLoc, 1, GL_FALSE, glm::value_ptr(vMat));
-//		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(sceneSettings->perspectiveMx));
-//		glUniform1f(tFactLoc, (float) currentTime);
-//
-//		glBindBuffer(GL_ARRAY_BUFFER, bufferStorage.vbo[0]);
-//		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-//		glEnableVertexAttribArray(0);
+}
 
 void OpenGLShader::use() {
     glUseProgram(renderingProgram);

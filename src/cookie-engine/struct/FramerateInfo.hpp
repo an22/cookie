@@ -18,12 +18,12 @@ namespace cookie {
     class FramerateInfo {
     private:
         std::unique_ptr<Time> time;
-        double lastTimestamp;
 
     public:
         uint32_t framerate;
         double framerateTimestamp;
         double frameTime;
+        double lastTimestamp;
 
         FramerateInfo();
         void invalidateFrameRate();

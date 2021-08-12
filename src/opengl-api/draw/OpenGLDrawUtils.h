@@ -15,7 +15,8 @@ public:
     void swapBuffers() override;
     void enableDepthTest() override;
     void drawInstanced(int32_t first, int32_t size, int32_t times) override;
-    void enableVertexAttribute(int32_t attrib) override;
+    void drawArrays(int32_t from, int32_t to) override;
+    void drawElements(uint32_t size) override;
     OpenGLDrawUtils() = default;
     ~OpenGLDrawUtils() override = default;
 

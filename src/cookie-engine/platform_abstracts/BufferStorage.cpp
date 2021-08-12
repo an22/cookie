@@ -4,8 +4,7 @@
 #include "BufferStorage.hpp"
 
 namespace cookie {
-    BufferStorage::BufferStorage(size_t bufferSize) {
-        this->bufferSize = bufferSize;
+    BufferStorage::BufferStorage() {
     }
 
     BufferStorage::~BufferStorage() = default;
