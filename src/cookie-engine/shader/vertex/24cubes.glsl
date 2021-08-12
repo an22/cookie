@@ -16,7 +16,7 @@ mat4 buildScale(float x, float y, float z);
 out vec4 varyingColor;
 
 void main(void) {
-    float i = gl_InstanceID + timeFactor/4.0;
+    float i = gl_InstanceID + timeFactor/2.0;
     float a = sin(203.0 * i/8000.0) * 40.0;
     float b = cos(301.0 * i/4001.0) * 401.0;
     float c = sin(400.0 * i/6003.0) * 405.0;

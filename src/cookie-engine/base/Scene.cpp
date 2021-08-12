@@ -15,14 +15,14 @@ namespace cookie {
                 width, height, 0.0f, 0.0f, 8.0f, 1.0472f, 0.1f, 1000.0f
         );
         vMat = glm::translate(glm::mat4(1.0f), -1.0f * sceneSettings->cameraPos);
+        drawUtils->enableDepthTest();
+        drawUtils->cullFace();
     }
 
     Scene::~Scene() = default;
 
     void Scene::display(double currentTime, double currentTimeDelta) {
         drawUtils->clearBuffers();
-        drawUtils->enableDepthTest();
-        drawUtils->cullFace();
         cube.draw(*drawUtils, vMat, sceneSettings->perspectiveMx);
     }
 

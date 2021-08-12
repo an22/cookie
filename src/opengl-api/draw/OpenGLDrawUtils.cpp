@@ -24,7 +24,7 @@ void OpenGLDrawUtils::swapBuffers() {
     glfwPollEvents();
 }
 void OpenGLDrawUtils::enableDepthTest() {
-    glEnable(GL_DEPTH);
+    glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
 }
 void OpenGLDrawUtils::drawInstanced(int32_t first, int32_t size, int32_t times) {
