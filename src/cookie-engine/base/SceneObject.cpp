@@ -10,13 +10,10 @@
 #include <Mesh.hpp>
 
 namespace cookie {
-    SceneObject::SceneObject() {
-        position = glm::vec3(0, 0, 0);
-        modelMat = glm::mat4();
+    SceneObject::SceneObject() : position(glm::vec3(0, 0, 0)), modelMat(glm::mat4()) {
     }
 
-    SceneObject::SceneObject(glm::vec3 pos) : position(pos) {
-        modelMat = glm::translate(glm::mat4(1), pos);
+    SceneObject::SceneObject(glm::vec3 pos) : position(pos), modelMat(glm::translate(glm::mat4(1), pos)) {
     }
 
     SceneObject::SceneObject(float x, float y, float z) : SceneObject(glm::vec3(x, y, z)) {

@@ -57,7 +57,7 @@ void OpenGLShader::use() {
 }
 
 void OpenGLShader::setBool(const std::string &name, bool value) const {
-	GLint location = glGetUniformLocation(renderingProgram, name.c_str());
+	//TODO GLint location = glGetUniformLocation(renderingProgram, name.c_str());
 }
 
 void OpenGLShader::setInt(const std::string &name, int32_t value) const {
