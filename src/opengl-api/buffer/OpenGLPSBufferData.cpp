@@ -5,12 +5,12 @@
 #include "OpenGLPSBufferData.h"
 
 OpenGLPSBufferData::OpenGLPSBufferData(cookie::BufferType bufferType) {
-    switch (bufferType) {
+	switch (bufferType) {
 
-        case cookie::BufferType::VERTEX_BUFFER: {
-            usage = GL_STATIC_DRAW;
-            target = GL_ARRAY_BUFFER;
-            break;
-        }
-    }
+		case cookie::BufferType::VERTEX_BUFFER: {
+			usage = GL_STATIC_DRAW;
+			target = GL_ARRAY_BUFFER;
+			break;
+		}
+	}
 }

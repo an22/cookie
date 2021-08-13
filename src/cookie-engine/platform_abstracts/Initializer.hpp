@@ -9,13 +9,13 @@
 #define Initializer_hpp
 
 namespace cookie {
-    class Initializer {
-    public:
-        Initializer() = default;
-        virtual ~Initializer() = default;
+	class Initializer {
+	public:
+		Initializer() = default;
+		virtual ~Initializer() = default;
 
-        virtual void initGraphicsAPIResources() const = 0;
-        virtual void destroyGraphicsAPIResources() const = 0;
-    };
+		virtual void initGraphicsAPIResources() const = 0;
+		virtual void destroyGraphicsAPIResources() const = 0;
+	};
 }
 #endif /* Initializer_hpp */

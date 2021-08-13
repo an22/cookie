@@ -15,24 +15,23 @@
 #include "Cube.hpp"
 
 namespace cookie {
-    class Scene {
-    private:
-        std::unique_ptr<SceneSettings> sceneSettings;
-        std::unique_ptr<DrawUtils> drawUtils;
-        FramerateInfo framerate;
-        glm::mat4 vMat;
-        Cube cube;
+	class Scene {
+	private:
+		std::unique_ptr<SceneSettings> sceneSettings;
+		std::unique_ptr<DrawUtils> drawUtils;
+		FramerateInfo framerate;
+		glm::mat4 vMat;
+		Cube cube;
 
-        void display(double currentTime, double currentTimeDelta);
+		void display(double currentTime, double currentTimeDelta);
 
-    public:
+	public:
+		Scene();
+		~Scene();
 
-        Scene();
-        ~Scene();
-
-        void startLoop();
-        SceneSettings& getSettings();
-    };
+		void startLoop();
+		SceneSettings &getSettings();
+	};
 }
 
 #endif /* Scene_hpp */

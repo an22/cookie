@@ -14,12 +14,12 @@
 class GLErrorHandler {
 
 public :
-    GLErrorHandler();
-    ~GLErrorHandler();
+	GLErrorHandler();
+	~GLErrorHandler();
 
-    void printShaderLog(GLuint shader);
-    void printProgramLog(int prog);
-    bool checkOpenGLError();
+	void printShaderLog(GLuint shader);
+	void printProgramLog(int prog);
+	bool checkOpenGLError();
 };
 
 #endif /* GLErrorHandler_hpp */

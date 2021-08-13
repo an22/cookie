@@ -8,26 +8,26 @@
 #include "Cookie.hpp"
 
 namespace cookie {
-    Cookie *engine = nullptr;
+	Cookie *engine = nullptr;
 
-    void init(CgAPI api) {
-        engine = new Cookie(api);
-        engine->initializer->initGraphicsAPIResources();
-    }
+	void init(CgAPI api) {
+		engine = new Cookie(api);
+		engine->initializer->initGraphicsAPIResources();
+	}
 
-    void setScene(std::unique_ptr<Scene> scene) {
-        engine->currentScene = std::move(scene);
-    }
+	void setScene(std::unique_ptr<Scene> scene) {
+		engine->currentScene = std::move(scene);
+	}
 
-    void destroy() {
-        delete engine;
-    }
+	void destroy() {
+		delete engine;
+	}
 
-    CgAPI Cookie::CURRENT_CG_API = CgAPI::OpenGL;
+	CgAPI Cookie::CURRENT_CG_API = CgAPI::OpenGL;
 
-    Cookie::Cookie(CgAPI api)
-            : platformData(CookieFactory::createPlatformSpecificContainer()),
-              initializer(CookieFactory::provideInitializer()) {
-        CURRENT_CG_API = api;
-    }
+	Cookie::Cookie(CgAPI api)
+			: platformData(CookieFactory::createPlatformSpecificContainer()),
+			  initializer(CookieFactory::provideInitializer()) {
+		CURRENT_CG_API = api;
+	}
 }

@@ -23,13 +23,10 @@ namespace cookie {
         std::unique_ptr<Time> time = CookieFactory::provideTimeManager();
     protected:
         bool is_static = false;
-
-        std::unordered_map<std::type_index, std::unique_ptr<Component>> components;
-
         glm::vec3 position{};
         glm::mat4 modelMat{};
+        std::unordered_map<std::type_index, std::unique_ptr<Component>> components;
     public:
-
         explicit SceneObject(glm::vec3 pos);
         SceneObject();
         SceneObject(float x, float y, float z);
@@ -63,8 +60,8 @@ namespace cookie {
         template<class ComponentType>
         ComponentType *getComponent() {
             auto item = components.find(typeid(ComponentType));
-            if(item != components.end()) {
-                return dynamic_cast<ComponentType*>(item->second.get());
+            if (item != components.end()) {
+                return dynamic_cast<ComponentType *>(item->second.get());
             }
             return nullptr;
         }

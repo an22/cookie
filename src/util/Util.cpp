@@ -10,8 +10,8 @@
 
 namespace cookie {
 
-    void throwAPIUnsupported() {
-        throw std::invalid_argument("Selected Rendering API isn't supported");
-    }
+	void throwAPIUnsupported() {
+		throw std::invalid_argument("Selected Rendering API isn't supported");
+	}
 }
 

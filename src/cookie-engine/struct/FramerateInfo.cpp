@@ -10,26 +10,25 @@
 
 namespace cookie {
 
-    FramerateInfo::FramerateInfo() {
-        time = CookieFactory::provideTimeManager();
-        framerate = 0;
-        framerateTimestamp = 0.0;
-        frameTime = 0.0;
-        lastTimestamp = 0.0;
-    }
+	FramerateInfo::FramerateInfo():time(CookieFactory::provideTimeManager()) {
+		framerate = 0;
+		framerateTimestamp = 0.0;
+		frameTime = 0.0;
+		lastTimestamp = 0.0;
+	}
 
-    void FramerateInfo::invalidateFrameRate() {
-        framerate++;
-        frameTime = time->getProgramTime();
-        if (lastTimestamp == 0.0) {
-            lastTimestamp = frameTime;
-            return;
-        }
-        framerateTimestamp = frameTime;
-        if (framerateTimestamp - lastTimestamp >= 1.0) {
-            std::cout << framerate << std::endl;
-            framerate = 0;
-            lastTimestamp = framerateTimestamp;
-        }
-    }
+	void FramerateInfo::invalidateFrameRate() {
+		framerate++;
+		frameTime = time->getProgramTime();
+		if (lastTimestamp == 0.0) {
+			lastTimestamp = frameTime;
+			return;
+		}
+		framerateTimestamp = frameTime;
+		if (framerateTimestamp - lastTimestamp >= 1.0) {
+			std::cout << framerate << std::endl;
+			framerate = 0;
+			lastTimestamp = framerateTimestamp;
+		}
+	}
 }
