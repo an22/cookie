@@ -4,9 +4,9 @@
 #include "BufferStorage.hpp"
 
 namespace cookie {
-    BufferStorage::BufferStorage() {
-    }
+	BufferStorage::BufferStorage() {
+	}
 
-    BufferStorage::~BufferStorage() = default;
+	BufferStorage::~BufferStorage() = default;
 }
 

@@ -9,13 +9,12 @@
 #include <memory>
 
 int main() {
-    try {
-        cookie::init();
-        cookie::setScene(std::make_unique<cookie::Scene>());
-        cookie::engine->currentScene->startLoop();
-        cookie::destroy();
-    } catch (std::exception &e) {
-
-    }
-    return 0;
+	try {
+		cookie::init();
+		cookie::setScene(std::make_unique<cookie::Scene>());
+		cookie::engine->currentScene->startLoop();
+		cookie::destroy();
+	} catch (std::exception &e) {
+	}
+	return 0;
 }

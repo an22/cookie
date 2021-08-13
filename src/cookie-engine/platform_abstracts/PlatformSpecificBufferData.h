@@ -6,12 +6,12 @@
 #define COOKIE_ENGINE_PLATFORMSPECIFICBUFFERDATA_H
 namespace cookie {
 
-    enum class BufferType {
-        VERTEX_BUFFER
-    };
+	enum class BufferType {
+		VERTEX_BUFFER
+	};
 
-    struct PlatformSpecificBufferData {
-        virtual ~PlatformSpecificBufferData() = default;
-    };
+	struct PlatformSpecificBufferData {
+		virtual ~PlatformSpecificBufferData() = default;
+	};
 }
 #endif //COOKIE_ENGINE_PLATFORMSPECIFICBUFFERDATA_H

@@ -9,14 +9,14 @@
 #include <memory>
 
 namespace cookie {
-    class Material : public Component {
-    private:
-        std::unique_ptr<Shader> shader;
-    public:
-        explicit Material(std::unique_ptr<Shader> &shader);
-        virtual ~Material() = default;
-        void onPreDraw();
-    };
+	class Material : public Component {
+	private:
+		std::unique_ptr<Shader> shader;
+	public:
+		explicit Material(std::unique_ptr<Shader> &shader);
+		virtual ~Material() = default;
+		void onPreDraw();
+	};
 }
 
 #endif //COOKIE_ENGINE_MATERIAL_H

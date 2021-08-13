@@ -9,10 +9,10 @@
 #define Component_hpp
 
 namespace cookie {
-    class Component {
-    public:
-        virtual ~Component() = default;
-    };
+	class Component {
+	public:
+		virtual ~Component() = default;
+	};
 }
 
 #endif /* Component_hpp */

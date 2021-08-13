@@ -9,10 +9,10 @@
 #include <GL/glew.h>
 
 struct OpenGLPSBufferData : public cookie::PlatformSpecificBufferData {
-    GLenum usage;
-    GLenum target;
+	GLenum usage;
+	GLenum target;
 
-    explicit OpenGLPSBufferData(cookie::BufferType bufferType);
+	explicit OpenGLPSBufferData(cookie::BufferType bufferType);
 };
 
 #endif //COOKIE_ENGINE_OPENGLPSBUFFERDATA_H

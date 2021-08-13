@@ -15,19 +15,19 @@
 
 namespace cookie {
 
-    class FramerateInfo {
-    private:
-        std::unique_ptr<Time> time;
+	class FramerateInfo {
+	private:
+		std::unique_ptr<Time> time;
 
-    public:
-        uint32_t framerate;
-        double framerateTimestamp;
-        double frameTime;
-        double lastTimestamp;
+	public:
+		uint32_t framerate;
+		double framerateTimestamp;
+		double frameTime;
+		double lastTimestamp;
 
-        FramerateInfo();
-        void invalidateFrameRate();
-    };
+		FramerateInfo();
+		void invalidateFrameRate();
+	};
 }
 
 #endif /* FramerateInfo_hpp */

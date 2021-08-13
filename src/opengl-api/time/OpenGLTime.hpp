@@ -14,10 +14,10 @@
 class OpenGLTime : public cookie::Time {
 
 public:
-    virtual double getProgramTime() override;
-    virtual double getFrameTime() override;
+	double getProgramTime() override;
+	double getFrameTime() override;
 
-    ~OpenGLTime() override = default;
+	~OpenGLTime() override = default;
 };
 
 #endif /* OpenGLTime_hpp */

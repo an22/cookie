@@ -14,15 +14,15 @@
 class OpenGLPlatformSpecificData : public cookie::PlatformSpecificData {
 
 private:
-    GLFWwindow *window = nullptr;
+	GLFWwindow *window = nullptr;
 public:
-    int32_t width() override;
-    int32_t height() override;
+	int32_t width() override;
+	int32_t height() override;
 
-    GLFWwindow *getWindow();
-    void setWindow(GLFWwindow *window);
-    OpenGLPlatformSpecificData() = default;
-    ~OpenGLPlatformSpecificData() override;
+	GLFWwindow *getWindow();
+	void setWindow(GLFWwindow *window);
+	OpenGLPlatformSpecificData() = default;
+	~OpenGLPlatformSpecificData() override;
 };
 
 #endif /* OpenGLPlatformSpecificData_hpp */

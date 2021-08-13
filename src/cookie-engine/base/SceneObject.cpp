@@ -7,7 +7,6 @@
 
 #include "SceneObject.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-#include <type_traits>
 #include <Mesh.hpp>
 
 namespace cookie {

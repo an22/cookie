@@ -6,7 +6,7 @@
 #define COOKIE_ENGINE_UTIL_H
 
 namespace cookie {
-    [[noreturn]] void throwAPIUnsupported();
+	[[noreturn]] void throwAPIUnsupported();
 }
 
 #endif //COOKIE_ENGINE_UTIL_H

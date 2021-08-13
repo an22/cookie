@@ -9,9 +9,9 @@
 #include <GLFW/glfw3.h>
 
 double OpenGLTime::getProgramTime() {
-    return glfwGetTime();
+	return glfwGetTime();
 }
 
 double OpenGLTime::getFrameTime() {
-    return 0.0;//TODO
+	return 0.0;//TODO
 }
