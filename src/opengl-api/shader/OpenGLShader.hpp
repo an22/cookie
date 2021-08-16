@@ -20,7 +20,7 @@ public:
 	OpenGLShader(const std::string &vertexPath, const std::string &fragmentPath);
 	~OpenGLShader() override = default;
 
-	GLuint loadShaderFrom(const std::string &path, GLenum shaderType);
+	static GLuint loadShaderFrom(const std::string &path, GLenum shaderType);
 
 	void use() override;
 	void setBool(const std::string &name, bool value) const override;
