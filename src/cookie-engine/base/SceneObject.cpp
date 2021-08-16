@@ -54,9 +54,9 @@ namespace cookie {
         auto shader = getComponent<Shader>();
         if (!mesh) return;
         if (!shader) return;
-        shader->setMatrix4("v_matrix", viewMatrix);
+        glm::mat4 a = viewMatrix * modelMat;
+        shader->setMatrix4("mv_matrix", a);
         shader->setMatrix4("proj_matrix", projMatrix);
-        shader->setFloat("timeFactor", time->getProgramTime());
         mesh->onPreDraw(*shader);
         if (!mesh->getIndices().empty()) {
             utils.drawElements(mesh->getIndices().size());

@@ -7,7 +7,7 @@
 
 namespace cookie {
 
-	Scene::Scene() : cube(2.0f, 2.0f, 0.0f) {
+	Scene::Scene() : cube(0.0f, 0.0f, 0.0f) {
 		auto width = cookie::engine->platformData->width();
 		auto height = cookie::engine->platformData->height();
 		drawUtils = CookieFactory::provideDrawUtils();

@@ -26,14 +26,14 @@ namespace cookie {
 		std::unique_ptr<MeshData> meshData;
 	public:
 		[[nodiscard]] const std::vector<Vertex> &getVertices() const;
-		[[nodiscard]] const std::vector<uint32_t> &getIndices() const;
+		[[nodiscard]] const std::vector<unsigned int> &getIndices() const;
 		[[nodiscard]] const std::vector<Texture> &getTextures() const;
 
 		void onPreDraw(Shader &shader);
 		void onPreDraw(Material &material);
 		explicit Mesh(std::unique_ptr<MeshData> meshData);
 		explicit Mesh(const std::string &path);
-		Mesh(const std::vector<Vertex> &vertices, const std::vector<uint32_t> &indices,
+		Mesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices,
 			 const std::vector<Texture> &textures);
 		~Mesh() override = default;
 	};

@@ -42,6 +42,7 @@ jobs:
           sudo apt-get -y install libglew-dev
           sudo apt-get -y install libglm-dev
           sudo apt-get -y install libglfw3-dev
+          sudo apt-get -y install assimp
       - name: Setup GCC
         run: |
           sudo rm /usr/bin/gcc

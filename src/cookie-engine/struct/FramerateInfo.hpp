@@ -20,7 +20,7 @@ namespace cookie {
 		std::unique_ptr<Time> time;
 
 	public:
-		uint32_t framerate;
+		unsigned int framerate;
 		double framerateTimestamp;
 		double frameTime;
 		double lastTimestamp;

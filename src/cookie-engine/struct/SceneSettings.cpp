@@ -9,8 +9,8 @@
 
 namespace cookie {
 	SceneSettings::SceneSettings(
-			uint32_t width,
-			uint32_t height,
+			unsigned int width,
+			unsigned int height,
 			float x,
 			float y,
 			float z,
@@ -26,7 +26,7 @@ namespace cookie {
 		onWindowResized(width, height);
 	}
 
-	void SceneSettings::onWindowResized(uint32_t newWidth, uint32_t newHeight) {
+	void SceneSettings::onWindowResized(unsigned int newWidth, unsigned int newHeight) {
 		width = newWidth;
 		height = newHeight;
 		aspectRatio = (float) newWidth / (float) newHeight;

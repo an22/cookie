@@ -40,6 +40,7 @@ jobs:
           brew install glew
           brew install glfw
           brew install glm
+          brew install assimp
       - name: Configure CMake
         run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 

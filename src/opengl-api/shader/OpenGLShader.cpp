@@ -19,11 +19,9 @@ OpenGLShader::OpenGLShader(const std::string &vertexPath, const std::string &fra
 	glAttachShader(renderingProgram, vertex);
 	glAttachShader(renderingProgram, fragment);
 	glLinkProgram(renderingProgram);
-	errorHandler.checkOpenGLError();
 	GLint linked;
 	glGetProgramiv(renderingProgram, GL_LINK_STATUS, &linked);
 	if (linked != 1) {
-		errorHandler.printProgramLog(renderingProgram);
 		throw std::runtime_error("Program linking failed");
 	}
 }
@@ -42,11 +40,9 @@ GLuint OpenGLShader::loadShaderFrom(const std::string &path, GLenum shaderType) 
 	const char *shaderCode = result.c_str();
 	glShaderSource(shader, 1, &shaderCode, nullptr);
 	glCompileShader(shader);
-	errorHandler.checkOpenGLError();
 	GLint shaderCompiled;
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &shaderCompiled);
 	if (shaderCompiled != 1) {
-		errorHandler.printShaderLog(shader);
 		throw std::runtime_error("Shader compilation failed");
 	}
 	return shader;
@@ -57,7 +53,8 @@ void OpenGLShader::use() {
 }
 
 void OpenGLShader::setBool(const std::string &name, bool value) const {
-	//TODO GLint location = glGetUniformLocation(renderingProgram, name.c_str());
+	GLint location = glGetUniformLocation(renderingProgram, name.c_str());
+	glUniform1i(location, value);
 }
 
 void OpenGLShader::setInt(const std::string &name, int32_t value) const {

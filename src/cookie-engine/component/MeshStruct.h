@@ -8,6 +8,7 @@
 #include <glm/glm.hpp>
 #include <string>
 #include <vector>
+#include <assimp/scene.h>
 
 namespace cookie {
 	struct Vertex {
@@ -16,22 +17,24 @@ namespace cookie {
 		glm::vec2 texCoords;
 
 		Vertex(const glm::vec3 &position, const glm::vec3 &normal, const glm::vec2 &texCoords);
+		Vertex() = default;
 	};
 
 	struct Texture {
-		uint32_t id;
-		std::string type;
+		unsigned int id;
+		char byteSize;
 
-		Texture(uint32_t id, std::string type);
+		Texture(unsigned int id, char byteSize);
 	};
 
 	struct MeshData {
 		std::vector<Vertex> vertices;
-		std::vector<uint32_t> indices;
+		std::vector<unsigned int> indices;
 		std::vector<Texture> textures;
 
 		MeshData() = default;
-		MeshData(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Texture> textures);
+		MeshData(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
+		explicit MeshData(const aiMesh *scene);
 	};
 }
 

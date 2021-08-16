@@ -1,13 +1,20 @@
 cmake_minimum_required(VERSION 3.20)
 
 project(cookie-engine VERSION 0.0.1)
-
+SET(CMAKE_POLICY_DEFAULT_CMP0012 NEW)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+
+find_package(OpenGL REQUIRED)
+find_package(GLEW REQUIRED)
+find_package(glfw3 REQUIRED)
+find_package(glm REQUIRED)
+find_package(assimp REQUIRED)
+set_target_properties(assimp::assimp PROPERTIES MAP_IMPORTED_CONFIG_DEBUG Release)
 
 add_executable(cookie-engine src/main.cpp
         src/cookie-engine/base/SceneObject.cpp
@@ -24,10 +31,29 @@ add_executable(cookie-engine src/main.cpp
         src/opengl-api/shader/OpenGLShader.cpp
         src/opengl-api/time/OpenGLTime.cpp
         src/cookie-engine/platform_abstracts/BufferStorage.cpp
-        src/cookie-engine/base/Scene.cpp src/util/Util.cpp src/util/Util.h src/cookie-engine/platform_abstracts/DrawUtils.cpp src/cookie-engine/platform_abstracts/DrawUtils.h src/opengl-api/draw/OpenGLDrawUtils.cpp src/opengl-api/draw/OpenGLDrawUtils.h src/cookie-engine/platform_abstracts/Shader.cpp src/cookie-engine/draw/Cube.cpp src/cookie-engine/platform_abstracts/PlatformSpecificBufferData.h src/opengl-api/buffer/OpenGLPSBufferData.cpp src/opengl-api/buffer/OpenGLPSBufferData.h src/cookie-engine/component/Material.cpp src/cookie-engine/component/Material.h src/cookie-engine/component/MeshStruct.cpp src/cookie-engine/component/MeshStruct.h)
+        src/cookie-engine/base/Scene.cpp src/util/Util.cpp
+        src/util/Util.h
+        src/cookie-engine/platform_abstracts/DrawUtils.cpp
+        src/cookie-engine/platform_abstracts/DrawUtils.h
+        src/opengl-api/draw/OpenGLDrawUtils.cpp
+        src/opengl-api/draw/OpenGLDrawUtils.h
+        src/cookie-engine/platform_abstracts/Shader.cpp
+        src/cookie-engine/draw/Cube.cpp
+        src/cookie-engine/platform_abstracts/PlatformSpecificBufferData.h
+        src/opengl-api/buffer/OpenGLPSBufferData.cpp
+        src/opengl-api/buffer/OpenGLPSBufferData.h
+        src/cookie-engine/component/Material.cpp
+        src/cookie-engine/component/Material.h
+        src/cookie-engine/component/MeshStruct.cpp
+        src/cookie-engine/component/MeshStruct.h
+        src/cookie-engine/platform_abstracts/TextureProcessor.cpp
+        src/cookie-engine/platform_abstracts/TextureProcessor.hpp
+        src/opengl-api/draw/OpenGlTexture.cpp src/opengl-api/draw/OpenGlTexture.hpp src/cookie-engine/platform_abstracts/ErrorHandler.cpp src/cookie-engine/platform_abstracts/ErrorHandler.hpp)
 
+target_include_directories(cookie-engine PUBLIC /usr/local/lib)
 target_include_directories(cookie-engine PUBLIC ${GLEW_INCLUDE_DIRS})
-target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/lib/glew/include)
+target_include_directories(cookie-engine PUBLIC ${ASSIMP_INCLUDE_DIRS})
+target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/lib)
 target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/cookie-engine)
 target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/cookie-engine/base)
 target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/cookie-engine/component)
@@ -46,11 +72,8 @@ target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/opengl-a
 target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/opengl-api/shader)
 target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/opengl-api/time)
 
-find_package(OpenGL REQUIRED)
 target_link_libraries(cookie-engine PRIVATE ${OPENGL_LIBRARIES})
-find_package(GLEW REQUIRED)
 target_link_libraries(cookie-engine PRIVATE GLEW::GLEW)
-find_package(glfw3 REQUIRED)
 target_link_libraries(cookie-engine PRIVATE glfw)
-find_package(glm REQUIRED)
 target_link_libraries(cookie-engine PRIVATE ${GLM_LIBRARIES})
+target_link_libraries(cookie-engine PRIVATE assimp::assimp)
