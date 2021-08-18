@@ -21,10 +21,16 @@ namespace cookie {
 	};
 
 	struct Texture {
+		enum class Type: char {
+			SPECULAR = 's',
+			DIFFUSE = 'd'
+		};
 		unsigned int id;
-		char byteSize;
+		std::string path;
+		Type type;
 
-		Texture(unsigned int id, char byteSize);
+		Texture(unsigned int id, std::string path, Type type);
+		Texture(unsigned int id, std::string path);
 	};
 
 	struct MeshData {
@@ -34,7 +40,6 @@ namespace cookie {
 
 		MeshData() = default;
 		MeshData(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
-		explicit MeshData(const aiMesh *scene);
 	};
 }
 

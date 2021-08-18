@@ -11,9 +11,10 @@
 namespace cookie {
 	class TextureProcessor {
 	public:
-		virtual std::unique_ptr<cookie::Texture> createTexture(const std::string &path, int32_t channels) = 0;
+		virtual std::unique_ptr<cookie::Texture> createTexture(const std::string &path) = 0;
 		unsigned char *getFilePixels(const std::string &path, int &width, int &height, int& channelsInFile,int32_t channels);
 
+		virtual ~TextureProcessor() = default;
 	};
 }
 

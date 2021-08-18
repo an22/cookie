@@ -8,10 +8,8 @@
 #include "Mesh.hpp"
 #include "CookieFactory.hpp"
 #include "DrawUtils.h"
+#include "AssetImporter.hpp"
 #include <utility>
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
 
 namespace cookie {
 
@@ -32,18 +30,7 @@ namespace cookie {
 	}
 
 	Mesh::Mesh(const std::string &path) : bufferStorage(CookieFactory::provideBufferStorage()) {
-		Assimp::Importer importer;
-		const aiScene *scene = importer.ReadFile(
-				path.c_str(),
-				aiProcess_CalcTangentSpace |
-				aiProcess_Triangulate |
-				aiProcess_FlipUVs
-		);
-		// If the import failed, report it
-		if (!scene|| !scene->HasMeshes()) {
-			throw std::runtime_error("Can't import asset at " + path);
-		}
-		meshData = std::make_unique<MeshData>(scene->mMeshes[0]);
+		meshData = std::move(AssetImporter::importMesh(path)[0]);//TODO change
 		std::unique_ptr<PlatformSpecificBufferData> data = CookieFactory::provideBufferData(BufferType::VERTEX_BUFFER);
 		bufferStorage->saveToBuffer(*this->meshData, std::move(data));
 	}

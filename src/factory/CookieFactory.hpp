@@ -9,6 +9,7 @@
 #define CookieFactory_hpp
 
 #include <memory>
+#include <TextureProcessor.hpp>
 #include "DrawUtils.h"
 #include "Time.hpp"
 #include "Shader.hpp"
@@ -30,6 +31,7 @@ public:
 	static std::unique_ptr<cookie::DrawUtils> provideDrawUtils();
 	static std::unique_ptr<cookie::PlatformSpecificBufferData> provideBufferData(cookie::BufferType bufferType);
 	static std::unique_ptr<cookie::PlatformSpecificData> createPlatformSpecificContainer();
+	static std::unique_ptr<cookie::TextureProcessor> provideTextureProcessor();
 };
 
 #endif /* CookieFactory_hpp */
