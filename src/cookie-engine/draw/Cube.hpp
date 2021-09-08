@@ -20,15 +20,6 @@ namespace cookie {
 		Cube(float x, float y, float z);
 
 		~Cube() override = default;
-
-		static const int meshSize = 8;
-
-		static std::unique_ptr<MeshData> genMesh() {
-			std::vector<Vertex> vertices;
-			std::vector<Texture> textures;
-			std::vector<unsigned int> indices;
-			return std::make_unique<MeshData>(vertices, indices, textures);
-		}
 	};
 }
 

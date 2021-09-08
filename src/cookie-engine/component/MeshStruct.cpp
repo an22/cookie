@@ -17,6 +17,11 @@ namespace cookie {
 		textures(std::move(textures)) {
 	}
 
+	MeshData::MeshData(MeshData &&meshData) noexcept: vertices(std::move(meshData.vertices)),
+													  indices(std::move(meshData.indices)),
+													  textures(std::move(meshData.textures)) {
+	}
+
 	Vertex::Vertex(
 			const glm::vec3 &position,
 			const glm::vec3 &normal,
@@ -24,6 +29,11 @@ namespace cookie {
 	) : position(position),
 		normal(normal),
 		texCoords(texCoords) {
+	}
+
+	Vertex::Vertex(Vertex &&vertex) noexcept: position(vertex.position),
+											  texCoords(vertex.texCoords),
+											  normal(vertex.normal) {
 	}
 
 	Texture::Texture(unsigned int id, std::string path, Type type) : id(id),
@@ -34,5 +44,11 @@ namespace cookie {
 	Texture::Texture(unsigned int id, std::string path) : id(id),
 														  path(std::move(path)),
 														  type(Type::DIFFUSE) {
+	}
+
+	Texture::Texture(Texture &&texture) noexcept : id(texture.id),
+										  path(std::move(texture.path)),
+										  type(texture.type) {
+		texture.id = 0;
 	}
 }

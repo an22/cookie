@@ -38,3 +38,30 @@ std::unique_ptr<cookie::Texture> OpenGLTextureProcessor::createTexture(const std
 			path
 	);
 }
+
+void OpenGLTextureProcessor::bindTexturesToShader(const std::vector<cookie::Texture> &textures,
+												  const cookie::Shader &shader) {
+	std::string name;
+	std::string number;
+	unsigned int specularCount = 0;
+	unsigned int diffuseCount = 0;
+	for (unsigned int i = 0; i < textures.size(); i++) {
+		glActiveTexture(GL_TEXTURE0 + i); // activate proper texture unit before binding
+		// retrieve texture number (the N in diffuse_textureN)
+		const auto &texture = textures[i];
+		switch (texture.type) {
+			case cookie::Texture::Type::SPECULAR:
+				name = "specular";
+				number = std::to_string(++specularCount);
+				break;
+			case cookie::Texture::Type::DIFFUSE:
+				name = "diffuse";
+				number = std::to_string(++diffuseCount);
+				break;
+		}
+		name += number;
+		shader.setFloat(name, i);
+		glBindTexture(GL_TEXTURE_2D, texture.id);
+	}
+	glActiveTexture(GL_TEXTURE0);
+}

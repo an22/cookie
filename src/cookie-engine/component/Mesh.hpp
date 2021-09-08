@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <TextureProcessor.hpp>
 #include "Component.hpp"
 #include "Shader.hpp"
 #include "Material.h"
@@ -22,6 +23,7 @@ namespace cookie {
 	class Mesh : public Component {
 	private:
 		std::unique_ptr<BufferStorage> bufferStorage;
+		std::unique_ptr<TextureProcessor> textureProcessor;
 		// mesh data
 		std::unique_ptr<MeshData> meshData;
 	public:
@@ -33,8 +35,7 @@ namespace cookie {
 		void onPreDraw(Material &material);
 		explicit Mesh(std::unique_ptr<MeshData> meshData);
 		explicit Mesh(const std::string &path);
-		Mesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices,
-			 const std::vector<Texture> &textures);
+		Mesh(std::vector<Vertex> &vertices, std::vector<unsigned int> &indices, std::vector<Texture> &textures);
 		~Mesh() override = default;
 	};
 }

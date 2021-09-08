@@ -21,10 +21,19 @@ namespace cookie {
 		static std::vector<Texture> loadMaterialTextures(
 				aiMaterial *mat,
 				aiTextureType type,
-				Texture::Type assignType
+				Texture::Type assignType,
+				const std::string &meshPath
 		);
-		static std::unique_ptr<MeshData> decodeMesh(const aiScene *scene, const aiMesh *mesh);
-		static std::vector<Texture> loadMaterials(const aiScene *scene, const aiMesh *mesh);
+		static std::unique_ptr<MeshData> decodeMesh(
+				const std::string &meshPath,
+				const aiScene *scene,
+				const aiMesh *mesh
+		);
+		static std::vector<Texture> loadMaterials(
+				const std::string &meshPath,
+				const aiScene *scene,
+				const aiMesh *mesh
+		);
 		static std::vector<Vertex> loadVertices(const aiScene *scene, const aiMesh *mesh);
 	public:
 		static std::vector<std::unique_ptr<MeshData>> importMesh(const std::string &path);

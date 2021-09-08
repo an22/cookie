@@ -3,30 +3,38 @@
 //
 
 #include "AssetImporter.hpp"
+#include "regex"
 
 namespace cookie {
 
 	std::vector<Texture> AssetImporter::loadMaterialTextures(
 			aiMaterial *mat,
 			aiTextureType type,
-			Texture::Type assignType
+			Texture::Type assignType,
+			const std::string &meshPath
 	) {
 		std::vector<Texture> textures;
 		auto textureProcessor = CookieFactory::provideTextureProcessor();
 		for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
 			aiString path;
 			mat->GetTexture(type, i, &path);
-			auto texture = textureProcessor->createTexture(path.C_Str());
+			std::string texturePath = std::string(path.C_Str());
+			std::string materialPath = meshPath + '/' + texturePath;
+			auto texture = textureProcessor->createTexture(materialPath);
 			texture->type = assignType;
-			textures.push_back(*texture.release());
+			textures.push_back(std::move(*texture.release()));
 		}
 		return textures;
 	}
 
-	std::unique_ptr<MeshData> AssetImporter::decodeMesh(const aiScene *scene, const aiMesh *mesh) {
+	std::unique_ptr<MeshData> AssetImporter::decodeMesh(
+			const std::string &meshPath,
+			const aiScene *scene,
+			const aiMesh *mesh
+	) {
 		auto meshData = std::make_unique<MeshData>();
 		meshData->vertices = loadVertices(scene, mesh);
-		meshData->textures = loadMaterials(scene, mesh);
+		meshData->textures = loadMaterials(meshPath, scene, mesh);
 		for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
 			auto &face = mesh->mFaces[i];
 			for (unsigned int j = 0; j < face.mNumIndices; j++)
@@ -51,28 +59,34 @@ namespace cookie {
 			} else {
 				vertex.texCoords = glm::vec2(0.0f, 0.0f);
 			}
-			vertices.push_back(vertex);
+			vertices.push_back(std::move(vertex));
 		}
 		return vertices;
 	}
 
 	//TODO add more materials support
-	std::vector<Texture> AssetImporter::loadMaterials(const aiScene *scene, const aiMesh *mesh) {
+	std::vector<Texture> AssetImporter::loadMaterials(
+			const std::string &meshPath,
+			const aiScene *scene,
+			const aiMesh *mesh
+	) {
 		std::vector<Texture> textures;
 		if (mesh->mMaterialIndex >= 0) {
 			aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
 			auto diffuseMaps = loadMaterialTextures(
 					material,
 					aiTextureType_DIFFUSE,
-					Texture::Type::DIFFUSE
+					Texture::Type::DIFFUSE,
+					meshPath
 			);
-			textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+			std::move(diffuseMaps.begin(), diffuseMaps.end(), std::back_inserter(textures));
 			std::vector<Texture> specularMaps = loadMaterialTextures(
 					material,
 					aiTextureType_SPECULAR,
-					Texture::Type::SPECULAR
+					Texture::Type::SPECULAR,
+					meshPath
 			);
-			textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+			std::move(specularMaps.begin(), specularMaps.end(), std::back_inserter(textures));
 		}
 		return textures;
 	}
@@ -91,7 +105,7 @@ namespace cookie {
 		}
 		std::vector<std::unique_ptr<MeshData>> meshes;
 		for (int i = 0; i < scene->mNumMeshes; ++i) {
-			auto meshData = decodeMesh(scene, scene->mMeshes[i]);
+			auto meshData = decodeMesh(path.substr(0, path.find_last_of('/')), scene, scene->mMeshes[i]);
 			meshes.push_back(std::move(meshData));
 		}
 		return meshes;

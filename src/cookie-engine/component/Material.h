@@ -14,7 +14,8 @@ namespace cookie {
 		std::unique_ptr<Shader> shader;
 	public:
 		explicit Material(std::unique_ptr<Shader> &shader);
-		virtual ~Material() = default;
+		~Material() override = default;
+		const Shader& getShader();
 		void onPreDraw();
 	};
 }
