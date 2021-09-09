@@ -8,7 +8,6 @@
 #include "Mesh.hpp"
 #include "CookieFactory.hpp"
 #include "DrawUtils.h"
-#include "AssetImporter.hpp"
 #include <utility>
 
 namespace cookie {
@@ -27,13 +26,6 @@ namespace cookie {
 	) : meshData(std::make_unique<MeshData>(std::move(vertices), std::move(indices), std::move(textures))),
 		bufferStorage(CookieFactory::provideBufferStorage()),
 		textureProcessor(CookieFactory::provideTextureProcessor()) {
-		std::unique_ptr<PlatformSpecificBufferData> data = CookieFactory::provideBufferData(BufferType::VERTEX_BUFFER);
-		bufferStorage->saveToBuffer(*this->meshData, std::move(data));
-	}
-
-	Mesh::Mesh(const std::string &path) : bufferStorage(CookieFactory::provideBufferStorage()),
-										  textureProcessor(CookieFactory::provideTextureProcessor()) {
-		meshData = std::move(AssetImporter::importMesh(path)[0]);//TODO change
 		std::unique_ptr<PlatformSpecificBufferData> data = CookieFactory::provideBufferData(BufferType::VERTEX_BUFFER);
 		bufferStorage->saveToBuffer(*this->meshData, std::move(data));
 	}

@@ -34,6 +34,12 @@ namespace cookie {
 				const aiScene *scene,
 				const aiMesh *mesh
 		);
+		static void processNode(
+				std::vector<std::unique_ptr<MeshData>> &meshes,
+				const std::string &path,
+				aiNode *node,
+				const aiScene *scene
+		);
 		static std::vector<Vertex> loadVertices(const aiScene *scene, const aiMesh *mesh);
 	public:
 		static std::vector<std::unique_ptr<MeshData>> importMesh(const std::string &path);

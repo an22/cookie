@@ -37,5 +37,6 @@ namespace cookie {
 	};
 
 	extern Cookie *engine;
+	extern Shader *defaultShader;
 }
 #endif /* Cookie_hpp */

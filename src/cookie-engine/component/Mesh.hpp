@@ -34,7 +34,6 @@ namespace cookie {
 		void onPreDraw(Shader &shader);
 		void onPreDraw(Material &material);
 		explicit Mesh(std::unique_ptr<MeshData> meshData);
-		explicit Mesh(const std::string &path);
 		Mesh(std::vector<Vertex> &vertices, std::vector<unsigned int> &indices, std::vector<Texture> &textures);
 		~Mesh() override = default;
 	};

@@ -9,10 +9,15 @@
 
 namespace cookie {
 	Cookie *engine = nullptr;
+	Shader *defaultShader = nullptr;
 
 	void init(CgAPI api) {
 		engine = new Cookie(api);
 		engine->initializer->initGraphicsAPIResources();
+		defaultShader = CookieFactory::provideShader(
+				"/Users/antiufieievmichael/Guides/cookie-engine/src/cookie-engine/shader/vertex/vertex.glsl",
+				"/Users/antiufieievmichael/Guides/cookie-engine/src/cookie-engine/shader/fragment/fragment.glsl"
+		).release();
 	}
 
 	void setScene(std::unique_ptr<Scene> scene) {
@@ -20,6 +25,7 @@ namespace cookie {
 	}
 
 	void destroy() {
+		delete defaultShader;
 		delete engine;
 	}
 

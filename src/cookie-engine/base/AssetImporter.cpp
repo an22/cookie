@@ -104,10 +104,27 @@ namespace cookie {
 			throw std::runtime_error("Can't import asset at " + path);
 		}
 		std::vector<std::unique_ptr<MeshData>> meshes;
-		for (int i = 0; i < scene->mNumMeshes; ++i) {
-			auto meshData = decodeMesh(path.substr(0, path.find_last_of('/')), scene, scene->mMeshes[i]);
-			meshes.push_back(std::move(meshData));
-		}
+		processNode(meshes, path, scene->mRootNode, scene);
 		return meshes;
 	}
+
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "misc-no-recursion"
+	void AssetImporter::processNode(
+			std::vector<std::unique_ptr<MeshData>> &meshes,
+			const std::string &path,
+			aiNode *node,
+			const aiScene *scene
+	) {
+		// process all the node's meshes (if any)
+		for (unsigned int i = 0; i < node->mNumMeshes; i++) {
+			aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
+			meshes.push_back(decodeMesh(path.substr(0, path.find_last_of('/')), scene, mesh));
+		}
+		// then do the same for each of its children
+		for (unsigned int i = 0; i < node->mNumChildren; i++) {
+			processNode(meshes, path, node->mChildren[i], scene);
+		}
+	}
+#pragma clang diagnostic pop
 }

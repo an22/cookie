@@ -5,10 +5,6 @@ SET(CMAKE_POLICY_DEFAULT_CMP0012 NEW)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(glfw3 REQUIRED)
@@ -76,8 +72,7 @@ target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/opengl-a
 target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/opengl-api/initializer)
 target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/opengl-api/shader)
 target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/opengl-api/time)
-target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/opengl-api/draw
-        )
+target_include_directories(cookie-engine PUBLIC ${CMAKE_SOURCE_DIR}/src/opengl-api/draw)
 
 target_link_libraries(cookie-engine PRIVATE ${OPENGL_LIBRARIES})
 target_link_libraries(cookie-engine PRIVATE GLEW::GLEW)
