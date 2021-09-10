@@ -80,7 +80,7 @@ namespace cookie {
 					meshPath
 			);
 			std::move(diffuseMaps.begin(), diffuseMaps.end(), std::back_inserter(textures));
-			std::vector<Texture> specularMaps = loadMaterialTextures(
+			auto specularMaps = loadMaterialTextures(
 					material,
 					aiTextureType_SPECULAR,
 					Texture::Type::SPECULAR,
@@ -104,12 +104,14 @@ namespace cookie {
 			throw std::runtime_error("Can't import asset at " + path);
 		}
 		std::vector<std::unique_ptr<MeshData>> meshes;
+		glm::mat4 accTransformation{1};
 		processNode(meshes, path, scene->mRootNode, scene);
 		return meshes;
 	}
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "misc-no-recursion"
+
 	void AssetImporter::processNode(
 			std::vector<std::unique_ptr<MeshData>> &meshes,
 			const std::string &path,
@@ -119,12 +121,25 @@ namespace cookie {
 		// process all the node's meshes (if any)
 		for (unsigned int i = 0; i < node->mNumMeshes; i++) {
 			aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
-			meshes.push_back(decodeMesh(path.substr(0, path.find_last_of('/')), scene, mesh));
+			auto meshUq = decodeMesh(
+					path.substr(0, path.find_last_of('/')),
+					scene,
+					mesh
+			);
+			auto &t = node->mTransformation;
+			meshUq->transformation = glm::mat4{
+					t.a1, t.a2, t.a3, t.a4,
+					t.b1, t.b2, t.b3, t.b4,
+					t.c1, t.c2, t.c3, t.c4,
+					t.d1, t.d2, t.d3, t.d4
+			};
+			meshes.push_back(std::move(meshUq));
 		}
 		// then do the same for each of its children
 		for (unsigned int i = 0; i < node->mNumChildren; i++) {
 			processNode(meshes, path, node->mChildren[i], scene);
 		}
 	}
+
 #pragma clang diagnostic pop
 }

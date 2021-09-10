@@ -20,7 +20,7 @@ namespace cookie {
 		Vertex() = default;
 		Vertex(const Vertex &) = delete;
 		Vertex &operator=(const Vertex &) = delete;
-		Vertex(Vertex &&) noexcept ;
+		Vertex(Vertex &&) noexcept;
 	};
 
 	struct Texture {
@@ -36,7 +36,7 @@ namespace cookie {
 		Texture(unsigned int id, std::string path);
 		Texture(const Texture &) = delete;
 		Texture &operator=(const Texture &) = delete;
-		Texture(Texture &&) noexcept ;
+		Texture(Texture &&) noexcept;
 	};
 
 	struct MeshData {
@@ -44,8 +44,15 @@ namespace cookie {
 		std::vector<unsigned int> indices;
 		std::vector<Texture> textures;
 
+		glm::mat4 transformation{1};
+
 		MeshData() = default;
-		MeshData(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
+		MeshData(
+				std::vector<Vertex> vertices,
+				std::vector<unsigned int> indices,
+				std::vector<Texture> textures,
+				glm::mat4 transformation
+		);
 		MeshData(const MeshData &) = delete;
 		MeshData &operator=(const MeshData &) = delete;
 		MeshData(MeshData &&) noexcept;

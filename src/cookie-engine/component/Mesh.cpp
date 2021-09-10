@@ -23,7 +23,14 @@ namespace cookie {
 			std::vector<Vertex> &vertices,
 			std::vector<unsigned int> &indices,
 			std::vector<Texture> &textures
-	) : meshData(std::make_unique<MeshData>(std::move(vertices), std::move(indices), std::move(textures))),
+	) : meshData(
+			std::make_unique<MeshData>(
+					std::move(vertices),
+					std::move(indices),
+					std::move(textures),
+					glm::mat4{1}
+			)
+	),
 		bufferStorage(CookieFactory::provideBufferStorage()),
 		textureProcessor(CookieFactory::provideTextureProcessor()) {
 		std::unique_ptr<PlatformSpecificBufferData> data = CookieFactory::provideBufferData(BufferType::VERTEX_BUFFER);

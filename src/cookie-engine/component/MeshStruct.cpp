@@ -11,15 +11,18 @@ namespace cookie {
 	MeshData::MeshData(
 			std::vector<Vertex> vertices,
 			std::vector<unsigned int> indices,
-			std::vector<Texture> textures
+			std::vector<Texture> textures,
+			glm::mat4 transformation
 	) : vertices(std::move(vertices)),
 		indices(std::move(indices)),
-		textures(std::move(textures)) {
+		textures(std::move(textures)),
+		transformation(transformation){
 	}
 
 	MeshData::MeshData(MeshData &&meshData) noexcept: vertices(std::move(meshData.vertices)),
 													  indices(std::move(meshData.indices)),
-													  textures(std::move(meshData.textures)) {
+													  textures(std::move(meshData.textures)),
+													  transformation(meshData.transformation){
 	}
 
 	Vertex::Vertex(
