@@ -28,22 +28,11 @@ namespace cookie {
 	}
 
 	SceneObject::SceneObject(const std::string &path, glm::vec3 pos) : SceneObject(pos) {
-		auto meshes = std::move(AssetImporter::importMesh(path));
-		if (meshes.size() > 1) {
-			auto iterator = meshes.begin();
-			while (iterator != meshes.end()) {
-				auto sceneObject = std::make_shared<SceneObject>();
-				sceneObject->addComponent(std::make_unique<Mesh>(std::move(*iterator)));
-				sceneObject->addComponent(CookieFactory::provideShader(
-						"/Users/antiufieievmichael/Guides/cookie-engine/src/cookie-engine/shader/vertex/vertex.glsl",
-						"/Users/antiufieievmichael/Guides/cookie-engine/src/cookie-engine/shader/fragment/fragment.glsl"
-				));
-				addChild(sceneObject);
-				iterator++;
-			}
-		} else {
-			addComponent(std::make_unique<Mesh>(std::move(meshes[0])));
-		}
+		AssetImporter::importMesh(*this, path);
+		addComponent(CookieFactory::provideShader(
+				"/Users/antiufieievmichael/Guides/cookie-engine/src/cookie-engine/shader/vertex/vertex.glsl",
+				"/Users/antiufieievmichael/Guides/cookie-engine/src/cookie-engine/shader/fragment/fragment.glsl"
+		));
 	}
 
 	SceneObject::~SceneObject() = default;
@@ -104,7 +93,7 @@ namespace cookie {
 #pragma clang diagnostic pop
 
 	void SceneObject::addChild(const std::shared_ptr<SceneObject> &child) {
-		children.push_back(child);
+		children.push_back(std::move(child));
 	}
 
 	void SceneObject::removeChild(const std::shared_ptr<SceneObject> &child) {

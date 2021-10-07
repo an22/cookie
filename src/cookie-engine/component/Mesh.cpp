@@ -13,28 +13,13 @@
 namespace cookie {
 
 	Mesh::Mesh(std::unique_ptr<MeshData> meshData) : meshData(std::move(meshData)),
-													 bufferStorage(CookieFactory::provideBufferStorage()),
 													 textureProcessor(CookieFactory::provideTextureProcessor()) {
 		std::unique_ptr<PlatformSpecificBufferData> data = CookieFactory::provideBufferData(BufferType::VERTEX_BUFFER);
-		bufferStorage->saveToBuffer(*this->meshData, std::move(data));
 	}
 
-	Mesh::Mesh(
-			std::vector<Vertex> &vertices,
-			std::vector<unsigned int> &indices,
-			std::vector<Texture> &textures
-	) : meshData(
-			std::make_unique<MeshData>(
-					std::move(vertices),
-					std::move(indices),
-					std::move(textures),
-					glm::mat4{1}
-			)
-	),
-		bufferStorage(CookieFactory::provideBufferStorage()),
+	Mesh::Mesh() : meshData(std::make_unique<MeshData>()),
 		textureProcessor(CookieFactory::provideTextureProcessor()) {
 		std::unique_ptr<PlatformSpecificBufferData> data = CookieFactory::provideBufferData(BufferType::VERTEX_BUFFER);
-		bufferStorage->saveToBuffer(*this->meshData, std::move(data));
 	}
 
 	const std::vector<Vertex> &Mesh::getVertices() const {
@@ -45,19 +30,13 @@ namespace cookie {
 		return meshData->indices;
 	}
 
-	const std::vector<Texture> &Mesh::getTextures() const {
-		return meshData->textures;
-	}
-
 	void Mesh::onPreDraw(Shader &shader) {
 		shader.use();
-		bufferStorage->bind();
-		textureProcessor->bindTexturesToShader(meshData->textures, shader);
+
 	}
 
 	void Mesh::onPreDraw(Material &material) {
 		material.onPreDraw();
-		bufferStorage->bind();
-		textureProcessor->bindTexturesToShader(meshData->textures, material.getShader());
+
 	}
 }

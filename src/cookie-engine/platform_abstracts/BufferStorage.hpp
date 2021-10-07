@@ -14,18 +14,18 @@
 #include "PlatformSpecificBufferData.h"
 
 namespace cookie {
-    class BufferStorage {
+	class BufferStorage {
 
-    public:
-        explicit BufferStorage();
-        virtual ~BufferStorage();
+	public:
+		explicit BufferStorage();
+		virtual ~BufferStorage();
 
-        virtual void bind() = 0;
-        virtual void saveToBuffer(
-                const MeshData &meshData,
-                std::unique_ptr<PlatformSpecificBufferData> data
-        ) = 0;
-    };
+		virtual void bind() = 0;
+		virtual void saveToBuffer(
+				const MeshData &meshData,
+				std::unique_ptr<PlatformSpecificBufferData> data
+		) = 0;
+	};
 }
 
 #endif /* BufferStorage_hpp */

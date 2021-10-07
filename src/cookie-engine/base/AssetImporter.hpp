@@ -8,6 +8,7 @@
 #include "MeshStruct.h"
 #include "TextureProcessor.hpp"
 #include "CookieFactory.hpp"
+#include "SceneObject.hpp"
 #include <string>
 #include <vector>
 #include <assimp/Importer.hpp>
@@ -18,31 +19,27 @@ namespace cookie {
 	class AssetImporter {
 	private:
 
-		static std::vector<Texture> loadMaterialTextures(
+		static std::vector<Material> loadMaterials(
+				const aiScene *scene,
+				const std::string &meshPath
+		);
+		static std::vector<Texture> loadTexture(
 				aiMaterial *mat,
 				aiTextureType type,
 				Texture::Type assignType,
 				const std::string &meshPath
 		);
-		static std::unique_ptr<MeshData> decodeMesh(
-				const std::string &meshPath,
-				const aiScene *scene,
-				const aiMesh *mesh
+		static void decodeMesh(
+				const aiMesh *mesh,
+				MeshData& target
 		);
-		static std::vector<Texture> loadMaterials(
-				const std::string &meshPath,
-				const aiScene *scene,
-				const aiMesh *mesh
+		static std::vector<Texture> loadTextures(
+				aiMaterial *mesh,
+				const std::string &meshPath
 		);
-		static void processNode(
-				std::vector<std::unique_ptr<MeshData>> &meshes,
-				const std::string &path,
-				aiNode *node,
-				const aiScene *scene
-		);
-		static std::vector<Vertex> loadVertices(const aiScene *scene, const aiMesh *mesh);
+		static std::vector<Vertex> loadVertices(const aiMesh *mesh);
 	public:
-		static std::vector<std::unique_ptr<MeshData>> importMesh(const std::string &path);
+		static void importMesh(SceneObject& root, const std::string &path);
 	};
 }
 

@@ -12,7 +12,7 @@
 namespace cookie {
 	class TextureProcessor {
 	public:
-		virtual std::unique_ptr<cookie::Texture> createTexture(const std::string &path) = 0;
+		virtual void  fillTexture(const std::string &path, Texture& target) = 0;
 		virtual void bindTexturesToShader(const std::vector<Texture>& textures, const Shader& shader) = 0;
 		unsigned char *getFilePixels(const std::string &path, int &width, int &height, int& channelsInFile,int32_t channels);
 

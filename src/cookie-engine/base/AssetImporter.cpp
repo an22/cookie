@@ -4,10 +4,11 @@
 
 #include "AssetImporter.hpp"
 #include "regex"
+#include "Mesh.hpp"
 
 namespace cookie {
 
-	std::vector<Texture> AssetImporter::loadMaterialTextures(
+	std::vector<Texture> AssetImporter::loadTexture(
 			aiMaterial *mat,
 			aiTextureType type,
 			Texture::Type assignType,
@@ -20,30 +21,27 @@ namespace cookie {
 			mat->GetTexture(type, i, &path);
 			std::string texturePath = std::string(path.C_Str());
 			std::string materialPath = meshPath + '/' + texturePath;
-			auto texture = textureProcessor->createTexture(materialPath);
-			texture->type = assignType;
-			textures.push_back(std::move(*texture.release()));
+			Texture target;
+			textureProcessor->fillTexture(materialPath, target);
+			target.type = assignType;
+			textures.push_back(std::move(target));
 		}
 		return textures;
 	}
 
-	std::unique_ptr<MeshData> AssetImporter::decodeMesh(
-			const std::string &meshPath,
-			const aiScene *scene,
-			const aiMesh *mesh
+	void AssetImporter::decodeMesh(
+			const aiMesh *mesh,
+			MeshData &target
 	) {
-		auto meshData = std::make_unique<MeshData>();
-		meshData->vertices = loadVertices(scene, mesh);
-		meshData->textures = loadMaterials(meshPath, scene, mesh);
+		target.vertices = loadVertices(mesh);
 		for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
 			auto &face = mesh->mFaces[i];
 			for (unsigned int j = 0; j < face.mNumIndices; j++)
-				meshData->indices.push_back(face.mIndices[j]);
+				target.indices.push_back(face.mIndices[j]);
 		}
-		return meshData;
 	}
 
-	std::vector<Vertex> AssetImporter::loadVertices(const aiScene *scene, const aiMesh *mesh) {
+	std::vector<Vertex> AssetImporter::loadVertices(const aiMesh *mesh) {
 		std::vector<Vertex> vertices;
 		for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
 			Vertex vertex{};
@@ -64,82 +62,82 @@ namespace cookie {
 		return vertices;
 	}
 
-	//TODO add more materials support
-	std::vector<Texture> AssetImporter::loadMaterials(
-			const std::string &meshPath,
-			const aiScene *scene,
-			const aiMesh *mesh
+	//TODO add more textures support
+	std::vector<Texture> AssetImporter::loadTextures(
+			aiMaterial *material,
+			const std::string &meshPath
 	) {
 		std::vector<Texture> textures;
-		if (mesh->mMaterialIndex >= 0) {
-			aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
-			auto diffuseMaps = loadMaterialTextures(
-					material,
-					aiTextureType_DIFFUSE,
-					Texture::Type::DIFFUSE,
-					meshPath
-			);
-			std::move(diffuseMaps.begin(), diffuseMaps.end(), std::back_inserter(textures));
-			auto specularMaps = loadMaterialTextures(
-					material,
-					aiTextureType_SPECULAR,
-					Texture::Type::SPECULAR,
-					meshPath
-			);
-			std::move(specularMaps.begin(), specularMaps.end(), std::back_inserter(textures));
-		}
+		auto diffuseMaps = loadTexture(
+				material,
+				aiTextureType_DIFFUSE,
+				Texture::Type::DIFFUSE,
+				meshPath
+		);
+		std::move(diffuseMaps.begin(), diffuseMaps.end(), std::back_inserter(textures));
+		auto specularMaps = loadTexture(
+				material,
+				aiTextureType_SPECULAR,
+				Texture::Type::SPECULAR,
+				meshPath
+		);
+		std::move(specularMaps.begin(), specularMaps.end(), std::back_inserter(textures));
 		return textures;
 	}
 
-	std::vector<std::unique_ptr<MeshData>> AssetImporter::importMesh(const std::string &path) {
+
+	void AssetImporter::importMesh(SceneObject& root, const std::string &path) {
 		Assimp::Importer importer;
 		const aiScene *scene = importer.ReadFile(
 				path.c_str(),
 				aiProcess_CalcTangentSpace |
 				aiProcess_Triangulate |
-				aiProcess_FlipUVs
+				aiProcess_FlipUVs |
+				aiProcess_JoinIdenticalVertices
 		);
 		// If the import failed, report it
 		if (!scene || !scene->HasMeshes()) {
 			throw std::runtime_error("Can't import asset at " + path);
 		}
-		std::vector<std::unique_ptr<MeshData>> meshes;
-		glm::mat4 accTransformation{1};
-		processNode(meshes, path, scene->mRootNode, scene);
-		return meshes;
-	}
-
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "misc-no-recursion"
-
-	void AssetImporter::processNode(
-			std::vector<std::unique_ptr<MeshData>> &meshes,
-			const std::string &path,
-			aiNode *node,
-			const aiScene *scene
-	) {
-		// process all the node's meshes (if any)
-		for (unsigned int i = 0; i < node->mNumMeshes; i++) {
-			aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
-			auto meshUq = decodeMesh(
-					path.substr(0, path.find_last_of('/')),
-					scene,
-					mesh
-			);
-			auto &t = node->mTransformation;
-			meshUq->transformation = glm::mat4{
-					t.a1, t.a2, t.a3, t.a4,
-					t.b1, t.b2, t.b3, t.b4,
-					t.c1, t.c2, t.c3, t.c4,
-					t.d1, t.d2, t.d3, t.d4
-			};
-			meshes.push_back(std::move(meshUq));
-		}
-		// then do the same for each of its children
-		for (unsigned int i = 0; i < node->mNumChildren; i++) {
-			processNode(meshes, path, node->mChildren[i], scene);
+		const auto& materials = loadMaterials(scene, path);
+		for (auto i = 0; i < scene->mNumMeshes; i++) {
+			aiMesh *mesh = scene->mMeshes[i];
+			auto meshData = std::make_unique<MeshData>();
+			decodeMesh(mesh, *meshData);
+			auto node = std::make_unique<SceneObject>();
+			auto meshComponent = std::make_unique<Mesh>(std::move(meshData));
+			node->addComponent(std::move(meshComponent));
+			root.addChild(std::move(node));
 		}
 	}
 
-#pragma clang diagnostic pop
+	std::vector<Material> AssetImporter::loadMaterials(const aiScene *scene, const std::string &meshPath) {
+		std::vector<Material> materials;
+		materials.reserve(scene->mNumMaterials);
+		for (auto i = 0; i < scene->mNumMaterials; i++) {
+			aiMaterial *material = scene->mMaterials[i];
+			Material target;
+			aiColor3D color;
+
+			material->Get(AI_MATKEY_NAME, target.name);
+			material->Get(AI_MATKEY_COLOR_DIFFUSE, color);
+			target.diffuseColor = glm::vec3(color.r, color.g, color.b);
+			material->Get(AI_MATKEY_COLOR_SPECULAR, color);
+			target.specularColor = glm::vec3(color.r, color.g, color.b);
+			material->Get(AI_MATKEY_COLOR_AMBIENT, color);
+			target.ambientColor = glm::vec3(color.r, color.g, color.b);
+			material->Get(AI_MATKEY_COLOR_EMISSIVE, color);
+			target.emissiveColor = glm::vec3(color.r, color.g, color.b);
+			material->Get(AI_MATKEY_COLOR_TRANSPARENT, color);
+			target.transparencyColor = glm::vec3(color.r, color.g, color.b);
+			material->Get(AI_MATKEY_OPACITY, target.opacity);
+			material->Get(AI_MATKEY_SHININESS, target.shininess);
+			material->Get(AI_MATKEY_REFRACTI, target.refraction);
+
+			target.textures = loadTextures(material,meshPath.substr(0, meshPath.find_last_of('/')));
+
+			materials.push_back(std::move(target));
+		}
+		return materials;
+	}
 }

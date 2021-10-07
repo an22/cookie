@@ -14,7 +14,6 @@
 #include <iostream>
 #include <glm/glm.hpp>
 #include <Component.hpp>
-#include "BufferStorage.hpp"
 
 namespace cookie {
 

@@ -5,7 +5,7 @@
 #include "OpenGLTextureProcessor.hpp"
 #include <GL/glew.h>
 
-std::unique_ptr<cookie::Texture> OpenGLTextureProcessor::createTexture(const std::string &path) {
+void OpenGLTextureProcessor::fillTexture(const std::string &path, cookie::Texture &target) {
 	int width, height, channelsInFile;
 	unsigned char *pixels = cookie::TextureProcessor::getFilePixels(
 			path,
@@ -33,10 +33,8 @@ std::unique_ptr<cookie::Texture> OpenGLTextureProcessor::createTexture(const std
 	} else {
 		throw std::runtime_error("Cannot process image at " + path);
 	}
-	return std::make_unique<cookie::Texture>(
-			textureID,
-			path
-	);
+	target.id = textureID;
+	target.path = path;
 }
 
 void OpenGLTextureProcessor::bindTexturesToShader(const std::vector<cookie::Texture> &textures,

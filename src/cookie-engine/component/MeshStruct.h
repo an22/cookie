@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include <assimp/scene.h>
+#include "Material.h"
 
 namespace cookie {
 	struct Vertex {
@@ -23,35 +24,19 @@ namespace cookie {
 		Vertex(Vertex &&) noexcept;
 	};
 
-	struct Texture {
-		enum class Type : char {
-			SPECULAR = 's',
-			DIFFUSE = 'd'
-		};
-		unsigned int id;
-		std::string path;
-		Type type;
-
-		Texture(unsigned int id, std::string path, Type type);
-		Texture(unsigned int id, std::string path);
-		Texture(const Texture &) = delete;
-		Texture &operator=(const Texture &) = delete;
-		Texture(Texture &&) noexcept;
-	};
-
 	struct MeshData {
+		std::string name;
 		std::vector<Vertex> vertices;
 		std::vector<unsigned int> indices;
-		std::vector<Texture> textures;
+		std::shared_ptr<Material> material;
 
-		glm::mat4 transformation{1};
 
 		MeshData() = default;
 		MeshData(
-				std::vector<Vertex> vertices,
-				std::vector<unsigned int> indices,
-				std::vector<Texture> textures,
-				glm::mat4 transformation
+				std::string name,
+				std::vector<Vertex> &vertices,
+				std::vector<unsigned int> &indices,
+				std::shared_ptr<Material> &material
 		);
 		MeshData(const MeshData &) = delete;
 		MeshData &operator=(const MeshData &) = delete;
