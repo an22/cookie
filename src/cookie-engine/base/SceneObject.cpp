@@ -66,9 +66,6 @@ namespace cookie {
 		modelMat = glm::translate(glm::mat4(1.0f), position);
 	}
 
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "misc-no-recursion"
-
 	void SceneObject::draw(cookie::DrawUtils &utils, glm::mat4 &viewMatrix, glm::mat4 &projMatrix) {
 		auto iterator = children.begin();
 		while (iterator != children.end()) {
@@ -90,10 +87,12 @@ namespace cookie {
 		}
 	}
 
-#pragma clang diagnostic pop
-
 	void SceneObject::addChild(const std::shared_ptr<SceneObject> &child) {
 		children.push_back(std::shared_ptr(child));
+	}
+
+	std::shared_ptr<SceneObject> SceneObject::getChildAt(unsigned int position) {
+		return children[position];
 	}
 
 	void SceneObject::removeChild(const std::shared_ptr<SceneObject> &child) {

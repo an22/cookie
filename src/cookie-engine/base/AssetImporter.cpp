@@ -68,6 +68,7 @@ namespace cookie {
 			const std::string &meshPath
 	) {
 		std::vector<Texture> textures;
+
 		auto diffuseMaps = loadTexture(
 				material,
 				aiTextureType_DIFFUSE,
@@ -86,7 +87,7 @@ namespace cookie {
 	}
 
 
-	void AssetImporter::importMesh(SceneObject& root, const std::string &path) {
+	void AssetImporter::importMesh(SceneObject &root, const std::string &path) {
 		Assimp::Importer importer;
 		const aiScene *scene = importer.ReadFile(
 				path.c_str(),
@@ -99,45 +100,62 @@ namespace cookie {
 		if (!scene || !scene->HasMeshes()) {
 			throw std::runtime_error("Can't import asset at " + path);
 		}
-		const auto& materials = loadMaterials(scene, path);
-		for (auto i = 0; i < scene->mNumMeshes; i++) {
-			aiMesh *mesh = scene->mMeshes[i];
-			auto meshData = std::make_unique<MeshData>();
-			decodeMesh(mesh, *meshData);
-			auto node = std::make_unique<SceneObject>();
-			auto meshComponent = std::make_unique<Mesh>(std::move(meshData));
-			node->addComponent(std::move(meshComponent));
-			root.addChild(std::move(node));
-		}
+		auto materials = std::move(loadMaterials(scene, path));
+		aiNode *rootNode = scene->mRootNode;
+		decodeSceneRecursively(scene, rootNode, materials, root);
 	}
 
-	std::vector<Material> AssetImporter::loadMaterials(const aiScene *scene, const std::string &meshPath) {
-		std::vector<Material> materials;
+	std::vector<std::shared_ptr<Material>>AssetImporter::loadMaterials(const aiScene *scene, const std::string &meshPath) {
+		std::vector<std::shared_ptr<Material>> materials;
 		materials.reserve(scene->mNumMaterials);
 		for (auto i = 0; i < scene->mNumMaterials; i++) {
 			aiMaterial *material = scene->mMaterials[i];
-			Material target;
+			auto target = std::make_shared<Material>();
 			aiColor3D color;
 
-			material->Get(AI_MATKEY_NAME, target.name);
+			material->Get(AI_MATKEY_NAME, target->name);
 			material->Get(AI_MATKEY_COLOR_DIFFUSE, color);
-			target.diffuseColor = glm::vec3(color.r, color.g, color.b);
+			target->diffuseColor = glm::vec3(color.r, color.g, color.b);
 			material->Get(AI_MATKEY_COLOR_SPECULAR, color);
-			target.specularColor = glm::vec3(color.r, color.g, color.b);
+			target->specularColor = glm::vec3(color.r, color.g, color.b);
 			material->Get(AI_MATKEY_COLOR_AMBIENT, color);
-			target.ambientColor = glm::vec3(color.r, color.g, color.b);
+			target->ambientColor = glm::vec3(color.r, color.g, color.b);
 			material->Get(AI_MATKEY_COLOR_EMISSIVE, color);
-			target.emissiveColor = glm::vec3(color.r, color.g, color.b);
+			target->emissiveColor = glm::vec3(color.r, color.g, color.b);
 			material->Get(AI_MATKEY_COLOR_TRANSPARENT, color);
-			target.transparencyColor = glm::vec3(color.r, color.g, color.b);
-			material->Get(AI_MATKEY_OPACITY, target.opacity);
-			material->Get(AI_MATKEY_SHININESS, target.shininess);
-			material->Get(AI_MATKEY_REFRACTI, target.refraction);
+			target->transparencyColor = glm::vec3(color.r, color.g, color.b);
+			material->Get(AI_MATKEY_OPACITY, target->opacity);
+			material->Get(AI_MATKEY_SHININESS, target->shininess);
+			material->Get(AI_MATKEY_REFRACTI, target->refraction);
 
-			target.textures = loadTextures(material,meshPath.substr(0, meshPath.find_last_of('/')));
+			target->textures = loadTextures(material, meshPath.substr(0, meshPath.find_last_of('/')));
 
 			materials.push_back(std::move(target));
 		}
 		return materials;
+	}
+
+	void AssetImporter::decodeSceneRecursively(const aiScene *rootScene, const aiNode *sceneNode,
+											   const std::vector<std::shared_ptr<Material>> &materials,
+											   SceneObject &sceneObject) {
+		sceneObject.name = sceneNode->mName.C_Str();
+		for (auto i = 0; i < sceneNode->mNumMeshes; i++) {
+			aiMesh *mesh = rootScene->mMeshes[sceneNode->mMeshes[i]];
+			auto meshData = std::make_unique<MeshData>();
+			decodeMesh(mesh, *meshData);
+			meshData->material = materials[mesh->mMaterialIndex];
+			auto node = std::make_shared<SceneObject>();
+			node->name = mesh->mName.C_Str();
+			auto meshComponent = std::make_unique<Mesh>(std::move(meshData));
+			node->addComponent(std::move(meshComponent));
+			sceneObject.addChild(node);
+		}
+		if(sceneNode->mNumChildren > 0) {
+			auto child = std::make_shared<SceneObject>();
+			sceneObject.addChild(child);
+			for (auto j = 0; j < sceneNode->mNumChildren; j++) {
+				decodeSceneRecursively(rootScene, sceneNode->mChildren[j], materials, *child);
+			}
+		}
 	}
 }

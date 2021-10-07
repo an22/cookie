@@ -19,27 +19,33 @@ namespace cookie {
 	class AssetImporter {
 	private:
 
-		static std::vector<Material> loadMaterials(
+		inline static std::vector<std::shared_ptr<Material>> loadMaterials(
 				const aiScene *scene,
 				const std::string &meshPath
 		);
-		static std::vector<Texture> loadTexture(
+		inline static std::vector<Texture> loadTexture(
 				aiMaterial *mat,
 				aiTextureType type,
 				Texture::Type assignType,
 				const std::string &meshPath
 		);
-		static void decodeMesh(
-				const aiMesh *mesh,
-				MeshData& target
+		inline static void decodeSceneRecursively(
+				const aiScene* rootScene,
+				const aiNode *sceneNode,
+				const std::vector<std::shared_ptr<Material>>& materials,
+				SceneObject &sceneObject
 		);
-		static std::vector<Texture> loadTextures(
+		inline static void decodeMesh(
+				const aiMesh *mesh,
+				MeshData &target
+		);
+		inline static std::vector<Texture> loadTextures(
 				aiMaterial *mesh,
 				const std::string &meshPath
 		);
-		static std::vector<Vertex> loadVertices(const aiMesh *mesh);
+		inline static std::vector<Vertex> loadVertices(const aiMesh *mesh);
 	public:
-		static void importMesh(SceneObject& root, const std::string &path);
+		static void importMesh(SceneObject &root, const std::string &path);
 	};
 }
 

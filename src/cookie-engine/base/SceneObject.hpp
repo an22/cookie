@@ -49,6 +49,7 @@ namespace cookie {
 		virtual void draw(DrawUtils &utils, glm::mat4 &viewMatrix, glm::mat4 &projMatrix);
 
 		virtual void addChild(const std::shared_ptr<SceneObject> &child);
+		virtual std::shared_ptr<SceneObject> getChildAt(unsigned int position);
 		virtual void removeChild(const std::shared_ptr<SceneObject> &child);
 
 
