@@ -93,7 +93,7 @@ namespace cookie {
 #pragma clang diagnostic pop
 
 	void SceneObject::addChild(const std::shared_ptr<SceneObject> &child) {
-		children.push_back(std::move(child));
+		children.push_back(std::shared_ptr(child));
 	}
 
 	void SceneObject::removeChild(const std::shared_ptr<SceneObject> &child) {
