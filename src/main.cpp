@@ -11,7 +11,9 @@
 int main() {
 	try {
 		cookie::init();
-		cookie::setScene(std::make_unique<cookie::Scene>());
+		auto scene = std::make_shared<cookie::Scene>();
+		scene->addObject(std::make_shared<cookie::Cube>(0.0f, 0.0f, 0.0f));
+		cookie::setScene(scene);
 		cookie::engine->currentScene->startLoop();
 		cookie::destroy();
 	} catch (std::exception &e) {

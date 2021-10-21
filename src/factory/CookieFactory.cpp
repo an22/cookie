@@ -17,6 +17,7 @@
 #include "OpenGLInitializer.hpp"
 #include "OpenGLPlatformSpecificData.h"
 #include "OpenGLTextureProcessor.hpp"
+#include "OpenGlCrossBatchBufferStorage.hpp"
 
 std::unique_ptr<cookie::Time> CookieFactory::provideTimeManager() {
 	switch (cookie::Cookie::CURRENT_CG_API) {
@@ -106,5 +107,14 @@ std::unique_ptr<cookie::TextureProcessor> CookieFactory::provideTextureProcessor
 			//TODO case DirectX:
 			default:
 				cookie::throwAPIUnsupported();
+	}
+}
+
+std::unique_ptr<cookie::CrossBatchBufferStorage> CookieFactory::provideCrossBatchBufferStorage() {
+	switch (cookie::Cookie::CURRENT_CG_API) {
+		case cookie::CgAPI::OpenGL:
+			return std::unique_ptr<cookie::CrossBatchBufferStorage>(new cookie::OpenGLCrossBatchBufferStorage());
+		default:
+			cookie::throwAPIUnsupported();
 	}
 }

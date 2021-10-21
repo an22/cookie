@@ -26,7 +26,7 @@ namespace cookie {
 		virtual void setBool(const std::string &name, bool value) const = 0;
 		virtual void setInt(const std::string &name, int32_t value) const = 0;
 		virtual void setFloat(const std::string &name, float value) const = 0;
-		virtual void setMatrix4(const std::string &name, glm::mat4 &matrix) = 0;
+		virtual void setMatrix4(const std::string &name, const glm::mat4 &matrix) const = 0;
 		//TODO add more utility functions
 	};
 }

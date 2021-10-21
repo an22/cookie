@@ -67,7 +67,7 @@ void OpenGLShader::setFloat(const std::string &name, float value) const {
 	glUniform1f(location, value);
 }
 
-void OpenGLShader::setMatrix4(const std::string &name, glm::mat4 &matrix) {
+void OpenGLShader::setMatrix4(const std::string &name, const glm::mat4 &matrix) const {
 	GLint location = glGetUniformLocation(renderingProgram, name.c_str());
 	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 }

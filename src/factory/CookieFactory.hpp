@@ -17,6 +17,7 @@
 #include "Initializer.hpp"
 #include "PlatformSpecificBufferData.h"
 #include "PlatformSpecificData.hpp"
+#include "CrossBatchBufferStorage.hpp"
 
 class CookieFactory {
 
@@ -32,6 +33,7 @@ public:
 	static std::unique_ptr<cookie::PlatformSpecificBufferData> provideBufferData(cookie::BufferType bufferType);
 	static std::unique_ptr<cookie::PlatformSpecificData> createPlatformSpecificContainer();
 	static std::unique_ptr<cookie::TextureProcessor> provideTextureProcessor();
+	static std::unique_ptr<cookie::CrossBatchBufferStorage> provideCrossBatchBufferStorage();
 };
 
 #endif /* CookieFactory_hpp */

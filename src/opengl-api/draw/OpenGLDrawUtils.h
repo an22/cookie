@@ -9,15 +9,15 @@
 
 class OpenGLDrawUtils : public cookie::DrawUtils {
 public:
-	bool shouldCloseWindow() override;
-	void clearBuffers() override;
-	void listenInputEvents() override;
-	void swapBuffers() override;
-	void enableDepthTest() override;
-	void drawInstanced(int32_t first, int32_t size, int32_t times) override;
-	void drawArrays(int32_t from, int32_t to) override;
-	void drawElements(unsigned int size) override;
-	void cullFace() override;
+	[[nodiscard]] bool shouldCloseWindow() const override;
+	void clearBuffers() const override;
+	void listenInputEvents()const  override;
+	void swapBuffers() const override;
+	void enableDepthTest() const override;
+	void drawInstanced(int32_t first, int32_t size, int32_t times) const override;
+	void drawArrays(int32_t from, int32_t to) const override;
+	void drawElements(unsigned int size) const override;
+	void cullFace() const override;
 	OpenGLDrawUtils() = default;
 	~OpenGLDrawUtils() override = default;
 };

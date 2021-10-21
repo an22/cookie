@@ -20,8 +20,8 @@ namespace cookie {
 		).release();
 	}
 
-	void setScene(std::unique_ptr<Scene> scene) {
-		engine->currentScene = std::move(scene);
+	void setScene(std::shared_ptr<Scene> scene) {
+		engine->currentScene = std::shared_ptr(std::move(scene));
 	}
 
 	void destroy() {

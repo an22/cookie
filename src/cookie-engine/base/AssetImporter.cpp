@@ -20,7 +20,9 @@ namespace cookie {
 			aiString path;
 			mat->GetTexture(type, i, &path);
 			std::string texturePath = std::string(path.C_Str());
-			std::string materialPath = meshPath + '/' + texturePath;
+			std::stringstream ss;
+			ss << meshPath << '/' << texturePath;
+			std::string materialPath = ss.str();
 			Texture target;
 			textureProcessor->fillTexture(materialPath, target);
 			target.type = assignType;
@@ -105,7 +107,7 @@ namespace cookie {
 		decodeSceneRecursively(scene, rootNode, materials, root);
 	}
 
-	std::vector<std::shared_ptr<Material>>AssetImporter::loadMaterials(const aiScene *scene, const std::string &meshPath) {
+	std::vector<std::shared_ptr<Material>> AssetImporter::loadMaterials(const aiScene *scene, const std::string &meshPath) {
 		std::vector<std::shared_ptr<Material>> materials;
 		materials.reserve(scene->mNumMaterials);
 		for (auto i = 0; i < scene->mNumMaterials; i++) {
@@ -146,7 +148,7 @@ namespace cookie {
 			meshData->material = materials[mesh->mMaterialIndex];
 			auto node = std::make_shared<SceneObject>();
 			node->name = mesh->mName.C_Str();
-			auto meshComponent = std::make_unique<Mesh>(std::move(meshData));
+			auto meshComponent = std::make_shared<Mesh>(std::move(meshData));
 			node->addComponent(std::move(meshComponent));
 			sceneObject.addChild(node);
 		}

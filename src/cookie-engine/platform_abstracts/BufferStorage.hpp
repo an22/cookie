@@ -10,6 +10,7 @@
 
 #include <cstdio>
 #include <memory>
+#include <vector>
 #include "MeshStruct.h"
 #include "PlatformSpecificBufferData.h"
 
@@ -20,11 +21,12 @@ namespace cookie {
 		explicit BufferStorage();
 		virtual ~BufferStorage();
 
-		virtual void bind() = 0;
+		virtual void bind() const = 0;
 		virtual void saveToBuffer(
 				const MeshData &meshData,
+				const std::vector<glm::mat4> &matrices,
 				std::unique_ptr<PlatformSpecificBufferData> data
-		) = 0;
+		) const = 0;
 	};
 }
 

@@ -8,42 +8,42 @@
 #include "Cookie.hpp"
 #include "OpenGLPlatformSpecificData.h"
 
-bool OpenGLDrawUtils::shouldCloseWindow() {
+bool OpenGLDrawUtils::shouldCloseWindow() const {
 	auto &platformData = dynamic_cast<OpenGLPlatformSpecificData &>(*cookie::engine->platformData);
 	return glfwWindowShouldClose(platformData.getWindow());
 }
 
-void OpenGLDrawUtils::clearBuffers() {
+void OpenGLDrawUtils::clearBuffers() const {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_DEPTH_BUFFER_BIT);
 }
 
-void OpenGLDrawUtils::listenInputEvents() {
+void OpenGLDrawUtils::listenInputEvents() const {
 	auto &platformData = dynamic_cast<OpenGLPlatformSpecificData &>(*cookie::engine->platformData);
 	glfwSwapBuffers(platformData.getWindow());
 }
 
-void OpenGLDrawUtils::swapBuffers() {
+void OpenGLDrawUtils::swapBuffers() const {
 	glfwPollEvents();
 }
 
-void OpenGLDrawUtils::enableDepthTest() {
+void OpenGLDrawUtils::enableDepthTest() const {
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 }
 
-void OpenGLDrawUtils::drawInstanced(int32_t first, int32_t size, int32_t times) {
+void OpenGLDrawUtils::drawInstanced(int32_t first, int32_t size, int32_t times) const {
 	glDrawArraysInstanced(GL_TRIANGLES, first, size, times);
 }
 
-void OpenGLDrawUtils::drawArrays(int32_t from, int32_t to) {
+void OpenGLDrawUtils::drawArrays(int32_t from, int32_t to) const {
 	glDrawArrays(GL_TRIANGLES, from, to);
 }
 
-void OpenGLDrawUtils::drawElements(unsigned int size) {
+void OpenGLDrawUtils::drawElements(unsigned int size) const {
 	glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
 }
 
-void OpenGLDrawUtils::cullFace() {
+void OpenGLDrawUtils::cullFace() const {
 	glEnable(GL_CULL_FACE);
 }

@@ -13,15 +13,18 @@
 #include "FramerateInfo.hpp"
 #include "SceneSettings.hpp"
 #include "Cube.hpp"
+#include "BatchManager.hpp"
 
 namespace cookie {
 	class Scene {
 	private:
 		std::unique_ptr<SceneSettings> sceneSettings;
+		std::unique_ptr<CrossBatchBufferStorage> globalBufferStorage;
 		std::unique_ptr<DrawUtils> drawUtils;
+		std::unique_ptr<BatchManager> batchManager;
+		std::vector<std::shared_ptr<SceneObject>> sceneObjects;
 		FramerateInfo framerate;
 		glm::mat4 vMat;
-		Cube cube;
 
 		void display(double currentTime, double currentTimeDelta);
 
@@ -29,6 +32,8 @@ namespace cookie {
 		Scene();
 		~Scene();
 
+		void addObject(const std::shared_ptr<SceneObject>& sceneObject);
+		void removeObject(const std::shared_ptr<SceneObject>& sceneObject);
 		void startLoop();
 		SceneSettings &getSettings();
 	};

@@ -16,6 +16,7 @@ namespace cookie {
 		glm::vec3 position;
 		glm::vec3 normal;
 		glm::vec2 texCoords;
+		unsigned int matrixOffset;
 
 		Vertex(const glm::vec3 &position, const glm::vec3 &normal, const glm::vec2 &texCoords);
 		Vertex() = default;

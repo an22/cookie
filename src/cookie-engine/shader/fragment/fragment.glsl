@@ -2,15 +2,16 @@
 
 out vec4 color;
 
-uniform mat4 mv_matrix;
-uniform mat4 proj_matrix;
+struct Material {
+    vec2 diff;
+};
 
-in vec2 _texCoord;
-in vec4 varyingColor;
+uniform materialBuffer {
+    Material materials;
+};
 
-uniform sampler2D diffuse1;
-uniform sampler2D specular1;
+in ivec2 fAssigns;
 
 void main(void) {
-    color = varyingColor;
+    color = vec4(0.0f, 0.0f, 0.0f, 1f);
 }

@@ -29,10 +29,6 @@ namespace cookie {
 
 	SceneObject::SceneObject(const std::string &path, glm::vec3 pos) : SceneObject(pos) {
 		AssetImporter::importMesh(*this, path);
-		addComponent(CookieFactory::provideShader(
-				"/Users/antiufieievmichael/Guides/cookie-engine/src/cookie-engine/shader/vertex/vertex.glsl",
-				"/Users/antiufieievmichael/Guides/cookie-engine/src/cookie-engine/shader/fragment/fragment.glsl"
-		));
 	}
 
 	SceneObject::~SceneObject() = default;
@@ -66,11 +62,9 @@ namespace cookie {
 		modelMat = glm::translate(glm::mat4(1.0f), position);
 	}
 
-	void SceneObject::draw(cookie::DrawUtils &utils, glm::mat4 &viewMatrix, glm::mat4 &projMatrix) {
-		auto iterator = children.begin();
-		while (iterator != children.end()) {
-			iterator->get()->draw(utils, viewMatrix, projMatrix);
-			iterator++;
+	void SceneObject::draw(const cookie::DrawUtils &utils, const glm::mat4 &viewMatrix, const glm::mat4 &projMatrix) {
+		for (auto& child : children) {
+			child->draw(utils, viewMatrix, projMatrix);
 		}
 		auto mesh = getComponent<Mesh>();
 		auto shader = getComponent<Shader>();
@@ -97,5 +91,13 @@ namespace cookie {
 
 	void SceneObject::removeChild(const std::shared_ptr<SceneObject> &child) {
 		children.erase(std::remove(children.begin(), children.end(), child), children.end());
+	}
+
+	SceneObject::PtrSceneObjVector::iterator SceneObject::childrenBegin() noexcept {
+		return children.begin();
+	}
+
+	SceneObject::PtrSceneObjVector::iterator SceneObject::childrenEnd() noexcept {
+		return children.end();
 	}
 }
