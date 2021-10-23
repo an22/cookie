@@ -22,7 +22,7 @@ namespace cookie {
 		std::unique_ptr<PlatformSpecificBufferData> data = CookieFactory::provideBufferData(BufferType::VERTEX_BUFFER);
 	}
 
-	const std::vector<Vertex> &Mesh::getVertices() const {
+	std::vector<Vertex> &Mesh::getVertices() const {
 		return meshData->vertices;
 	}
 
@@ -38,5 +38,9 @@ namespace cookie {
 	void Mesh::onPreDraw(Material &material) {
 		material.onPreDraw();
 
+	}
+
+	std::shared_ptr<Material> Mesh::getMaterial() const {
+		return meshData->material;
 	}
 }

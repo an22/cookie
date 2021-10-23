@@ -6,11 +6,13 @@
 //
 
 #include "OpenGLShader.hpp"
+#include <fstream>
+#include <sstream>
+#include <iostream>
 #include "GLErrorHandler.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <string>
-#include <sstream>
 
 OpenGLShader::OpenGLShader(const std::string &vertexPath, const std::string &fragmentPath) : cookie::Shader() {
 	auto vertex = loadShaderFrom(vertexPath, GL_VERTEX_SHADER);
@@ -31,7 +33,7 @@ GLuint OpenGLShader::loadShaderFrom(const std::string &path, GLenum shaderType) 
 	if (!filestream.is_open()) {
 		throw std::invalid_argument("Cant read " + path);
 	}
-
+	GLErrorHandler handler;
 	std::stringstream buffer;
 	buffer << filestream.rdbuf();
 	filestream.close();
@@ -42,7 +44,9 @@ GLuint OpenGLShader::loadShaderFrom(const std::string &path, GLenum shaderType) 
 	glCompileShader(shader);
 	GLint shaderCompiled;
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &shaderCompiled);
+	handler.checkOpenGLError();
 	if (shaderCompiled != 1) {
+		handler.printShaderLog(shader);
 		throw std::runtime_error("Shader compilation failed");
 	}
 	return shader;

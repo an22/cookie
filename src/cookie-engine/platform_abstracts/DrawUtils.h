@@ -16,8 +16,9 @@ namespace cookie {
         virtual void swapBuffers() const = 0;
         virtual void enableDepthTest() const  = 0;
         virtual void drawInstanced(int32_t first, int32_t size, int32_t times) const = 0;
+		virtual void drawMultiElementsWithIndexOffset(unsigned int meshCount, const int32_t* size, const int32_t* indicesOffset) const = 0;
         virtual void drawArrays(int32_t from, int32_t to) const = 0;
-        virtual void drawElements(unsigned int size) const = 0 ;
+        virtual void drawElements(int32_t size) const = 0 ;
         virtual void cullFace() const = 0;
         DrawUtils() = default;
         virtual ~DrawUtils() = default;

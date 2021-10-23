@@ -18,6 +18,11 @@ namespace cookie {
 								 children() {
 	}
 
+	SceneObject::SceneObject(glm::mat4 transformation) : position(glm::vec3(transformation[3])),
+														 modelMat(transformation),
+														 children() {
+	}
+
 	SceneObject::SceneObject(glm::vec3 pos) : position(pos),
 											  modelMat(glm::translate(glm::mat4(1), pos)),
 											  children() {
@@ -63,7 +68,7 @@ namespace cookie {
 	}
 
 	void SceneObject::draw(const cookie::DrawUtils &utils, const glm::mat4 &viewMatrix, const glm::mat4 &projMatrix) {
-		for (auto& child : children) {
+		for (auto &child: children) {
 			child->draw(utils, viewMatrix, projMatrix);
 		}
 		auto mesh = getComponent<Mesh>();

@@ -5,10 +5,11 @@
 #ifndef COOKIE_ENGINE_BATCHMANAGER_HPP
 #define COOKIE_ENGINE_BATCHMANAGER_HPP
 
+#include <unordered_map>
 #include "Material.h"
 #include "Batch.hpp"
 #include "BufferStorage.hpp"
-#include <unordered_map>
+#include "DrawUtils.h"
 
 namespace cookie {
 
@@ -17,12 +18,12 @@ namespace cookie {
 	class BatchManager {
 	private:
 		MaterialBatchMap batchMap;
-		std::unique_ptr<BufferStorage> bufferStorage;
 	public:
 
 		BatchManager();
 
 		void onNewObject(const std::shared_ptr<SceneObject>& sceneObject);
+		void draw(const DrawUtils& drawUtils) const;
 		void syncWithVideoBuffer();
 	};
 }

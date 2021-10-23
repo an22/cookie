@@ -40,10 +40,26 @@ void OpenGLDrawUtils::drawArrays(int32_t from, int32_t to) const {
 	glDrawArrays(GL_TRIANGLES, from, to);
 }
 
-void OpenGLDrawUtils::drawElements(unsigned int size) const {
-	glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
+void OpenGLDrawUtils::drawElements(int32_t size) const {
+	glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, nullptr);
 }
 
 void OpenGLDrawUtils::cullFace() const {
 	glEnable(GL_CULL_FACE);
+}
+
+void OpenGLDrawUtils::drawMultiElementsWithIndexOffset(
+		unsigned int meshCount,
+		const int32_t *indicesCount,
+		const int32_t *vertexOffset
+) const {
+	for (int i = 0; i < meshCount; i++)
+		if (indicesCount[i] > 0)
+			glDrawElementsBaseVertex(
+					GL_TRIANGLES,
+					indicesCount[i],
+					GL_UNSIGNED_INT,
+					nullptr,
+					vertexOffset[i]
+			);
 }

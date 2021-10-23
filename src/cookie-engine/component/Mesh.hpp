@@ -24,8 +24,9 @@ namespace cookie {
 		// mesh data
 		std::unique_ptr<MeshData> meshData;
 	public:
-		[[nodiscard]] const std::vector<Vertex> &getVertices() const;
+		[[nodiscard]] std::vector<Vertex> &getVertices() const;
 		[[nodiscard]] const std::vector<unsigned int> &getIndices() const;
+		std::shared_ptr<Material> getMaterial() const;
 
 		void onPreDraw(Shader &shader);
 		void onPreDraw(Material &material);

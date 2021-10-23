@@ -9,9 +9,6 @@
 #define Shader_hpp
 
 #include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
 #include <glm/glm.hpp>
 #include <Component.hpp>
 

@@ -5,10 +5,10 @@
 #ifndef COOKIE_ENGINE_MATERIAL_H
 #define COOKIE_ENGINE_MATERIAL_H
 
-#include "Shader.hpp"
 #include <vector>
 #include <memory>
 #include <string>
+#include "Shader.hpp"
 
 namespace cookie {
 

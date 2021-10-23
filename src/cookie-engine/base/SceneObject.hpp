@@ -35,6 +35,7 @@ namespace cookie {
 		std::string name;
 
 		explicit SceneObject(glm::vec3 pos);
+		explicit SceneObject(glm::mat4 transformation);
 		SceneObject(const std::string &path, glm::vec3 pos);
 		SceneObject();
 		SceneObject(const std::string &path, float x, float y, float z);

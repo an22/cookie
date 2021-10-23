@@ -3,8 +3,12 @@
 //
 
 #include "AssetImporter.hpp"
+#include <sstream>
 #include "regex"
 #include "Mesh.hpp"
+#include "Utils.hpp"
+#include <glm/gtx/string_cast.hpp>
+#include <iostream>
 
 namespace cookie {
 
@@ -146,7 +150,9 @@ namespace cookie {
 			auto meshData = std::make_unique<MeshData>();
 			decodeMesh(mesh, *meshData);
 			meshData->material = materials[mesh->mMaterialIndex];
-			auto node = std::make_shared<SceneObject>();
+			const auto& glmMatrix = cookie::Utils::convertMatrix(sceneNode->mTransformation);
+			auto node = std::make_shared<SceneObject>(glmMatrix);
+			std::cout << glm::to_string(glmMatrix) << std::endl;
 			node->name = mesh->mName.C_Str();
 			auto meshComponent = std::make_shared<Mesh>(std::move(meshData));
 			node->addComponent(std::move(meshComponent));

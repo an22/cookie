@@ -9,19 +9,27 @@
 #include "Material.h"
 #include "SceneObject.hpp"
 #include "BufferStorage.hpp"
+#include "BatchConfig.hpp"
+#include "DrawUtils.h"
 
 namespace cookie {
 
 	class Batch {
 	private:
 		std::vector<std::shared_ptr<SceneObject>> sceneObjects;
-		bool isStatic = true;
+		std::unique_ptr<BufferStorage> bufferStorage;
+		std::shared_ptr<Material> material;
+		BatchConfig config;
 
+		bool isStatic = true;
 	public:
 
+		explicit Batch(const std::shared_ptr<Material> &material);
+
 		void addObject(std::shared_ptr<SceneObject> sceneObject);
-		void removeObject(std::shared_ptr<SceneObject> sceneObject);
-		void syncWithVideoBuffer(const BufferStorage &bufferStorage);
+		void removeObject(const std::shared_ptr<SceneObject>& sceneObject);
+		void syncWithVideoBuffer();
+		void draw(const DrawUtils& drawUtils);
 	};
 }
 

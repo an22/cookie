@@ -3,10 +3,11 @@
 //
 
 #include "Material.h"
+#include "Cookie.hpp"
 
 namespace cookie {
 	void Material::onPreDraw() {
-		shader->use();
+		cookie::defaultShader->use();
 	}
 
 	const Shader &cookie::Material::getShader() {

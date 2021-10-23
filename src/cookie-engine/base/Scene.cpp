@@ -13,7 +13,7 @@ namespace cookie {
 		auto width = cookie::engine->platformData->width();
 		auto height = cookie::engine->platformData->height();
 		sceneSettings = std::make_unique<SceneSettings>(
-				width, height, 0.0f, 0.0f, 8.0f, 1.0472f, 0.1f, 1000.0f
+				width, height, 10.0f, 100.0f, 300.0f, 1.0472f, 300.1f, 1000.0f
 		);
 		vMat = glm::translate(glm::mat4(1.0f), -1.0f * sceneSettings->cameraPos);
 		globalBufferStorage->updateMatrices(sceneSettings->perspectiveMx, vMat);
@@ -26,9 +26,7 @@ namespace cookie {
 	void Scene::display(double currentTime, double currentTimeDelta) {
 		drawUtils->clearBuffers();
 		globalBufferStorage->bind();
-		for (std::shared_ptr<SceneObject> &obj: sceneObjects) {
-			obj->draw(*drawUtils, vMat, sceneSettings->perspectiveMx);
-		}
+		batchManager->draw(*drawUtils);
 	}
 
 	void Scene::startLoop() {
