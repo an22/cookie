@@ -5,6 +5,7 @@
 #include "OpenGLDrawUtils.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <GLErrorHandler.hpp>
 #include "Cookie.hpp"
 #include "OpenGLPlatformSpecificData.h"
 
@@ -28,8 +29,6 @@ void OpenGLDrawUtils::swapBuffers() const {
 }
 
 void OpenGLDrawUtils::enableDepthTest() const {
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LEQUAL);
 }
 
 void OpenGLDrawUtils::drawInstanced(int32_t first, int32_t size, int32_t times) const {
@@ -45,21 +44,23 @@ void OpenGLDrawUtils::drawElements(int32_t size) const {
 }
 
 void OpenGLDrawUtils::cullFace() const {
-	glEnable(GL_CULL_FACE);
 }
 
 void OpenGLDrawUtils::drawMultiElementsWithIndexOffset(
 		unsigned int meshCount,
-		const int32_t *indicesCount,
-		const int32_t *vertexOffset
+		const unsigned int *startOffset,
+		const unsigned int *indicesCount,
+		const unsigned int *vertexOffset
 ) const {
-	for (int i = 0; i < meshCount; i++)
-		if (indicesCount[i] > 0)
-			glDrawElementsBaseVertex(
-					GL_TRIANGLES,
-					indicesCount[i],
-					GL_UNSIGNED_INT,
-					nullptr,
-					vertexOffset[i]
-			);
+	GLErrorHandler handler;
+	for (int i = 0; i < meshCount; i++) {
+		glDrawElementsBaseVertex(
+				GL_TRIANGLES,
+				indicesCount[i],
+				GL_UNSIGNED_INT,
+				(void *) startOffset[i],
+				vertexOffset[i]
+		);
+		handler.checkOpenGLError();
+	}
 }

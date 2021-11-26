@@ -13,18 +13,17 @@
 
 OpenGLBufferStorage::OpenGLBufferStorage() : cookie::BufferStorage() {
 	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
 	glGenBuffers(1, &vboVertex);
 	glGenBuffers(1, &vboIndex);
-	glGenBuffers(1, &tboMatrices);
-	glGenTextures(1, &tboTexture);
+	glGenBuffers(1, &vboMatrices);
+	glGenTextures(1, &tboMatrices);
 }
 
 OpenGLBufferStorage::~OpenGLBufferStorage() {
 	glDeleteBuffers(1, &vboVertex);
 	glDeleteBuffers(1, &vboIndex);
-	glDeleteBuffers(1, &tboMatrices);
-	glDeleteTextures(1, &tboTexture);
+	glDeleteBuffers(1, &vboMatrices);
+	glDeleteTextures(1, &tboMatrices);
 	glDeleteVertexArrays(1, &vao);
 }
 
@@ -48,7 +47,7 @@ inline void OpenGLBufferStorage::setupVertexElementBuffer(const cookie::MeshData
 	glBufferData(GL_ARRAY_BUFFER, sizeof(cookie::Vertex) * meshData.vertices.size(), meshData.vertices.data(), GL_STATIC_DRAW);
 	handler.checkOpenGLError();
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIndex);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, meshData.indices.size() * sizeof(uint32_t), meshData.indices.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, meshData.indices.size() * sizeof(unsigned int), meshData.indices.data(), GL_STATIC_DRAW);
 	handler.checkOpenGLError();
 	// vertex coords
 	glEnableVertexAttribArray(0);
@@ -71,16 +70,20 @@ inline void OpenGLBufferStorage::setupVertexElementBuffer(const cookie::MeshData
 
 inline void OpenGLBufferStorage::setupMatricesBuffer(const std::vector<glm::mat4>& matrices) const {
 	GLErrorHandler handler;
-	glBindBuffer(GL_TEXTURE_BUFFER, tboMatrices);
+	glBindBuffer(GL_TEXTURE_BUFFER, vboMatrices);
 	handler.checkOpenGLError();
 	glBufferData(GL_TEXTURE_BUFFER, sizeof(glm::mat4) * matrices.size(), matrices.data(), GL_STATIC_DRAW);
 	handler.checkOpenGLError();
-	glBindTexture(GL_TEXTURE_BUFFER, tboTexture);
+	glActiveTexture(GL_TEXTURE0);
 	handler.checkOpenGLError();
-	glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, tboMatrices);
+	glBindTexture(GL_TEXTURE_BUFFER, tboMatrices);
+	handler.checkOpenGLError();
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, vboMatrices);
 	handler.checkOpenGLError();
 }
 
 void OpenGLBufferStorage::bind() const {
+	GLErrorHandler handler;
 	glBindVertexArray(vao);
+	handler.checkOpenGLError();
 }

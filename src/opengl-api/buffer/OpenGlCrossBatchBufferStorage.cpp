@@ -4,7 +4,9 @@
 
 #include <glm/gtc/type_ptr.hpp>
 #include <GLErrorHandler.hpp>
+#include "Cookie.hpp"
 #include "OpenGlCrossBatchBufferStorage.hpp"
+#include "OpenGLShader.hpp"
 
 void cookie::OpenGLCrossBatchBufferStorage::updateMatrices(const glm::mat4 &projection, const glm::mat4 &view) {
 	GLErrorHandler handler;
@@ -28,7 +30,10 @@ cookie::OpenGLCrossBatchBufferStorage::OpenGLCrossBatchBufferStorage() {
 
 void cookie::OpenGLCrossBatchBufferStorage::bind() {
 	GLErrorHandler handler;
-	glBindBufferRange(GL_UNIFORM_BUFFER, 0, uboMatrices, 0, 2 * sizeof(glm::mat4));
+	auto* shader = dynamic_cast<OpenGLShader*>(cookie::defaultShader);
+	unsigned int lights_index = glGetUniformBlockIndex(shader->id, "Matrices");
+	glUniformBlockBinding(shader->id, lights_index, 0);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, uboMatrices);
 	handler.checkOpenGLError();
 }
 

@@ -18,6 +18,7 @@ private:
 	GLuint vao{};
 	GLuint vboVertex{};
 	GLuint vboIndex{};
+	GLuint vboMatrices{};
 	GLuint tboMatrices{};
 	GLuint tboTexture{};
 

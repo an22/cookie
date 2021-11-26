@@ -7,22 +7,14 @@
 
 namespace cookie {
 	void Material::onPreDraw() {
-		cookie::defaultShader->use();
-	}
-
-	const Shader &cookie::Material::getShader() {
-		return *shader;
 	}
 
 	Material::Material(
-			std::shared_ptr<Shader> shader,
 			std::vector<Texture> &textures
-	) : shader(std::move(shader)),
-		textures(std::move(textures)) {
+	) : textures(std::move(textures)) {
 	}
 
-	Material::Material(Material &&mat) noexcept: shader(std::move(mat.shader)),
-												 textures(std::move(mat.textures)),
+	Material::Material(Material &&mat) noexcept: textures(std::move(mat.textures)),
 												 name(std::move(mat.name)),
 												 diffuseColor(mat.diffuseColor),
 												 specularColor(mat.specularColor),

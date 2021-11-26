@@ -39,9 +39,7 @@ cookie::BatchManager::BatchManager() : batchMap{} {
 }
 
 void cookie::BatchManager::draw(const cookie::DrawUtils &drawUtils) const {
-	GLErrorHandler handler;
-	for (auto &entry: batchMap) {
-		handler.checkOpenGLError();
+	for (auto &entry: batchMap) {;
 		entry.second->draw(drawUtils);
 	}
 }

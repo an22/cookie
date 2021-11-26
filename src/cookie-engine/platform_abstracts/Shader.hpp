@@ -16,6 +16,8 @@ namespace cookie {
 
 	class Shader : public Component {
 	public:
+		int32_t id;
+
 		virtual ~Shader() = default;
 		// use/activate the shader
 		virtual void use() = 0;

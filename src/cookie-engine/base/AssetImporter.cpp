@@ -150,9 +150,8 @@ namespace cookie {
 			auto meshData = std::make_unique<MeshData>();
 			decodeMesh(mesh, *meshData);
 			meshData->material = materials[mesh->mMaterialIndex];
-			const auto& glmMatrix = cookie::Utils::convertMatrix(sceneNode->mTransformation);
+			const auto& glmMatrix = cookie::Utils::convertMatrix(sceneNode->mTransformation * sceneNode->mParent->mTransformation);
 			auto node = std::make_shared<SceneObject>(glmMatrix);
-			std::cout << glm::to_string(glmMatrix) << std::endl;
 			node->name = mesh->mName.C_Str();
 			auto meshComponent = std::make_shared<Mesh>(std::move(meshData));
 			node->addComponent(std::move(meshComponent));

@@ -7,6 +7,9 @@
 #include "CookieFactory.hpp"
 #include "PlatformSpecificBufferData.h"
 #include <iostream>
+#include <iterator>
+#include <glm/gtx/string_cast.hpp>
+#include <GLErrorHandler.hpp>
 
 void cookie::Batch::addObject(std::shared_ptr<SceneObject> sceneObject) {
 	sceneObjects.push_back(std::move(sceneObject));
@@ -34,42 +37,36 @@ void cookie::Batch::syncWithVideoBuffer() {
 	std::vector<unsigned int> indices;
 	std::vector<glm::mat4> matrices;
 	config.meshCount = sceneObjects.size();
-	config.baseVertexOffset = new int32_t[sceneObjects.size()];
-	config.indicesSize = new int32_t[sceneObjects.size()];
+	config.startOffset = new unsigned int [sceneObjects.size()];
+	config.baseVertexOffset = new unsigned int[sceneObjects.size()];
+	config.indicesSize = new unsigned int[sceneObjects.size()];
 	vertices.reserve(vertexSize);
 	indices.reserve(indexSize);
 	matrices.reserve(sceneObjects.size());
 	std::shared_ptr<Material> empty(nullptr);
 
-	int32_t vertexOffset = 0;
-	int32_t indexOffset = 0;
-	int32_t matrixOffset = 0;
+	unsigned int vertexOffset = 0;
+	unsigned int indexOffset = 0;
+	unsigned int matrixOffset = 0;
 	int32_t i = 0;
 	for (auto &sceneObject: sceneObjects) {
 		const auto &mesh = sceneObject->getComponent<Mesh>();
 		const auto &meshIndices = mesh->getIndices();
 		auto &meshVertices = mesh->getVertices();
-		vertices.insert(vertices.begin() + vertexOffset, meshVertices.begin(), meshVertices.end());
-		indices.insert(indices.begin() + indexOffset, meshIndices.begin(), meshIndices.end());
-		matrices.insert(matrices.begin() + i, sceneObject->getModelMat());
 		for (auto &vertex: meshVertices) {
 			vertex.matrixOffset = matrixOffset;
 		}
+		std::copy (meshVertices.begin(), meshVertices.end(), std::back_inserter(vertices));
+		std::copy (meshIndices.begin(), meshIndices.end(), std::back_inserter(indices));
+		matrices.emplace_back(sceneObject->getModelMat());
+		config.startOffset[i] = indexOffset * sizeof(unsigned int);
 		config.indicesSize[i] = meshIndices.size();
 		config.baseVertexOffset[i] = vertexOffset;
-		vertexOffset += static_cast<int32_t>(meshVertices.size());
-		indexOffset += static_cast<int32_t>(meshIndices.size());
-		matrixOffset += 4;
+		vertexOffset += meshVertices.size();
+		indexOffset += meshIndices.size();
+		matrixOffset += 1;
 		i++;
 	}
-	for( int j = 0; j < i; j++) {
-		std::cout << config.indicesSize[j] << " ";
-	}
-	std::cout << std::endl;
-	for( int j = 0; j < i; j++) {
-		std::cout << config.baseVertexOffset[j] << " ";
-	}
-	std::cout << std::endl;
 	MeshData meshData("", vertices, indices, empty);
 	bufferStorage->saveToBuffer(
 			meshData,
@@ -83,6 +80,7 @@ void cookie::Batch::draw(const DrawUtils &drawUtils) {
 	material->onPreDraw();
 	drawUtils.drawMultiElementsWithIndexOffset(
 			config.meshCount,
+			config.startOffset,
 			config.indicesSize,
 			config.baseVertexOffset
 	);

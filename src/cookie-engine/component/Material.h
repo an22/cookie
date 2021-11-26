@@ -8,7 +8,8 @@
 #include <vector>
 #include <memory>
 #include <string>
-#include "Shader.hpp"
+#include "Component.hpp"
+#include <glm/vec3.hpp>
 
 namespace cookie {
 
@@ -30,8 +31,6 @@ namespace cookie {
 	};
 
 	class Material : public Component {
-	private:
-		std::shared_ptr<Shader> shader;
 	public:
 
 		std::string name;
@@ -48,10 +47,9 @@ namespace cookie {
 		std::vector<Texture> textures;
 
 		Material() = default;
-		Material(std::shared_ptr<Shader> shader, std::vector<Texture> &textures);
+		Material(std::vector<Texture> &textures);
 		Material(Material &&) noexcept;
 		~Material() override = default;
-		const Shader &getShader();
 		void onPreDraw();
 	};
 }

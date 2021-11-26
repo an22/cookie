@@ -25,7 +25,9 @@ namespace cookie {
 
 	void Scene::display(double currentTime, double currentTimeDelta) {
 		drawUtils->clearBuffers();
-		globalBufferStorage->bind();
+		for(auto& sceneobj:sceneObjects) {
+			sceneobj->draw(*drawUtils, vMat,sceneSettings->perspectiveMx);
+		}
 		batchManager->draw(*drawUtils);
 	}
 
@@ -33,6 +35,8 @@ namespace cookie {
 		batchManager->syncWithVideoBuffer();
 		framerate.invalidateFrameRate();
 		double last = framerate.frameTime;
+		cookie::defaultShader->use();
+		globalBufferStorage->bind();
 		while (!drawUtils->shouldCloseWindow()) {
 			framerate.invalidateFrameRate();
 			display(framerate.frameTime, framerate.frameTime - last);
