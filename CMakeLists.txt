@@ -10,7 +10,6 @@ find_package(GLEW REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glm REQUIRED)
 find_package(assimp REQUIRED)
-set_target_properties(assimp::assimp PROPERTIES MAP_IMPORTED_CONFIG_DEBUG Release)
 
 add_executable(cookie-engine src/main.cpp
         src/cookie-engine/base/SceneObject.cpp
@@ -79,3 +78,10 @@ target_link_libraries(cookie-engine PRIVATE GLEW::GLEW)
 target_link_libraries(cookie-engine PRIVATE glfw)
 target_link_libraries(cookie-engine PRIVATE ${GLM_LIBRARIES})
 target_link_libraries(cookie-engine PRIVATE assimp::assimp)
+
+install(
+        TARGETS cookie-engine
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+)

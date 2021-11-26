@@ -15,8 +15,8 @@ namespace cookie {
 		engine = new Cookie(api);
 		engine->initializer->initGraphicsAPIResources();
 		defaultShader = CookieFactory::provideShader(
-				"/Users/antiufieievmichael/Guides/cookie-engine/src/cookie-engine/shader/vertex/vertex.glsl",
-				"/Users/antiufieievmichael/Guides/cookie-engine/src/cookie-engine/shader/fragment/fragment.glsl"
+				"../src/cookie-engine/shader/vertex/vertex.glsl",
+				"../src/cookie-engine/shader/fragment/fragment.glsl"
 		).release();
 	}
 

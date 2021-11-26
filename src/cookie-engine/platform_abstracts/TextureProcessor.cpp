@@ -2,9 +2,10 @@
 // Created by Antiufieiev Michael on 13.08.2021.
 //
 
-#include "TextureProcessor.hpp"
 #define STB_IMAGE_IMPLEMENTATION
 
+#include <stdexcept>
+#include "TextureProcessor.hpp"
 #include "stb_image.h"
 
 stbi_uc *cookie::TextureProcessor::getFilePixels(const std::string &path,int &width, int &height, int& channelsInFile, int32_t channels) {

@@ -5,7 +5,6 @@
 //  Created by Antiufieiev Michael on 05.08.2021.
 //
 
-#include <MacTypes.h>
 #include "OpenGLBufferStorage.hpp"
 #include "GL/glew.h"
 #include "OpenGLPSBufferData.h"

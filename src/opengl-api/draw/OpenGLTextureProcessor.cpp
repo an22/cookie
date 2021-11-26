@@ -4,6 +4,7 @@
 
 #include "OpenGLTextureProcessor.hpp"
 #include <GL/glew.h>
+#include <stdexcept>
 
 void OpenGLTextureProcessor::fillTexture(const std::string &path, cookie::Texture &target) {
 	int width, height, channelsInFile;
