@@ -47,14 +47,13 @@ void cookie::Batch::syncWithVideoBuffer() {
 
 	unsigned int vertexOffset = 0;
 	unsigned int indexOffset = 0;
-	unsigned int matrixOffset = 0;
 	int32_t i = 0;
 	for (auto &sceneObject: sceneObjects) {
 		const auto &mesh = sceneObject->getComponent<Mesh>();
 		const auto &meshIndices = mesh->getIndices();
 		auto &meshVertices = mesh->getVertices();
 		for (auto &vertex: meshVertices) {
-			vertex.matrixOffset = matrixOffset;
+			vertex.matrixOffset = i;
 		}
 		std::copy (meshVertices.begin(), meshVertices.end(), std::back_inserter(vertices));
 		std::copy (meshIndices.begin(), meshIndices.end(), std::back_inserter(indices));
@@ -64,7 +63,6 @@ void cookie::Batch::syncWithVideoBuffer() {
 		config.baseVertexOffset[i] = vertexOffset;
 		vertexOffset += meshVertices.size();
 		indexOffset += meshIndices.size();
-		matrixOffset += 1;
 		i++;
 	}
 	MeshData meshData("", vertices, indices, empty);
@@ -84,4 +82,5 @@ void cookie::Batch::draw(const DrawUtils &drawUtils) {
 			config.indicesSize,
 			config.baseVertexOffset
 	);
+    bufferStorage->unbind();
 }

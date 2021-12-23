@@ -56,10 +56,10 @@ void OpenGLDrawUtils::drawMultiElementsWithIndexOffset(
 	for (int i = 0; i < meshCount; i++) {
 		glDrawElementsBaseVertex(
 				GL_TRIANGLES,
-				indicesCount[i],
+				static_cast<int>(indicesCount[i]),
 				GL_UNSIGNED_INT,
 				(void *) startOffset[i],
-				vertexOffset[i]
+                static_cast<int>(vertexOffset[i])
 		);
 		handler.checkOpenGLError();
 	}

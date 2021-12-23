@@ -18,9 +18,8 @@ private:
 	GLuint vao{};
 	GLuint vboVertex{};
 	GLuint vboIndex{};
-	GLuint vboMatrices{};
 	GLuint tboMatrices{};
-	GLuint tboTexture{};
+	GLuint texMatrices{};
 
 	std::unique_ptr<OpenGLPSBufferData> bufferData;
 
@@ -32,6 +31,7 @@ public:
 
 
 	void bind() const override;
+    void unbind() const override;
 	void saveToBuffer(
 			const cookie::MeshData &meshData,
 			const std::vector<glm::mat4>& matrices,

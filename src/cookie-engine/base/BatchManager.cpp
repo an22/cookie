@@ -39,7 +39,7 @@ cookie::BatchManager::BatchManager() : batchMap{} {
 }
 
 void cookie::BatchManager::draw(const cookie::DrawUtils &drawUtils) const {
-	for (auto &entry: batchMap) {;
+	for (auto &entry: batchMap) {
 		entry.second->draw(drawUtils);
 	}
 }
