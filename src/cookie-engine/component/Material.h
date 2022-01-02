@@ -30,20 +30,29 @@ namespace cookie {
 		Texture(Texture &&) noexcept;
 	};
 
-	class Material : public Component {
-	public:
-
-		std::string name;
-		glm::vec3 diffuseColor;
-		glm::vec3 specularColor;
-		glm::vec3 ambientColor;
-		glm::vec3 emissiveColor;
-		glm::vec3 transparencyColor;
+	struct GPUMaterial {
+		glm::vec3 diffuseColor{};
+		glm::vec3 specularColor{};
+		glm::vec3 ambientColor{};
+		glm::vec3 emissiveColor{};
+		glm::vec3 transparencyColor{};
 
 		float opacity = 1;
 		float shininess = 0;
 		float refraction = 1;
 
+		GPUMaterial();
+		GPUMaterial(const glm::vec3 &diffuseColor, const glm::vec3 &specularColor, const glm::vec3 &ambientColor,
+					const glm::vec3 &emissiveColor, const glm::vec3 &transparencyColor, float opacity, float shininess,
+					float refraction);
+
+		virtual ~GPUMaterial() = default;
+	};
+
+	class Material : public GPUMaterial, public Component {
+	public:
+
+		std::string name;
 		std::vector<Texture> textures;
 
 		Material() = default;

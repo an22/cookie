@@ -14,16 +14,20 @@ namespace cookie {
 	) : textures(std::move(textures)) {
 	}
 
-	Material::Material(Material &&mat) noexcept: textures(std::move(mat.textures)),
-												 name(std::move(mat.name)),
-												 diffuseColor(mat.diffuseColor),
-												 specularColor(mat.specularColor),
-												 ambientColor(mat.ambientColor),
-												 emissiveColor(mat.emissiveColor),
-												 transparencyColor(mat.transparencyColor),
-												 opacity(mat.opacity),
-												 shininess(mat.shininess),
-												 refraction(mat.refraction) {
+	Material::Material(Material &&mat) noexcept:
+			GPUMaterial(
+					mat.diffuseColor,
+					mat.specularColor,
+					mat.ambientColor,
+					mat.emissiveColor,
+					mat.transparencyColor,
+					mat.opacity,
+					mat.shininess,
+					mat.refraction
+			),
+			textures(std::move(mat.textures)),
+			name(std::move(mat.name)) {
+
 	}
 
 	Texture::Texture(unsigned int id, std::string path, Type type) : id(id),
@@ -41,4 +45,13 @@ namespace cookie {
 												  type(texture.type) {
 		texture.id = 0;
 	}
+
+	GPUMaterial::GPUMaterial(const glm::vec3 &diffuseColor, const glm::vec3 &specularColor,
+							 const glm::vec3 &ambientColor, const glm::vec3 &emissiveColor,
+							 const glm::vec3 &transparencyColor, float opacity, float shininess, float refraction)
+			: diffuseColor(diffuseColor), specularColor(specularColor), ambientColor(ambientColor),
+			  emissiveColor(emissiveColor), transparencyColor(transparencyColor), opacity(opacity),
+			  shininess(shininess), refraction(refraction) {}
+
+	GPUMaterial::GPUMaterial() = default;
 }

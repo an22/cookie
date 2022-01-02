@@ -31,8 +31,8 @@ cookie::OpenGLCrossBatchBufferStorage::OpenGLCrossBatchBufferStorage() {
 void cookie::OpenGLCrossBatchBufferStorage::bind() {
 	GLErrorHandler handler;
 	auto* shader = dynamic_cast<OpenGLShader*>(cookie::defaultShader);
-	unsigned int lights_index = glGetUniformBlockIndex(shader->id, "Matrices");
-	glUniformBlockBinding(shader->id, lights_index, 0);
+	unsigned int matrices_index = glGetUniformBlockIndex(shader->id, "Matrices");
+	glUniformBlockBinding(shader->id, matrices_index, 0);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, uboMatrices);
 	handler.checkOpenGLError();
 }

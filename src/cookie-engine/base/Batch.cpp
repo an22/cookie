@@ -43,7 +43,6 @@ void cookie::Batch::syncWithVideoBuffer() {
 	vertices.reserve(vertexSize);
 	indices.reserve(indexSize);
 	matrices.reserve(sceneObjects.size());
-	std::shared_ptr<Material> empty(nullptr);
 
 	unsigned int vertexOffset = 0;
 	unsigned int indexOffset = 0;
@@ -65,7 +64,7 @@ void cookie::Batch::syncWithVideoBuffer() {
 		indexOffset += meshIndices.size();
 		i++;
 	}
-	MeshData meshData("", vertices, indices, empty);
+	MeshData meshData("", vertices, indices, material);
 	bufferStorage->saveToBuffer(
 			meshData,
 			matrices,

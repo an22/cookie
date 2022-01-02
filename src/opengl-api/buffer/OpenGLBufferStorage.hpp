@@ -16,6 +16,7 @@
 class OpenGLBufferStorage : public cookie::BufferStorage {
 private:
 	GLuint vao{};
+	GLuint uboMaterial{};
 	GLuint vboVertex{};
 	GLuint vboIndex{};
 	GLuint tboMatrices{};
@@ -25,6 +26,7 @@ private:
 
 	void setupVertexElementBuffer(const cookie::MeshData &meshData) const;
 	void setupMatricesBuffer(const std::vector<glm::mat4>& matrices) const;
+	void setupMaterialBuffer(const cookie::MeshData &meshData) const;
 
 public:
 	explicit OpenGLBufferStorage();

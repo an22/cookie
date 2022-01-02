@@ -13,14 +13,11 @@ layout (std140) uniform Matrices
 
 uniform samplerBuffer matrixBuffer;
 
-out vec4 varyingColor;
-
 mat4 findMatrix(int offset);
 
 void main(void) {
     mat4 mv_matrix = matrixData.view * findMatrix(matrixOffset);
     gl_Position = matrixData.projection * mv_matrix * vec4(position, 1.0);
-    varyingColor = vec4(position, 1.0) * 0.5 + vec4(0.5, 0.5, 0.5, 0.5);
 }
 
 mat4 findMatrix(int offset)
