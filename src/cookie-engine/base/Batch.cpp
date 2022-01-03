@@ -37,9 +37,9 @@ void cookie::Batch::syncWithVideoBuffer() {
 	std::vector<unsigned int> indices;
 	std::vector<glm::mat4> matrices;
 	config.meshCount = sceneObjects.size();
-	config.startOffset = new unsigned int [sceneObjects.size()];
-	config.baseVertexOffset = new unsigned int[sceneObjects.size()];
-	config.indicesSize = new unsigned int[sceneObjects.size()];
+	config.startOffset = new int32_t[sceneObjects.size()];
+	config.baseVertexOffset = new int32_t[sceneObjects.size()];
+	config.indicesSize = new int32_t[sceneObjects.size()];
 	vertices.reserve(vertexSize);
 	indices.reserve(indexSize);
 	matrices.reserve(sceneObjects.size());

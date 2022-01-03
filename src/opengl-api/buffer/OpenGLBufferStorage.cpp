@@ -85,6 +85,7 @@ inline void OpenGLBufferStorage::setupMatricesBuffer(const std::vector<glm::mat4
 	handler.checkOpenGLError();
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, tboMatrices);
 	handler.checkOpenGLError();
+	glBindBuffer(GL_TEXTURE_BUFFER, 0);
 }
 
 void OpenGLBufferStorage::setupMaterialBuffer(const cookie::MeshData &meshData) const {
@@ -92,12 +93,16 @@ void OpenGLBufferStorage::setupMaterialBuffer(const cookie::MeshData &meshData) 
 	glBindBuffer(GL_UNIFORM_BUFFER, uboMaterial);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(cookie::GPUMaterial), (void *) ((char*)meshData.material.get() + offsetof(cookie::Material, diffuseColor)), GL_STATIC_DRAW);
 	handler.checkOpenGLError();
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
 void OpenGLBufferStorage::bind() const {
 	GLErrorHandler handler;
 	glBindVertexArray(vao);
 	glBindBuffer(GL_TEXTURE_BUFFER, tboMatrices);
+	glBindTexture(GL_TEXTURE_BUFFER, texMatrices);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, tboMatrices);
+	glBindBuffer(GL_UNIFORM_BUFFER, uboMaterial);
 	auto* shader = dynamic_cast<OpenGLShader*>(cookie::defaultShader);
 	unsigned int matrices_index = glGetUniformBlockIndex(shader->id, "Material");
 	glUniformBlockBinding(shader->id, matrices_index, 1);
@@ -108,5 +113,8 @@ void OpenGLBufferStorage::bind() const {
 void OpenGLBufferStorage::unbind() const {
 	GLErrorHandler handler;
 	glBindVertexArray(0);
+	glBindBuffer(GL_TEXTURE_BUFFER, 0);
+	glBindTexture(GL_TEXTURE_BUFFER, 0);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 	handler.checkOpenGLError();
 }

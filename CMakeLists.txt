@@ -10,45 +10,47 @@ find_package(GLEW REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glm REQUIRED)
 find_package(assimp REQUIRED)
+set_target_properties(assimp::assimp PROPERTIES MAP_IMPORTED_CONFIG_DEBUG Release)
 
 add_executable(cookie-engine src/main.cpp
-        src/cookie-engine/base/SceneObject.cpp
-        src/cookie-engine/component/Mesh.cpp
-        src/cookie-engine/errors/GLErrorHandler.cpp
-        src/cookie-engine/struct/FramerateInfo.cpp
-        src/cookie-engine/struct/SceneSettings.cpp
-        src/cookie-engine/util/Constants.cpp
-        src/cookie-engine/Cookie.cpp
-        src/factory/CookieFactory.cpp
-        src/opengl-api/OpenGLPlatformSpecificData.cpp
-        src/opengl-api/buffer/OpenGLBufferStorage.cpp
-        src/opengl-api/initializer/OpenGLInitializer.cpp
-        src/opengl-api/shader/OpenGLShader.cpp
-        src/opengl-api/time/OpenGLTime.cpp
-        src/cookie-engine/platform_abstracts/BufferStorage.cpp
-        src/cookie-engine/base/Scene.cpp src/util/Util.cpp
-        src/util/Util.h
-        src/cookie-engine/platform_abstracts/DrawUtils.cpp
-        src/cookie-engine/platform_abstracts/DrawUtils.h
-        src/opengl-api/draw/OpenGLDrawUtils.cpp
-        src/opengl-api/draw/OpenGLDrawUtils.h
-        src/cookie-engine/platform_abstracts/Shader.cpp
-        src/cookie-engine/draw/Cube.cpp
-        src/cookie-engine/platform_abstracts/PlatformSpecificBufferData.h
-        src/opengl-api/buffer/OpenGLPSBufferData.cpp
-        src/opengl-api/buffer/OpenGLPSBufferData.h
-        src/cookie-engine/component/Material.cpp
-        src/cookie-engine/component/Material.h
-        src/cookie-engine/component/MeshStruct.cpp
-        src/cookie-engine/component/MeshStruct.h
-        src/cookie-engine/platform_abstracts/TextureProcessor.cpp
-        src/cookie-engine/platform_abstracts/TextureProcessor.hpp
-        src/opengl-api/draw/OpenGLTextureProcessor.cpp
-        src/opengl-api/draw/OpenGLTextureProcessor.hpp
-        src/cookie-engine/platform_abstracts/ErrorHandler.cpp
-        src/cookie-engine/platform_abstracts/ErrorHandler.hpp
-        src/cookie-engine/base/AssetImporter.cpp
-        src/cookie-engine/base/AssetImporter.hpp src/cookie-engine/base/BatchManager.cpp src/cookie-engine/base/BatchManager.hpp src/cookie-engine/base/Batch.cpp src/cookie-engine/base/Batch.hpp src/cookie-engine/platform_abstracts/CrossBatchBufferStorage.hpp src/opengl-api/buffer/OpenGlCrossBatchBufferStorage.cpp src/opengl-api/buffer/OpenGlCrossBatchBufferStorage.hpp src/cookie-engine/base/BatchConfig.hpp src/cookie-engine/util/Utils.cpp src/cookie-engine/util/Utils.hpp)
+		src/cookie-engine/base/SceneObject.cpp
+		src/cookie-engine/component/Mesh.cpp
+		src/cookie-engine/errors/GLErrorHandler.cpp
+		src/cookie-engine/struct/FramerateInfo.cpp
+		src/cookie-engine/struct/SceneSettings.cpp
+		src/cookie-engine/util/Constants.cpp
+		src/cookie-engine/Cookie.cpp
+		src/factory/CookieFactory.cpp
+		src/opengl-api/OpenGLPlatformSpecificData.cpp
+		src/opengl-api/buffer/OpenGLBufferStorage.cpp
+		src/opengl-api/initializer/OpenGLInitializer.cpp
+		src/opengl-api/shader/OpenGLShader.cpp
+		src/opengl-api/time/OpenGLTime.cpp
+		src/cookie-engine/platform_abstracts/BufferStorage.cpp
+		src/cookie-engine/base/Scene.cpp src/util/Util.cpp
+		src/util/Util.h
+		src/cookie-engine/platform_abstracts/DrawUtils.cpp
+		src/cookie-engine/platform_abstracts/DrawUtils.h
+		src/opengl-api/draw/OpenGLDrawUtils.cpp
+		src/opengl-api/draw/OpenGLDrawUtils.h
+		src/cookie-engine/platform_abstracts/Shader.cpp
+		src/cookie-engine/draw/Cube.cpp
+		src/cookie-engine/platform_abstracts/PlatformSpecificBufferData.h
+		src/opengl-api/buffer/OpenGLPSBufferData.cpp
+		src/opengl-api/buffer/OpenGLPSBufferData.h
+		src/cookie-engine/component/Material.cpp
+		src/cookie-engine/component/Material.h
+		src/cookie-engine/component/MeshStruct.cpp
+		src/cookie-engine/component/MeshStruct.h
+		src/cookie-engine/platform_abstracts/TextureProcessor.cpp
+		src/cookie-engine/platform_abstracts/TextureProcessor.hpp
+		src/opengl-api/draw/OpenGLTextureProcessor.cpp
+		src/opengl-api/draw/OpenGLTextureProcessor.hpp
+		src/cookie-engine/platform_abstracts/ErrorHandler.cpp
+		src/cookie-engine/platform_abstracts/ErrorHandler.hpp
+		src/cookie-engine/base/AssetImporter.cpp
+		src/cookie-engine/base/AssetImporter.hpp
+		src/cookie-engine/base/BatchManager.cpp src/cookie-engine/base/BatchManager.hpp src/cookie-engine/base/Batch.cpp src/cookie-engine/base/Batch.hpp src/cookie-engine/platform_abstracts/CrossBatchBufferStorage.hpp src/opengl-api/buffer/OpenGlCrossBatchBufferStorage.cpp src/opengl-api/buffer/OpenGlCrossBatchBufferStorage.hpp src/cookie-engine/base/BatchConfig.hpp src/cookie-engine/util/Utils.cpp src/cookie-engine/util/Utils.hpp)
 
 target_include_directories(cookie-engine PUBLIC /usr/local/lib)
 target_include_directories(cookie-engine PUBLIC ${GLEW_INCLUDE_DIRS})
@@ -80,8 +82,8 @@ target_link_libraries(cookie-engine PRIVATE ${GLM_LIBRARIES})
 target_link_libraries(cookie-engine PRIVATE assimp::assimp)
 
 install(
-        TARGETS cookie-engine
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
+		TARGETS cookie-engine
+		RUNTIME DESTINATION bin
+		LIBRARY DESTINATION lib
+		ARCHIVE DESTINATION lib
 )

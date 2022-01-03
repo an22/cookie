@@ -48,19 +48,22 @@ void OpenGLDrawUtils::cullFace() const {
 
 void OpenGLDrawUtils::drawMultiElementsWithIndexOffset(
 		unsigned int meshCount,
-		const unsigned int *startOffset,
-		const unsigned int *indicesCount,
-		const unsigned int *vertexOffset
+		const int32_t *startOffset,
+		const int32_t *indicesCount,
+		const int32_t *vertexOffset
 ) const {
 	GLErrorHandler handler;
+	std::vector<void *> pointers(meshCount);
 	for (int i = 0; i < meshCount; i++) {
-		glDrawElementsBaseVertex(
-				GL_TRIANGLES,
-				static_cast<int>(indicesCount[i]),
-				GL_UNSIGNED_INT,
-				(void *) startOffset[i],
-                static_cast<int>(vertexOffset[i])
-		);
-		handler.checkOpenGLError();
+		pointers[i] = reinterpret_cast<void *>(startOffset[i]);
 	}
+	glMultiDrawElementsBaseVertex(
+			GL_TRIANGLES,
+			indicesCount,
+			GL_UNSIGNED_INT,
+			pointers.data(),
+			static_cast<int>(meshCount),
+			vertexOffset
+	);
+	handler.checkOpenGLError();
 }

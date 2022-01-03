@@ -1,7 +1,7 @@
 #version 410
 
 out vec4 color;
-layout (binding = 1) uniform Material
+layout (shared) uniform Material
 {
     vec3 diffuseColor;
     vec3 specularColor;
