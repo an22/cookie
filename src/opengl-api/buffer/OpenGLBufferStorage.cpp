@@ -5,12 +5,11 @@
 //  Created by Antiufieiev Michael on 05.08.2021.
 //
 
+#include "GL/glew.h"
 #include <OpenGLShader.hpp>
 #include <Cookie.hpp>
 #include "OpenGLBufferStorage.hpp"
-#include "GL/glew.h"
 #include "Material.h"
-#include "OpenGLPSBufferData.h"
 #include "GLErrorHandler.hpp"
 
 OpenGLBufferStorage::OpenGLBufferStorage() : cookie::BufferStorage() {

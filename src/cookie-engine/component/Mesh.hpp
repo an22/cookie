@@ -11,10 +11,6 @@
 #include <vector>
 #include <memory>
 #include "TextureProcessor.hpp"
-#include "Component.hpp"
-#include "Material.h"
-#include "MeshStruct.h"
-#include "BufferStorage.hpp"
 
 namespace cookie {
 
@@ -26,7 +22,7 @@ namespace cookie {
 	public:
 		[[nodiscard]] std::vector<Vertex> &getVertices() const;
 		[[nodiscard]] const std::vector<unsigned int> &getIndices() const;
-		std::shared_ptr<Material> getMaterial() const;
+		[[nodiscard]] std::shared_ptr<Material> getMaterial() const;
 
 		void onPreDraw(Shader &shader);
 		void onPreDraw(Material &material);

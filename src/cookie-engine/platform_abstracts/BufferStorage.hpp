@@ -8,7 +8,6 @@
 #ifndef BufferStorage_hpp
 #define BufferStorage_hpp
 
-#include <cstdio>
 #include <memory>
 #include <vector>
 #include "MeshStruct.h"

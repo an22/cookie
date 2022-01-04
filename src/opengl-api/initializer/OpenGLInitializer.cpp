@@ -7,6 +7,7 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <iostream>
 #include "OpenGLInitializer.hpp"
 #include "OpenGLPlatformSpecificData.h"
 #include "Cookie.hpp"

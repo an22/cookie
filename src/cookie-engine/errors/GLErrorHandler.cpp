@@ -5,6 +5,8 @@
 //  Created by Antiufieiev Michael on 21.06.2021.
 //
 
+#include <cstdlib>
+#include <iostream>
 #include "GLErrorHandler.hpp"
 
 GLErrorHandler::GLErrorHandler() = default;

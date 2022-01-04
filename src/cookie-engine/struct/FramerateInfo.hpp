@@ -8,8 +8,6 @@
 #ifndef FramerateInfo_hpp
 #define FramerateInfo_hpp
 
-#include <GLFW/glfw3.h>
-#include <iostream>
 #include <memory>
 #include "platform_abstracts/Time.hpp"
 

@@ -8,8 +8,6 @@
 #include "PlatformSpecificBufferData.h"
 #include <iostream>
 #include <iterator>
-#include <glm/gtx/string_cast.hpp>
-#include <GLErrorHandler.hpp>
 
 void cookie::Batch::addObject(std::shared_ptr<SceneObject> sceneObject) {
 	sceneObjects.push_back(std::move(sceneObject));

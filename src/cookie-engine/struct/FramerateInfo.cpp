@@ -5,6 +5,7 @@
 //  Created by Antiufieiev Michael on 06.08.2021.
 //
 
+#include <iostream>
 #include "FramerateInfo.hpp"
 #include "CookieFactory.hpp"
 

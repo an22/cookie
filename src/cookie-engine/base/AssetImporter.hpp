@@ -6,14 +6,11 @@
 #define COOKIE_ENGINE_ASSETIMPORTER_HPP
 
 #include "MeshStruct.h"
-#include "TextureProcessor.hpp"
-#include "CookieFactory.hpp"
 #include "SceneObject.hpp"
 #include <string>
 #include <vector>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
-#include <assimp/postprocess.h>
 
 namespace cookie {
 	class AssetImporter {

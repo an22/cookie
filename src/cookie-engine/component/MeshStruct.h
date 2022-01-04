@@ -6,6 +6,7 @@
 #define COOKIE_ENGINE_MESHSTRUCT_H
 
 #include <glm/glm.hpp>
+#include <memory>
 #include "Material.h"
 
 namespace cookie {

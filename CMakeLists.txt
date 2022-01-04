@@ -31,7 +31,6 @@ add_executable(cookie-engine src/main.cpp
 		src/cookie-engine/platform_abstracts/BufferStorage.cpp
 		src/cookie-engine/base/Scene.cpp src/util/Util.cpp
 		src/util/Util.h
-		src/cookie-engine/platform_abstracts/DrawUtils.cpp
 		src/cookie-engine/platform_abstracts/DrawUtils.h
 		src/opengl-api/draw/OpenGLDrawUtils.cpp
 		src/opengl-api/draw/OpenGLDrawUtils.h

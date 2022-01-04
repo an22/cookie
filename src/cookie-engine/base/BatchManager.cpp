@@ -5,7 +5,6 @@
 #include <Mesh.hpp>
 #include <GLErrorHandler.hpp>
 #include "BatchManager.hpp"
-#include "CookieFactory.hpp"
 
 void cookie::BatchManager::onNewObject(const std::shared_ptr<SceneObject> &sceneObject) {
 	auto meshComponent = sceneObject->getComponent<Mesh>();

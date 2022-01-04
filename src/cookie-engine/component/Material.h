@@ -6,7 +6,6 @@
 #define COOKIE_ENGINE_MATERIAL_H
 
 #include <vector>
-#include <memory>
 #include <string>
 #include "Component.hpp"
 #include <glm/vec3.hpp>
