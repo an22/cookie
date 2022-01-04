@@ -2,10 +2,9 @@
 // Created by Antiufieiev Michael on 08.08.2021.
 //
 
-#include "OpenGLDrawUtils.h"
-#include <GL/glew.h>
+#include "GLErrorHandler.hpp"
 #include <GLFW/glfw3.h>
-#include <GLErrorHandler.hpp>
+#include "OpenGLDrawUtils.h"
 #include "Cookie.hpp"
 #include "OpenGLPlatformSpecificData.h"
 

@@ -9,7 +9,7 @@
 #define OpenGLShader_hpp
 
 #include <string>
-#include <GL/glew.h>
+#include <gl/glew.h>
 #include "platform_abstracts/Shader.hpp"
 #include "GLErrorHandler.hpp"
 

@@ -6,7 +6,7 @@
 #define COOKIE_ENGINE_OPENGLCROSSBATCHBUFFERSTORAGE_HPP
 
 #include "CrossBatchBufferStorage.hpp"
-#include "GL/glew.h"
+#include "gl/glew.h"
 
 class OpenGLCrossBatchBufferStorage : public cookie::CrossBatchBufferStorage {
 	GLuint uboMatrices{};

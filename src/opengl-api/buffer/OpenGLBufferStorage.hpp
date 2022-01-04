@@ -8,7 +8,7 @@
 #ifndef OpenGLBufferStorage_hpp
 #define OpenGLBufferStorage_hpp
 
-#include <GL/glew.h>
+#include <gl/glew.h>
 #include "BufferStorage.hpp"
 #include "PlatformSpecificBufferData.h"
 #include "OpenGLPSBufferData.h"

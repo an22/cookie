@@ -8,7 +8,7 @@
 #ifndef GLErrorHandler_hpp
 #define GLErrorHandler_hpp
 
-#include <GL/glew.h>
+#include <gl/glew.h>
 
 class GLErrorHandler {
 

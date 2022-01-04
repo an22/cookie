@@ -5,7 +5,7 @@
 //  Created by Antiufieiev Michael on 05.08.2021.
 //
 
-#include "GL/glew.h"
+#include "gl/glew.h"
 #include <OpenGLShader.hpp>
 #include <Cookie.hpp>
 #include "OpenGLBufferStorage.hpp"

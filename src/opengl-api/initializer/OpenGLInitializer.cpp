@@ -5,7 +5,7 @@
 //  Created by Antiufieiev Michael on 05.08.2021.
 //
 
-#include <GL/glew.h>
+#include <gl/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include "OpenGLInitializer.hpp"
