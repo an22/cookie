@@ -8,15 +8,9 @@
 
 struct BatchConfig {
 	unsigned int meshCount = 0;
-	int32_t* startOffset = nullptr;
-	int32_t* indicesSize = nullptr;
-	int32_t* baseVertexOffset = nullptr;
-
-	~BatchConfig() {
-		delete[] startOffset;
-		delete[] indicesSize;
-		delete[] baseVertexOffset;
-	}
+	std::vector<int32_t> startOffset;
+	std::vector<int32_t> indicesSize;
+	std::vector<int32_t> baseVertexOffset;
 };
 
 

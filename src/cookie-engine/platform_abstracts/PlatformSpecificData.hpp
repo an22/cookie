@@ -8,8 +8,6 @@
 #ifndef PlatformSpecificData_hpp
 #define PlatformSpecificData_hpp
 
-#include <cstdint>
-
 namespace cookie {
 
 	class PlatformSpecificData {

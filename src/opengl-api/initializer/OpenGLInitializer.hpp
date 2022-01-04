@@ -8,11 +8,11 @@
 #ifndef OpenGLInitializer_hpp
 #define OpenGLInitializer_hpp
 
-#include "platform_abstracts/Initializer.hpp"
+#include "Initializer.hpp"
 
 class OpenGLInitializer : public cookie::Initializer {
-	void initGraphicsAPIResources() const override;
-	void destroyGraphicsAPIResources() const override;
+	void initGraphicsAPIResources(cookie::PlatformSpecificData& data) const override;
+	void destroyGraphicsAPIResources(cookie::PlatformSpecificData& data) const override;
 };
 
 #endif /* OpenGLInitializer_hpp */

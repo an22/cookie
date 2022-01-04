@@ -8,7 +8,7 @@
 #include "OpenGlCrossBatchBufferStorage.hpp"
 #include "OpenGLShader.hpp"
 
-void cookie::OpenGLCrossBatchBufferStorage::updateMatrices(const glm::mat4 &projection, const glm::mat4 &view) {
+void OpenGLCrossBatchBufferStorage::updateMatrices(const glm::mat4 &projection, const glm::mat4 &view) {
 	GLErrorHandler handler;
 	glBindBuffer(GL_UNIFORM_BUFFER, uboMatrices);
 	handler.checkOpenGLError();
@@ -18,7 +18,7 @@ void cookie::OpenGLCrossBatchBufferStorage::updateMatrices(const glm::mat4 &proj
 	handler.checkOpenGLError();
 }
 
-cookie::OpenGLCrossBatchBufferStorage::OpenGLCrossBatchBufferStorage() {
+OpenGLCrossBatchBufferStorage::OpenGLCrossBatchBufferStorage() {
 	GLErrorHandler handler;
 	glGenBuffers(1, &uboMatrices);
 	handler.checkOpenGLError();
@@ -28,15 +28,15 @@ cookie::OpenGLCrossBatchBufferStorage::OpenGLCrossBatchBufferStorage() {
 	handler.checkOpenGLError();
 }
 
-void cookie::OpenGLCrossBatchBufferStorage::bind() {
+void OpenGLCrossBatchBufferStorage::bind() {
 	GLErrorHandler handler;
-	auto* shader = dynamic_cast<OpenGLShader*>(cookie::defaultShader);
-	unsigned int matrices_index = glGetUniformBlockIndex(shader->id, "Matrices");
-	glUniformBlockBinding(shader->id, matrices_index, 0);
+	auto& shader = dynamic_cast<OpenGLShader&>(*cookie::Cookie::getInstance().defaultShader);
+	unsigned int matrices_index = glGetUniformBlockIndex(shader.id, "Matrices");
+	glUniformBlockBinding(shader.id, matrices_index, 0);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, uboMatrices);
 	handler.checkOpenGLError();
 }
 
-cookie::OpenGLCrossBatchBufferStorage::~OpenGLCrossBatchBufferStorage() {
+OpenGLCrossBatchBufferStorage::~OpenGLCrossBatchBufferStorage() {
 	glDeleteBuffers(1, &uboMatrices);
 }

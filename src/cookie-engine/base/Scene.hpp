@@ -9,10 +9,10 @@
 
 #include <glm/glm.hpp>
 #include <memory>
-#include <DrawUtils.h>
+#include "DrawUtils.h"
 #include "FramerateInfo.hpp"
 #include "SceneSettings.hpp"
-#include "Cube.hpp"
+#include "CrossBatchBufferStorage.hpp"
 #include "BatchManager.hpp"
 
 namespace cookie {

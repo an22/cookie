@@ -10,12 +10,10 @@
 #include "OpenGLInitializer.hpp"
 #include "OpenGLPlatformSpecificData.h"
 #include "Cookie.hpp"
-#include <cstdlib>
-#include <iostream>
 
 void windowReshapeCallback(GLFWwindow *window, int newWidth, int newHeight) {
 	glViewport(0, 0, newWidth, newHeight); // sets screen region associated with framebuffer
-	cookie::engine->currentScene->getSettings().onWindowResized(newWidth, newHeight);
+	cookie::Cookie::getInstance().currentScene->getSettings().onWindowResized(newWidth, newHeight);
 }
 
 void errorCallback(int code, const char *description) {
@@ -23,7 +21,7 @@ void errorCallback(int code, const char *description) {
 	std::cout << description << std::endl;
 }
 
-void OpenGLInitializer::initGraphicsAPIResources() const {
+void OpenGLInitializer::initGraphicsAPIResources(cookie::PlatformSpecificData& data) const {
 	if (!glfwInit()) exit(EXIT_FAILURE);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
@@ -32,15 +30,15 @@ void OpenGLInitializer::initGraphicsAPIResources() const {
 	glfwSetErrorCallback(errorCallback);
 	GLFWwindow *window = glfwCreateWindow(600, 600, "EngineTest", nullptr, nullptr);
 	glfwSetFramebufferSizeCallback(window, windowReshapeCallback);
-	auto &platformData = dynamic_cast<OpenGLPlatformSpecificData &>(*cookie::engine->platformData);
+	auto &platformData = dynamic_cast<OpenGLPlatformSpecificData &>(data);
 	platformData.setWindow(window);
 	glfwMakeContextCurrent(window);
 	if (glewInit() != GLEW_OK) exit(EXIT_FAILURE);
 	glfwSwapInterval(1);
 }
 
-void OpenGLInitializer::destroyGraphicsAPIResources() const {
-	auto &platformData = dynamic_cast<OpenGLPlatformSpecificData &>(*cookie::engine->platformData);
+void OpenGLInitializer::destroyGraphicsAPIResources(cookie::PlatformSpecificData& data) const {
+	auto &platformData = dynamic_cast<OpenGLPlatformSpecificData &>(data);
 	glfwDestroyWindow(platformData.getWindow());
 	glfwTerminate();
 }

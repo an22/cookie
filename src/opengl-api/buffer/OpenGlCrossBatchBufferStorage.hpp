@@ -8,17 +8,16 @@
 #include "CrossBatchBufferStorage.hpp"
 #include "GL/glew.h"
 
-namespace cookie {
-	class OpenGLCrossBatchBufferStorage : public CrossBatchBufferStorage {
-		GLuint uboMatrices{};
+class OpenGLCrossBatchBufferStorage : public cookie::CrossBatchBufferStorage {
+	GLuint uboMatrices{};
 
-	public:
-		OpenGLCrossBatchBufferStorage();
-		~OpenGLCrossBatchBufferStorage() override;
-		void bind() override;
-		void updateMatrices(const glm::mat4 &projection, const glm::mat4 &view) override;
-	};
-}
+public:
+	OpenGLCrossBatchBufferStorage();
+	~OpenGLCrossBatchBufferStorage() override;
+
+	void bind() override;
+	void updateMatrices(const glm::mat4 &projection, const glm::mat4 &view) override;
+};
 
 
 #endif //COOKIE_ENGINE_OPENGLCROSSBATCHBUFFERSTORAGE_HPP

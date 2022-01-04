@@ -103,9 +103,9 @@ void OpenGLBufferStorage::bind() const {
 	glBindTexture(GL_TEXTURE_BUFFER, texMatrices);
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, tboMatrices);
 	glBindBuffer(GL_UNIFORM_BUFFER, uboMaterial);
-	auto* shader = dynamic_cast<OpenGLShader*>(cookie::defaultShader);
-	unsigned int matrices_index = glGetUniformBlockIndex(shader->id, "Material");
-	glUniformBlockBinding(shader->id, matrices_index, 1);
+	auto& shader = dynamic_cast<OpenGLShader&>(*cookie::Cookie::getInstance().defaultShader);
+	unsigned int matrices_index = glGetUniformBlockIndex(shader.id, "Material");
+	glUniformBlockBinding(shader.id, matrices_index, 1);
 	handler.checkOpenGLError();
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, uboMaterial);
 }

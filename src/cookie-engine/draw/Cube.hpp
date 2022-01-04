@@ -8,11 +8,7 @@
 #ifndef Cube_hpp
 #define Cube_hpp
 
-#include "Mesh.hpp"
-#include "Time.hpp"
-#include "CookieFactory.hpp"
 #include "SceneObject.hpp"
-#include "MeshStruct.h"
 
 namespace cookie {
 	class Cube : public SceneObject {

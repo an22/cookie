@@ -2,6 +2,7 @@
 // Created by Antiufieiev Michael on 07.08.2021.
 //
 #include <Mesh.hpp>
+#include <CookieFactory.hpp>
 #include "Scene.hpp"
 #include "Cookie.hpp"
 
@@ -10,8 +11,8 @@ namespace cookie {
 	Scene::Scene() : drawUtils(CookieFactory::provideDrawUtils()),
 					 batchManager(std::make_unique<BatchManager>()),
 					 globalBufferStorage(CookieFactory::provideCrossBatchBufferStorage()){
-		auto width = cookie::engine->platformData->width();
-		auto height = cookie::engine->platformData->height();
+		auto width = Cookie::getInstance().platformData->width();
+		auto height = Cookie::getInstance().platformData->height();
 		sceneSettings = std::make_unique<SceneSettings>(
 				width, height, 10.0f, 100.0f, 300.0f, 1.0472f, 300.1f, 1000.0f
 		);
@@ -35,7 +36,7 @@ namespace cookie {
 		batchManager->syncWithVideoBuffer();
 		framerate.invalidateFrameRate();
 		double last = framerate.frameTime;
-		cookie::defaultShader->use();
+		Cookie::getInstance().defaultShader->use();
 		globalBufferStorage->bind();
 		while (!drawUtils->shouldCloseWindow()) {
 			framerate.invalidateFrameRate();

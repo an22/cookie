@@ -10,7 +10,7 @@
 
 namespace cookie {
 
-	FramerateInfo::FramerateInfo():time(CookieFactory::provideTimeManager()) {
+	FramerateInfo::FramerateInfo() : time(CookieFactory::provideTimeManager()) {
 		framerate = 0;
 		framerateTimestamp = 0.0;
 		frameTime = 0.0;

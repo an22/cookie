@@ -6,6 +6,6 @@
 
 namespace cookie {
 
-	Cube::Cube(float x, float y, float z) : SceneObject(R"(/Users/antiufieievmichael/Guides/cookie-engine/assets/IronMan.obj)", x, y, z) {
+	Cube::Cube(float x, float y, float z) : SceneObject(R"(assets/IronMan.obj)", x, y, z) {
 	}
 }

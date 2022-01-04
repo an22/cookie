@@ -7,7 +7,6 @@
 
 #include "MeshStruct.h"
 #include "Shader.hpp"
-#include <memory>
 
 namespace cookie {
 	class TextureProcessor {

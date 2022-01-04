@@ -10,7 +10,7 @@
 #include "OpenGLPlatformSpecificData.h"
 
 bool OpenGLDrawUtils::shouldCloseWindow() const {
-	auto &platformData = dynamic_cast<OpenGLPlatformSpecificData &>(*cookie::engine->platformData);
+	auto &platformData = dynamic_cast<OpenGLPlatformSpecificData &>(*cookie::Cookie::getInstance().platformData);
 	return glfwWindowShouldClose(platformData.getWindow());
 }
 
@@ -20,7 +20,7 @@ void OpenGLDrawUtils::clearBuffers() const {
 }
 
 void OpenGLDrawUtils::listenInputEvents() const {
-	auto &platformData = dynamic_cast<OpenGLPlatformSpecificData &>(*cookie::engine->platformData);
+	auto &platformData = dynamic_cast<OpenGLPlatformSpecificData &>(*cookie::Cookie::getInstance().platformData);
 	glfwSwapBuffers(platformData.getWindow());
 }
 

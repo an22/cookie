@@ -37,9 +37,9 @@ void cookie::Batch::syncWithVideoBuffer() {
 	std::vector<unsigned int> indices;
 	std::vector<glm::mat4> matrices;
 	config.meshCount = sceneObjects.size();
-	config.startOffset = new int32_t[sceneObjects.size()];
-	config.baseVertexOffset = new int32_t[sceneObjects.size()];
-	config.indicesSize = new int32_t[sceneObjects.size()];
+	config.startOffset.reserve(sceneObjects.size());
+	config.baseVertexOffset.reserve(sceneObjects.size());
+	config.indicesSize.reserve(sceneObjects.size());
 	vertices.reserve(vertexSize);
 	indices.reserve(indexSize);
 	matrices.reserve(sceneObjects.size());
@@ -57,9 +57,9 @@ void cookie::Batch::syncWithVideoBuffer() {
 		std::copy (meshVertices.begin(), meshVertices.end(), std::back_inserter(vertices));
 		std::copy (meshIndices.begin(), meshIndices.end(), std::back_inserter(indices));
 		matrices.emplace_back(sceneObject->getModelMat());
-		config.startOffset[i] = indexOffset * sizeof(unsigned int);
-		config.indicesSize[i] = meshIndices.size();
-		config.baseVertexOffset[i] = vertexOffset;
+		config.startOffset.emplace_back(indexOffset * sizeof(unsigned int));
+		config.indicesSize.emplace_back(meshIndices.size());
+		config.baseVertexOffset.emplace_back(vertexOffset);
 		vertexOffset += meshVertices.size();
 		indexOffset += meshIndices.size();
 		i++;
@@ -77,9 +77,9 @@ void cookie::Batch::draw(const DrawUtils &drawUtils) {
 	material->onPreDraw();
 	drawUtils.drawMultiElementsWithIndexOffset(
 			config.meshCount,
-			config.startOffset,
-			config.indicesSize,
-			config.baseVertexOffset
+			config.startOffset.data(),
+			config.indicesSize.data(),
+			config.baseVertexOffset.data()
 	);
     bufferStorage->unbind();
 }

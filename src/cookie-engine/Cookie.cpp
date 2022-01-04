@@ -6,34 +6,36 @@
 //
 
 #include "Cookie.hpp"
+#include "CookieFactory.hpp"
 
 namespace cookie {
-	Cookie *engine = nullptr;
-	Shader *defaultShader = nullptr;
 
-	void init(CgAPI api) {
-		engine = new Cookie(api);
-		engine->initializer->initGraphicsAPIResources();
-		defaultShader = CookieFactory::provideShader(
-				"../src/cookie-engine/shader/vertex/vertex.glsl",
-				"../src/cookie-engine/shader/fragment/fragment.glsl"
-		).release();
-	}
-
-	void setScene(std::shared_ptr<Scene> scene) {
-		engine->currentScene = std::shared_ptr(std::move(scene));
-	}
-
-	void destroy() {
-		delete defaultShader;
-		delete engine;
-	}
-
-	CgAPI Cookie::CURRENT_CG_API = CgAPI::OpenGL;
+	std::mutex Cookie::mutex;
+	std::unique_ptr<Cookie> Cookie::instance;
 
 	Cookie::Cookie(CgAPI api)
 			: platformData(CookieFactory::createPlatformSpecificContainer()),
 			  initializer(CookieFactory::provideInitializer()) {
-		CURRENT_CG_API = api;
+		currentAPI = api;
+		initializer->initGraphicsAPIResources(*platformData);
+		defaultShader = CookieFactory::provideShader(
+				"src/cookie-engine/shader/vertex/vertex.glsl",
+				"src/cookie-engine/shader/fragment/fragment.glsl"
+		);
+	}
+
+	void Cookie::setScene(std::shared_ptr<Scene> scene) {
+		currentScene = std::shared_ptr(std::move(scene));
+	}
+
+	Cookie::~Cookie() = default;
+
+	Cookie &Cookie::getInstance(CgAPI api) {
+		std::lock_guard<std::mutex> lock(mutex);
+		CookieFactory::getFactory(api);
+		if(Cookie::instance == nullptr) {
+			Cookie::instance = std::unique_ptr<Cookie>(new Cookie(api));
+		}
+		return *Cookie::instance;
 	}
 }
