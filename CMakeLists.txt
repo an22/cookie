@@ -13,11 +13,6 @@ find_package(glm REQUIRED)
 find_package(assimp REQUIRED)
 find_package(Ktx CONFIG REQUIRED)
 
-if(APPLE)
-set_target_properties(assimp::assimp PROPERTIES MAP_IMPORTED_CONFIG_DEBUG Release)
-target_include_directories(cookie-engine PUBLIC /usr/local/lib)
-endif()
-
 add_executable(cookie-engine src/main.cpp
 		src/cookie-engine/base/SceneObject.cpp
 		src/cookie-engine/component/Mesh.cpp
@@ -56,6 +51,11 @@ add_executable(cookie-engine src/main.cpp
 		src/cookie-engine/base/AssetImporter.cpp
 		src/cookie-engine/base/AssetImporter.hpp
 		src/cookie-engine/base/BatchManager.cpp src/cookie-engine/base/BatchManager.hpp src/cookie-engine/base/Batch.cpp src/cookie-engine/base/Batch.hpp src/cookie-engine/platform_abstracts/CrossBatchBufferStorage.hpp src/opengl-api/buffer/OpenGlCrossBatchBufferStorage.cpp src/opengl-api/buffer/OpenGlCrossBatchBufferStorage.hpp src/cookie-engine/base/BatchConfig.hpp src/cookie-engine/util/Utils.cpp src/cookie-engine/util/Utils.hpp src/opengl-api/initializer/OpenGLCookieFactory.cpp src/opengl-api/initializer/OpenGLCookieFactory.h src/cookie-engine/struct/CgAPI.h)
+
+if(APPLE)
+	set_target_properties(assimp::assimp PROPERTIES MAP_IMPORTED_CONFIG_DEBUG Release)
+	target_include_directories(cookie-engine PUBLIC /usr/local/lib)
+endif()
 
 target_include_directories(cookie-engine PUBLIC ${GLEW_INCLUDE_DIRS})
 target_include_directories(cookie-engine PUBLIC ${ASSIMP_INCLUDE_DIRS})
