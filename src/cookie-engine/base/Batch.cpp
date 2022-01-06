@@ -24,15 +24,15 @@ cookie::Batch::Batch(const std::shared_ptr<Material> &material) : bufferStorage(
 }
 
 void cookie::Batch::syncWithVideoBuffer() {
-	unsigned int vertexSize = 0;
-	unsigned int indexSize = 0;
+	uint32_t vertexSize = 0;
+	uint32_t indexSize = 0;
 	for (auto &sceneObject: sceneObjects) {
 		const auto &mesh = sceneObject->getComponent<Mesh>();
 		vertexSize += mesh->getVertices().size();
 		indexSize += mesh->getIndices().size();
 	}
 	std::vector<Vertex> vertices;
-	std::vector<unsigned int> indices;
+	std::vector<uint32_t> indices;
 	std::vector<glm::mat4> matrices;
 	config.meshCount = sceneObjects.size();
 	config.startOffset.reserve(sceneObjects.size());
@@ -42,8 +42,8 @@ void cookie::Batch::syncWithVideoBuffer() {
 	indices.reserve(indexSize);
 	matrices.reserve(sceneObjects.size());
 
-	unsigned int vertexOffset = 0;
-	unsigned int indexOffset = 0;
+	uint32_t vertexOffset = 0;
+	uint32_t indexOffset = 0;
 	int32_t i = 0;
 	for (auto &sceneObject: sceneObjects) {
 		const auto &mesh = sceneObject->getComponent<Mesh>();
@@ -55,9 +55,9 @@ void cookie::Batch::syncWithVideoBuffer() {
 		std::copy (meshVertices.begin(), meshVertices.end(), std::back_inserter(vertices));
 		std::copy (meshIndices.begin(), meshIndices.end(), std::back_inserter(indices));
 		matrices.emplace_back(sceneObject->getModelMat());
-		config.startOffset.emplace_back(indexOffset * sizeof(unsigned int));
-		config.indicesSize.emplace_back(meshIndices.size());
-		config.baseVertexOffset.emplace_back(vertexOffset);
+		config.startOffset.emplace_back(static_cast<int32_t>(indexOffset * sizeof(uint32_t)));
+		config.indicesSize.emplace_back(static_cast<int32_t>(meshIndices.size()));
+		config.baseVertexOffset.emplace_back(static_cast<int32_t>(vertexOffset));
 		vertexOffset += meshVertices.size();
 		indexOffset += meshIndices.size();
 		i++;
