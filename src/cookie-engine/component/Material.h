@@ -17,13 +17,12 @@ namespace cookie {
 			SPECULAR = 's',
 			DIFFUSE = 'd'
 		};
-		unsigned int id;
+		uint32_t id;
 		std::string path;
 		Type type;
 
-		Texture() = default;
-		Texture(unsigned int id, std::string path, Type type);
-		Texture(unsigned int id, std::string path);
+		Texture(uint32_t id, std::string path, Type type);
+		Texture(uint32_t id, std::string path);
 		Texture(const Texture &) = delete;
 		Texture &operator=(const Texture &) = delete;
 		Texture(Texture &&) noexcept;

@@ -30,12 +30,12 @@ namespace cookie {
 
 	}
 
-	Texture::Texture(unsigned int id, std::string path, Type type) : id(id),
+	Texture::Texture(uint32_t id, std::string path, Type type) : id(id),
 																	 path(std::move(path)),
 																	 type(type) {
 	}
 
-	Texture::Texture(unsigned int id, std::string path) : id(id),
+	Texture::Texture(uint32_t id, std::string path) : id(id),
 														  path(std::move(path)),
 														  type(Type::DIFFUSE) {
 	}

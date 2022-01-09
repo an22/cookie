@@ -22,6 +22,10 @@ namespace cookie {
 		BatchConfig config;
 
 		bool isStatic = true;
+
+		void combineMeshData(std::vector<Vertex>& vertices, std::vector<uint32_t>& indices, std::vector<glm::mat4>& matrices);
+		void calculateVertexAndIndexSize(uint32_t& vertexCount, uint32_t& indexCount);
+		void initBatchConfig();
 	public:
 
 		explicit Batch(const std::shared_ptr<Material> &material);

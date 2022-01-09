@@ -8,7 +8,7 @@
 #include "TextureProcessor.hpp"
 
 class OpenGLTextureProcessor : public cookie::TextureProcessor {
-	void fillTexture(const std::string &path, cookie::Texture& target) override;
+	uint32_t generateAPITexture(ktxTexture *texture) override;
 	void bindTexturesToShader(const std::vector<cookie::Texture> &textures, const cookie::Shader& shader) override;
 };
 

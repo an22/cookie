@@ -28,10 +28,8 @@ namespace cookie {
 			std::stringstream ss;
 			ss << meshPath << '/' << texturePath;
 			std::string materialPath = ss.str();
-			Texture target;
-			textureProcessor->fillTexture(materialPath, target);
-			target.type = assignType;
-			textures.push_back(std::move(target));
+			auto texture = textureProcessor->readTextureAt(materialPath, assignType);
+			textures.push_back(std::move(*texture));
 		}
 		return textures;
 	}

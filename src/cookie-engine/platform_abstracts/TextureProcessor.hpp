@@ -5,15 +5,17 @@
 #ifndef COOKIE_ENGINE_TEXTUREPROCESSOR_HPP
 #define COOKIE_ENGINE_TEXTUREPROCESSOR_HPP
 
+#include <ktx.h>
 #include "MeshStruct.h"
 #include "Shader.hpp"
 
 namespace cookie {
 	class TextureProcessor {
+	protected:
+		virtual uint32_t generateAPITexture(ktxTexture *texture) = 0;
+		virtual void bindTexturesToShader(const std::vector<Texture> &textures, const Shader &shader) = 0;
 	public:
-		virtual void  fillTexture(const std::string &path, Texture& target) = 0;
-		virtual void bindTexturesToShader(const std::vector<Texture>& textures, const Shader& shader) = 0;
-		unsigned char *getFilePixels(const std::string &path, int &width, int &height, int& channelsInFile,int32_t channels);
+		virtual std::unique_ptr<Texture> readTextureAt(const std::string &path, Texture::Type type);
 
 		virtual ~TextureProcessor() = default;
 	};
