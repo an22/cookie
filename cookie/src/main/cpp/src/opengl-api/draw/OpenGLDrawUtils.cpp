@@ -17,9 +17,6 @@ void OpenGLDrawUtils::clearBuffers() const {
 	glClear(GL_DEPTH_BUFFER_BIT);
 }
 
-void OpenGLDrawUtils::listenInputEvents() const {
-}
-
 void OpenGLDrawUtils::swapBuffers() const {
 	eglSwapBuffers(platformData.getDisplay(), platformData.getSurface());
 }

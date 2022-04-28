@@ -67,18 +67,15 @@ namespace cookie {
 		modelMat = glm::translate(glm::mat4(1.0f), position);
 	}
 
-	void SceneObject::draw(const cookie::DrawUtils &utils, const glm::mat4 &viewMatrix, const glm::mat4 &projMatrix) {
+	void SceneObject::draw(const cookie::DrawUtils &utils) {
 		for (auto &child: children) {
-			child->draw(utils, viewMatrix, projMatrix);
+			child->draw(utils);
 		}
 		auto mesh = getComponent<Mesh>();
 		auto shader = getComponent<Shader>();
 		if (!mesh) return;
 		if (!shader) return;
-		glm::mat4 a = viewMatrix * modelMat;
-		shader->setMatrix4("mv_matrix", a);
-		shader->setMatrix4("proj_matrix", projMatrix);
-		mesh->onPreDraw(*shader);
+		shader->use();
 		if (!mesh->getIndices().empty()) {
 			utils.drawElements(mesh->getIndices().size());
 		} else {

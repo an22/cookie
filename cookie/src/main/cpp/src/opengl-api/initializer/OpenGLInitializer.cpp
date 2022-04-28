@@ -86,10 +86,6 @@ bool OpenGLInitializer::initGraphicsAPIResources(cookie::PlatformSpecificData &d
 		return false;
 	}
 
-	int a[2] = {};
-
-	eglQueryContext(display, context, EGL_CONTEXT_MINOR_VERSION, a);
-
 	platformData.setWidth(width);
 	platformData.setHeight(width);
 	platformData.setContext(context);

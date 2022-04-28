@@ -2,7 +2,7 @@
 // Created by Michael on 1/4/2022.
 //
 
-#include <OpenGlCrossBatchBufferStorage.hpp>
+#include <OpenGlGlobalBufferStorage.hpp>
 #include <OpenGLTextureProcessor.hpp>
 #include <OpenGLPSBufferData.h>
 #include <OpenGLPlatformSpecificData.h>
@@ -45,8 +45,8 @@ std::unique_ptr<cookie::TextureProcessor> OpenGLCookieFactory::provideTexturePro
 	return std::unique_ptr<cookie::TextureProcessor>(new OpenGLTextureProcessor());
 }
 
-std::unique_ptr<cookie::CrossBatchBufferStorage> OpenGLCookieFactory::provideCrossBatchBufferStorageImpl() const {
-	return std::unique_ptr<cookie::CrossBatchBufferStorage>(new OpenGLCrossBatchBufferStorage());
+std::unique_ptr<cookie::GlobalBufferStorage> OpenGLCookieFactory::provideGlobalBufferStorageImpl() const {
+	return std::unique_ptr<cookie::GlobalBufferStorage>(new OpenGLGlobalBufferStorage());
 }
 
 OpenGLCookieFactory::OpenGLCookieFactory(CgAPI api) : CookieFactory(api) {

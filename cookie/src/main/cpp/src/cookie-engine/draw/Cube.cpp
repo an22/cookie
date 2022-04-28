@@ -7,6 +7,7 @@
 
 namespace cookie {
 
-	Cube::Cube(float x, float y, float z) : SceneObject(STRCAT(BASE_DIR, "Car.fbx"), x, y, z) {
+	Cube::Cube(float x, float y, float z) : SceneObject(glm::vec3(x, y, z)) {
+
 	}
 }

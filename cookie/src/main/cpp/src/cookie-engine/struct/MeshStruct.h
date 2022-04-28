@@ -29,7 +29,6 @@ namespace cookie {
 		std::vector<unsigned int> indices;
 		std::shared_ptr<Material> material;
 
-
 		MeshData() = default;
 		MeshData(
 				std::string name,

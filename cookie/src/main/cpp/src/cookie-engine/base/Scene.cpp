@@ -10,7 +10,8 @@ namespace cookie {
 
 	Scene::Scene() : drawUtils(CookieFactory::provideDrawUtils()),
 					 batchManager(std::make_unique<BatchManager>()),
-					 globalBufferStorage(CookieFactory::provideCrossBatchBufferStorage()){
+					 globalBufferStorage(CookieFactory::provideGlobalBufferStorage()),
+					 sceneSectorManager(CookieFactory::provideSceneSectorManager(1, glm::vec4(1))) {
 		auto width = Cookie::getInstance().getPlatformData().width();
 		auto height = Cookie::getInstance().getPlatformData().height();
 		sceneSettings = std::make_unique<SceneSettings>(
@@ -24,10 +25,11 @@ namespace cookie {
 
 	Scene::~Scene() = default;
 
-	void Scene::display(const std::chrono::steady_clock::time_point& currentTime, const std::chrono::steady_clock::time_point& currentTimeDelta) {
+	void Scene::display(const std::chrono::steady_clock::time_point &currentTime,
+						const std::chrono::steady_clock::time_point &currentTimeDelta) {
 		drawUtils->clearBuffers();
-		for(auto& sceneobj:sceneObjects) {
-			sceneobj->draw(*drawUtils, vMat,sceneSettings->perspectiveMx);
+		for (auto &sceneobj:sceneObjects) {
+			sceneobj->draw(*drawUtils);
 		}
 		batchManager->draw(*drawUtils);
 	}
@@ -36,13 +38,12 @@ namespace cookie {
 		batchManager->syncWithVideoBuffer();
 		framerate.invalidateFrameRate();
 		std::chrono::steady_clock::time_point last = framerate.frameTime;
-		Cookie::getInstance().getDefaultShader().use();
+		Cookie::getInstance().getCurrentShader().use();
 		globalBufferStorage->bind();
 		while (!drawUtils->shouldCloseWindow()) {
 			framerate.invalidateFrameRate();
 			display(framerate.frameTime, framerate.frameTime);
 			drawUtils->swapBuffers();
-			drawUtils->listenInputEvents();
 			last = framerate.frameTime;
 		}
 	}
@@ -53,6 +54,12 @@ namespace cookie {
 
 	void Scene::addObject(const std::shared_ptr<SceneObject> &sceneObject) {
 		sceneObjects.push_back(sceneObject);
-		batchManager->onNewObject(sceneObject);
+		//batchManager->onNewObject(sceneObject);
+	}
+
+	void Scene::removeObject(const std::shared_ptr<SceneObject> &sceneObject) {
+		sceneObjects.erase(
+				std::find(sceneObjects.begin(), sceneObjects.end(), sceneObject)
+		);
 	}
 }

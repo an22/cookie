@@ -21,7 +21,7 @@ public:
 	std::unique_ptr<cookie::PlatformSpecificBufferData> provideBufferDataImpl(cookie::BufferType bufferType) const override;
 	std::unique_ptr<cookie::PlatformSpecificData> createPlatformSpecificContainerImpl() const override;
 	std::unique_ptr<cookie::TextureProcessor> provideTextureProcessorImpl() const override;
-	std::unique_ptr<cookie::CrossBatchBufferStorage> provideCrossBatchBufferStorageImpl() const override;
+	std::unique_ptr<cookie::GlobalBufferStorage> provideGlobalBufferStorageImpl() const override;
 };
 
 

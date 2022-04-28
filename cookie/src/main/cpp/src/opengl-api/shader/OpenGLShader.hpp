@@ -15,6 +15,7 @@
 class OpenGLShader : public cookie::Shader {
 public:
 	OpenGLShader(const std::string &vertexPath, const std::string &fragmentPath);
+	OpenGLShader(const std::string &computePath);
 	~OpenGLShader() override = default;
 
 	static GLuint loadShaderFrom(const std::string &path, GLenum shaderType);

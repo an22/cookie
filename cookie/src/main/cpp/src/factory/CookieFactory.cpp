@@ -9,6 +9,8 @@
 #include "OpenGLCookieFactory.h"
 #include "CookieFactory.hpp"
 
+#include <memory>
+
 namespace cookie {
 
 	std::unique_ptr<CookieFactory> CookieFactory::instance;
@@ -47,7 +49,8 @@ namespace cookie {
 		return getFactory().provideTimeManagerImpl();
 	}
 
-	std::unique_ptr<cookie::Shader> CookieFactory::provideShader(const std::string &vertexPath, const std::string &fragmentPath) {
+	std::unique_ptr<cookie::Shader>
+	CookieFactory::provideShader(const std::string &vertexPath, const std::string &fragmentPath) {
 		return getFactory().provideShaderImpl(vertexPath, fragmentPath);
 	}
 
@@ -63,7 +66,8 @@ namespace cookie {
 		return getFactory().provideDrawUtilsImpl();
 	}
 
-	std::unique_ptr<cookie::PlatformSpecificBufferData> CookieFactory::provideBufferData(cookie::BufferType bufferType) {
+	std::unique_ptr<cookie::PlatformSpecificBufferData>
+	CookieFactory::provideBufferData(cookie::BufferType bufferType) {
 		return getFactory().provideBufferDataImpl(bufferType);
 	}
 
@@ -75,7 +79,14 @@ namespace cookie {
 		return getFactory().provideTextureProcessorImpl();
 	}
 
-	std::unique_ptr<cookie::CrossBatchBufferStorage> CookieFactory::provideCrossBatchBufferStorage() {
-		return getFactory().provideCrossBatchBufferStorageImpl();
+	std::unique_ptr<cookie::GlobalBufferStorage> CookieFactory::provideGlobalBufferStorage() {
+		return getFactory().provideGlobalBufferStorageImpl();
+	}
+
+	std::unique_ptr<cookie::SceneSectorManager> CookieFactory::provideSceneSectorManager(
+			float sectorSize,
+			const glm::vec4 &bounds
+	) {
+		return std::make_unique<cookie::SceneSectorManager>(sectorSize, bounds);
 	}
 }

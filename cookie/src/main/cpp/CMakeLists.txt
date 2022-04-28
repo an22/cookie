@@ -9,7 +9,7 @@ cmake_minimum_required(VERSION 3.18.1)
 
 project(cookie VERSION 0.0.1)
 SET(CMAKE_POLICY_DEFAULT_CMP0012 NEW)
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_subdirectory(lib/glm)
@@ -20,10 +20,17 @@ find_library(libEGL SHARED)
 find_library(glm SHARED)
 
 add_library(libktx SHARED IMPORTED)
-add_library(ofbx SHARED lib/miniz.h lib/miniz.c lib/ofbx.h lib/ofbx.cpp)
 add_library(cookie SHARED cookie.cpp src/core.cpp
+        src/cookie-engine/scene/SceneSectorManager.cpp
+        src/cookie-engine/scene/SceneSectorManager.hpp
+        src/cookie-engine/scene/Sector.cpp
+        src/cookie-engine/scene/Sector.hpp
+        src/cookie-engine/raytracing/Ray.cpp
+        src/cookie-engine/raytracing/Ray.hpp
+        src/cookie-engine/algorithm/Algorithm.hpp
+        src/cookie-engine/algorithm/Algorithm.cpp
         src/cookie-engine/base/SceneObject.cpp
-        src/cookie-engine/component/Mesh.cpp
+        src/cookie-engine/struct/Mesh.cpp
         src/cookie-engine/errors/GLErrorHandler.cpp
         src/cookie-engine/struct/FramerateInfo.cpp
         src/cookie-engine/struct/SceneSettings.cpp
@@ -47,9 +54,9 @@ add_library(cookie SHARED cookie.cpp src/core.cpp
         src/opengl-api/buffer/OpenGLPSBufferData.cpp
         src/opengl-api/buffer/OpenGLPSBufferData.h
         src/cookie-engine/component/Material.cpp
-        src/cookie-engine/component/Material.h
-        src/cookie-engine/component/MeshStruct.cpp
-        src/cookie-engine/component/MeshStruct.h
+        src/cookie-engine/struct/Material.h
+        src/cookie-engine/struct/MeshStruct.cpp
+        src/cookie-engine/struct/MeshStruct.h
         src/cookie-engine/platform_abstracts/TextureProcessor.cpp
         src/cookie-engine/platform_abstracts/TextureProcessor.hpp
         src/opengl-api/draw/OpenGLTextureProcessor.cpp
@@ -62,9 +69,9 @@ add_library(cookie SHARED cookie.cpp src/core.cpp
         src/cookie-engine/base/BatchManager.hpp
         src/cookie-engine/base/Batch.cpp
         src/cookie-engine/base/Batch.hpp
-        src/cookie-engine/platform_abstracts/CrossBatchBufferStorage.hpp
-        src/opengl-api/buffer/OpenGlCrossBatchBufferStorage.cpp
-        src/opengl-api/buffer/OpenGlCrossBatchBufferStorage.hpp
+        src/cookie-engine/platform_abstracts/GlobalBufferStorage.hpp
+        src/opengl-api/buffer/OpenGlGlobalBufferStorage.cpp
+        src/opengl-api/buffer/OpenGlGlobalBufferStorage.hpp
         src/cookie-engine/base/BatchConfig.hpp
         src/cookie-engine/util/Utils.cpp
         src/cookie-engine/util/Utils.hpp
@@ -107,13 +114,15 @@ target_include_directories(cookie PUBLIC ${CMAKE_SOURCE_DIR}/src/opengl-api/draw
 target_include_directories(cookie PUBLIC ${CMAKE_SOURCE_DIR}/lib/glm)
 target_include_directories(cookie PUBLIC ${CMAKE_SOURCE_DIR}/src)
 target_include_directories(cookie PUBLIC ${CMAKE_SOURCE_DIR}/src/cookie-engine/io)
+target_include_directories(cookie PUBLIC ${CMAKE_SOURCE_DIR}/src/cookie-engine/scene)
+target_include_directories(cookie PUBLIC ${CMAKE_SOURCE_DIR}/src/cookie-engine/raytracing)
+target_include_directories(cookie PUBLIC ${CMAKE_SOURCE_DIR}/src/cookie-engine/algorithm)
 
 target_link_libraries(cookie GLESv3)
 target_link_libraries(cookie EGL)
 target_link_libraries(cookie glm)
 target_link_libraries(cookie ${log-lib})
 target_link_libraries(cookie libktx)
-target_link_libraries(cookie ofbx)
 target_link_libraries(cookie android)
 
 install(

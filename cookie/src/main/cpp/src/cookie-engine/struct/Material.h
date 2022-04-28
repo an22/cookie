@@ -47,7 +47,7 @@ namespace cookie {
 		virtual ~GPUMaterial() = default;
 	};
 
-	class Material : public GPUMaterial, public Component {
+	class Material : public GPUMaterial {
 	public:
 
 		std::string name;

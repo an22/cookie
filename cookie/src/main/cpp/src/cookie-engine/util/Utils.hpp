@@ -6,7 +6,6 @@
 #define COOKIE_ENGINE_UTILS_HPP
 #include <glm/glm.hpp>
 #include <memory>
-#include <ofbx.h>
 #include <SceneObject.hpp>
 
 namespace cookie {

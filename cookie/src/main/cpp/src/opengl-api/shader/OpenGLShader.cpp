@@ -31,6 +31,18 @@ OpenGLShader::OpenGLShader(const std::string &vertexPath, const std::string &fra
 	}
 }
 
+OpenGLShader::OpenGLShader(const std::string &computePath) {
+	auto compute = loadShaderFrom(computePath, GL_COMPUTE_SHADER);
+	id = glCreateProgram();
+	glAttachShader(id, compute);
+	glLinkProgram(id);
+	GLint linked;
+	glGetProgramiv(id, GL_LINK_STATUS, &linked);
+	if (linked != 1) {
+		throw std::runtime_error("Program linking failed");
+	}
+}
+
 GLuint OpenGLShader::loadShaderFrom(const std::string &path, GLenum shaderType) {
 	GLErrorHandler handler;
 	GLuint shader = glCreateShader(shaderType);

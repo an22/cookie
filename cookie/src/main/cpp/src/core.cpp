@@ -19,7 +19,7 @@ bool start(EGLNativeWindowType window) {
 		eglData.setWindow(window);
 		engine.prepareRendering();
 		engine.setScene(std::make_unique<cookie::Scene>());
-		engine.getCurrentScene().addObject(std::make_shared<cookie::Cube>(0.0f, 0.0f, 0.0f));
+		engine.getCurrentScene().addObject(std::make_shared<cookie::Cube>(0.0f, 0.0f, 400.0f));
 		engine.getCurrentScene().startLoop();
 		engine.clear();
 		return true;

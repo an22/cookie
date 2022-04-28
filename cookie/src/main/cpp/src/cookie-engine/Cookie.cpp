@@ -33,10 +33,6 @@ namespace cookie {
 
 	void Cookie::prepareRendering() {
 		initializer->initGraphicsAPIResources(*platformData);
-		defaultShader = CookieFactory::provideShader(
-				STRCAT(BASE_DIR, "shader/vertex/vertex.glsl"),
-				STRCAT(BASE_DIR, "shader/fragment/fragment.glsl")
-		);
 	}
 
 	void Cookie::clear() {

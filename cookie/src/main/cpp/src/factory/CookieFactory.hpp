@@ -10,6 +10,8 @@
 
 #include <memory>
 #include <mutex>
+#include <glm.hpp>
+#include "SceneSectorManager.hpp"
 #include "TextureProcessor.hpp"
 #include "DrawUtils.h"
 #include "Time.hpp"
@@ -18,7 +20,7 @@
 #include "Initializer.hpp"
 #include "PlatformSpecificBufferData.h"
 #include "PlatformSpecificData.hpp"
-#include "CrossBatchBufferStorage.hpp"
+#include "GlobalBufferStorage.hpp"
 #include "FileManager.hpp"
 #include "CgAPI.h"
 
@@ -44,7 +46,7 @@ namespace cookie {
 		[[nodiscard]] virtual std::unique_ptr<cookie::PlatformSpecificBufferData>provideBufferDataImpl(cookie::BufferType bufferType) const = 0;
 		[[nodiscard]] virtual std::unique_ptr<cookie::PlatformSpecificData> createPlatformSpecificContainerImpl() const = 0;
 		[[nodiscard]] virtual std::unique_ptr<cookie::TextureProcessor> provideTextureProcessorImpl() const = 0;
-		[[nodiscard]] virtual std::unique_ptr<cookie::CrossBatchBufferStorage> provideCrossBatchBufferStorageImpl() const = 0;
+		[[nodiscard]] virtual std::unique_ptr<cookie::GlobalBufferStorage> provideGlobalBufferStorageImpl() const = 0;
 
 	public:
 
@@ -68,7 +70,8 @@ namespace cookie {
 		static std::unique_ptr<cookie::PlatformSpecificBufferData> provideBufferData(cookie::BufferType bufferType);
 		static std::unique_ptr<cookie::PlatformSpecificData> createPlatformSpecificContainer();
 		static std::unique_ptr<cookie::TextureProcessor> provideTextureProcessor();
-		static std::unique_ptr<cookie::CrossBatchBufferStorage> provideCrossBatchBufferStorage();
+		static std::unique_ptr<cookie::GlobalBufferStorage> provideGlobalBufferStorage();
+		static std::unique_ptr<cookie::SceneSectorManager> provideSceneSectorManager(float sectorSize, const glm::vec4& bounds);
 	};
 }
 

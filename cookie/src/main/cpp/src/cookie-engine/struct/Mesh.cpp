@@ -30,16 +30,6 @@ namespace cookie {
 		return meshData->indices;
 	}
 
-	void Mesh::onPreDraw(Shader &shader) {
-		shader.use();
-
-	}
-
-	void Mesh::onPreDraw(Material &material) {
-		material.onPreDraw();
-
-	}
-
 	std::shared_ptr<Material> Mesh::getMaterial() const {
 		return meshData->material;
 	}

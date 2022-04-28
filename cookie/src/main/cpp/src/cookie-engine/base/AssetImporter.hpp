@@ -9,12 +9,12 @@
 #include "SceneObject.hpp"
 #include <string>
 #include <vector>
-#include <ofbx.h>
+#include <tiny_gltf.h>
 
 namespace cookie {
 	class AssetImporter {
 	private:
-		static inline ofbx::IScene *readFbxFromFile(const std::string &path);
+		static inline tinygltf::Model *readFbxFromFile(const std::string &path);
 	public:
 		static void importMesh(SceneObject &root, const std::string &path);
 	};

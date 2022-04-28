@@ -23,9 +23,6 @@ namespace cookie {
 		[[nodiscard]] std::vector<Vertex> &getVertices() const;
 		[[nodiscard]] const std::vector<unsigned int> &getIndices() const;
 		[[nodiscard]] std::shared_ptr<Material> getMaterial() const;
-
-		void onPreDraw(Shader &shader);
-		void onPreDraw(Material &material);
 		explicit Mesh(std::unique_ptr<MeshData> meshData);
 		Mesh();
 		~Mesh() override = default;

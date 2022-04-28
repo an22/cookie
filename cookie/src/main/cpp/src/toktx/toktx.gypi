@@ -9,7 +9,7 @@
 {
   'variables': { # level 1
     'variables': { # level 2 so can use in level 1
-      # This is a list to avoid a very wide line.
+      # This is a list dir avoid a very wide line.
       # -s is separate because '-s foo' in a list results
       # in "-s foo" on output.
       'additional_emcc_options': [

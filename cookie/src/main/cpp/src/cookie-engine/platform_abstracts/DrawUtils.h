@@ -12,7 +12,6 @@ namespace cookie {
 	public:
 		virtual bool shouldCloseWindow() const = 0;
 		virtual void clearBuffers() const = 0;
-		virtual void listenInputEvents() const = 0;
 		virtual void swapBuffers() const = 0;
 		virtual void enableDepthTest() const = 0;
 		virtual void drawInstanced(int32_t first, int32_t size, int32_t times) const = 0;

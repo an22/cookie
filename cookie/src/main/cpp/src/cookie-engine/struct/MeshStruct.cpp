@@ -37,17 +37,17 @@ namespace cookie {
 	Vertex::Vertex(Vertex &&vertex) noexcept: position(vertex.position),
 											  texCoords(vertex.texCoords),
 											  normal(vertex.normal),
-											  matrixOffset(vertex.matrixOffset){
+											  matrixOffset(vertex.matrixOffset) {
 	}
 
-	Vertex::Vertex(const Vertex &vertex):position(vertex.position),
-										 texCoords(vertex.texCoords),
-										 normal(vertex.normal),
-										 matrixOffset(vertex.matrixOffset) {
+	Vertex::Vertex(const Vertex &vertex) : position(vertex.position),
+										   texCoords(vertex.texCoords),
+										   normal(vertex.normal),
+										   matrixOffset(vertex.matrixOffset) {
 
 	}
 
-	Vertex &Vertex::operator=(const Vertex & vertex) {
+	Vertex &Vertex::operator=(const Vertex &vertex) {
 		this->position = vertex.position;
 		this->normal = vertex.normal;
 		this->texCoords = vertex.texCoords;

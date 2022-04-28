@@ -50,7 +50,7 @@ namespace cookie {
 		virtual void setPosition(const glm::vec3 &position);
 		virtual void setPosition(float x, float y, float z);
 
-		virtual void draw(const DrawUtils &utils, const glm::mat4 &viewMatrix, const glm::mat4 &projMatrix);
+		virtual void draw(const DrawUtils &utils);
 
 		virtual void addChild(const std::shared_ptr<SceneObject> &child);
 		virtual std::shared_ptr<SceneObject> getChildAt(unsigned int position);

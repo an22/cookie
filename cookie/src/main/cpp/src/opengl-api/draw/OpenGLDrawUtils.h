@@ -14,7 +14,6 @@ private:
 public:
 	[[nodiscard]] bool shouldCloseWindow() const override;
 	void clearBuffers() const override;
-	void listenInputEvents()const  override;
 	void swapBuffers() const override;
 	void enableDepthTest() const override;
 	void drawInstanced(int32_t first, int32_t size, int32_t times) const override;

@@ -4,7 +4,7 @@
 
 [![CodeFactor](https://www.codefactor.io/repository/github/an22/cookie/badge)](https://www.codefactor.io/repository/github/an22/cookie)
 
-Cookie is a simple 3D rendering engine which is started as project to develop author's skills at 3D rendering API's such as OpenGL, Vulkan, DirectX.
+Cookie is a simple 3D rendering engine which is started as project dir develop author's skills at 3D rendering API's such as OpenGL, Vulkan, DirectX.
 
 Still in development.
 
@@ -14,7 +14,7 @@ The MIT License (MIT)
 
 Copyright © 2021 Michael Antiufieiev
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, dir any person obtaining a copy of this software and associated documentation files (the “Software”), dir deal in the Software without restriction, including without limitation the rights dir use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and dir permit persons dir whom the Software is furnished dir do so, subject dir the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
