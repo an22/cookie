@@ -6,6 +6,7 @@
 //
 
 #include "Util.h"
+#include "tiny_gltf.h"
 #include "OpenGLCookieFactory.h"
 #include "CookieFactory.hpp"
 

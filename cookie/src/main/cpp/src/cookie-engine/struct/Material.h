@@ -8,7 +8,7 @@
 #include <vector>
 #include <string>
 #include "Component.hpp"
-#include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
 
 namespace cookie {
 
@@ -29,20 +29,24 @@ namespace cookie {
 	};
 
 	struct GPUMaterial {
-		glm::vec3 diffuseColor{};
-		glm::vec3 specularColor{};
-		glm::vec3 ambientColor{};
-		glm::vec3 emissiveColor{};
-		glm::vec3 transparencyColor{};
-
+		glm::vec4 baseColor;
+		glm::vec4 emissiveColor;
+		float roughness;
+		float metallic = 0;
+		float specular = 0.5f;
 		float opacity = 1;
-		float shininess = 0;
-		float refraction = 1;
+		bool doubleSided = false;
 
 		GPUMaterial();
-		GPUMaterial(const glm::vec3 &diffuseColor, const glm::vec3 &specularColor, const glm::vec3 &ambientColor,
-					const glm::vec3 &emissiveColor, const glm::vec3 &transparencyColor, float opacity, float shininess,
-					float refraction);
+		GPUMaterial(
+				const glm::vec4 &baseColor,
+				const glm::vec4 &emissiveColor,
+				float roughness,
+				float metallic,
+				float specular,
+				float opacity,
+				bool doubleSided
+		);
 
 		virtual ~GPUMaterial() = default;
 	};
@@ -54,7 +58,17 @@ namespace cookie {
 		std::vector<Texture> textures;
 
 		Material() = default;
-		Material(std::vector<Texture> &textures);
+		Material(
+				std::string name,
+				const glm::vec4 &baseColor,
+				const glm::vec4 &emissiveColor,
+				float roughness,
+				float metallic,
+				float specular,
+				float opacity,
+				bool doubleSided,
+				std::vector<Texture> &textures
+		) noexcept;
 		Material(Material &&) noexcept;
 		~Material() override = default;
 		void onPreDraw();

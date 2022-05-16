@@ -7,7 +7,7 @@
 
 namespace cookie {
 
-	Cube::Cube(float x, float y, float z) : SceneObject(glm::vec3(x, y, z)) {
+	Cube::Cube(float x, float y, float z) : SceneObject("untitled.glb", glm::vec3(x, y, z)) {
 
 	}
 }
