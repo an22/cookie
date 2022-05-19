@@ -27,8 +27,8 @@ namespace cookie {
 		static int objCount;
 	protected:
 		bool is_static = false;
-		glm::vec3 position{};
-		glm::mat4 modelMat{};
+		glm::vec3 position;
+		glm::mat4 modelMat;
 		ComponentMap components;
 		PtrSceneObjVector children;
 	public:

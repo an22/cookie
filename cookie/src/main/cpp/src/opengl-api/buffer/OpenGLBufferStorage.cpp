@@ -91,7 +91,7 @@ inline void OpenGLBufferStorage::setupMatricesBuffer(const std::vector<glm::mat4
 void OpenGLBufferStorage::setupMaterialBuffer(const cookie::MeshData &meshData) const {
 	GLErrorHandler handler;
 	glBindBuffer(GL_UNIFORM_BUFFER, uboMaterial);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(cookie::GPUMaterial), (void *) ((char*)meshData.material.get() + offsetof(cookie::Material, diffuseColor)), GL_STATIC_DRAW);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(cookie::GPUMaterial), (void *) ((char*)meshData.material.get() + offsetof(cookie::Material, baseColor)), GL_STATIC_DRAW);
 	handler.checkOpenGLError();
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }

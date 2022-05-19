@@ -18,10 +18,16 @@ void OpenGLDrawUtils::clearBuffers() const {
 }
 
 void OpenGLDrawUtils::swapBuffers() const {
-	eglSwapBuffers(platformData.getDisplay(), platformData.getSurface());
+	GLErrorHandler handler;
+	auto& platformData = cookie::Cookie::getInstance().getPlatformData<OpenGLPlatformSpecificData>();
+	if(!eglSwapBuffers(platformData.getDisplay(), platformData.getSurface())) {
+		handler.checkOpenGLError();
+		throw std::runtime_error("CANT SWAP BUFFERS");
+	}
 }
 
 void OpenGLDrawUtils::enableDepthTest() const {
+	glEnable(GL_DEPTH_TEST);
 }
 
 void OpenGLDrawUtils::drawInstanced(int32_t first, int32_t size, int32_t times) const {
@@ -37,6 +43,7 @@ void OpenGLDrawUtils::drawElements(int32_t size) const {
 }
 
 void OpenGLDrawUtils::cullFace() const {
+	glEnable(GL_CULL_FACE);
 }
 
 void OpenGLDrawUtils::drawMultiElementsWithIndexOffset(
@@ -63,5 +70,4 @@ void OpenGLDrawUtils::drawMultiElementsWithIndexOffset(
 }
 
 OpenGLDrawUtils::OpenGLDrawUtils() {
-	platformData = cookie::Cookie::getInstance().getPlatformData<OpenGLPlatformSpecificData>();
 }

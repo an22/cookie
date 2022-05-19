@@ -7,7 +7,7 @@
 
 extern "C" {
 
-bool start(EGLNativeWindowType window);
+bool start();
 
 };
 

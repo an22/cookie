@@ -7,7 +7,7 @@
 
 #include <cstdlib>
 #include <iostream>
-#include <GLES3/gl32.h>
+#include <EGL/egl.h>
 #include "GLErrorHandler.hpp"
 
 GLErrorHandler::GLErrorHandler() = default;
@@ -21,6 +21,7 @@ void GLErrorHandler::printShaderLog(GLuint shader) {
 	if (len > 0) {
 		char *log = (char *) malloc(len);
 		glGetShaderInfoLog(shader, len, &chWrittn, log);
+		glDeleteShader(shader);
 		std::cout << "Shader Info Log: " << log << std::endl;
 		free(log);
 	}
@@ -40,11 +41,11 @@ void GLErrorHandler::printProgramLog(int prog) {
 
 bool GLErrorHandler::checkOpenGLError() {
 	bool foundError = false;
-	GLenum glErr = glGetError();
-	while (glErr != GL_NO_ERROR) {
+	GLenum glErr = eglGetError();
+	while (glErr != EGL_SUCCESS) {
 		std::cout << "glError: " << glErr << std::endl;
 		foundError = true;
-		glErr = glGetError();
+		glErr = eglGetError();
 	}
 	return foundError;
 }

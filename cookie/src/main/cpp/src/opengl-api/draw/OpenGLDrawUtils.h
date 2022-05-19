@@ -9,8 +9,6 @@
 #include "DrawUtils.h"
 
 class OpenGLDrawUtils : public cookie::DrawUtils {
-private:
-	OpenGLPlatformSpecificData platformData;
 public:
 	[[nodiscard]] bool shouldCloseWindow() const override;
 	void clearBuffers() const override;

@@ -9,7 +9,7 @@ layout (location=1) in vec3 normal;
 layout (location=2) in vec2 texCoord;
 layout (location=3) in int matrixOffset;
 
-layout (std140) uniform Matrices
+layout (binding = 0, std140) uniform Matrices
 {
     mat4 projection;
     mat4 view;

@@ -12,16 +12,11 @@
 #include "Cube.hpp"
 #include "core.hpp"
 
-bool start(EGLNativeWindowType window) {
+bool start() {
 	cookie::Cookie &engine = cookie::Cookie::getInstance(CgAPI::OpenGL);
 	try {
-		auto &eglData = engine.getPlatformData<OpenGLPlatformSpecificData>();
-		eglData.setWindow(window);
-		engine.prepareRendering();
 		engine.setScene(std::make_unique<cookie::Scene>());
 		engine.getCurrentScene().addObject(std::make_shared<cookie::Cube>(0.0f, 0.0f, 400.0f));
-		engine.getCurrentScene().startLoop();
-		engine.clear();
 		return true;
 	}
 	catch (std::exception &e) {

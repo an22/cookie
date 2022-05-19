@@ -15,37 +15,38 @@ namespace cookie {
 		auto width = Cookie::getInstance().getPlatformData().width();
 		auto height = Cookie::getInstance().getPlatformData().height();
 		sceneSettings = std::make_unique<SceneSettings>(
-				width, height, 10.0f, 100.0f, 300.0f, 1.0472f, 300.1f, 1000.0f
+				width, height, 2.0f, 3.0f, 9.0f, 1.0472f, 1.0f, 100.0f
 		);
-		vMat = glm::translate(glm::mat4(1.0f), -1.0f * sceneSettings->cameraPos);
-		globalBufferStorage->updateMatrices(sceneSettings->perspectiveMx, vMat);
+		vMat = glm::lookAt(
+				sceneSettings->cameraPos,
+				glm::vec3(0.0f),
+				glm::vec3(0.0f, 1.0f, 0.0f)
+		);
 		drawUtils->enableDepthTest();
 		drawUtils->cullFace();
 	}
 
 	Scene::~Scene() = default;
 
-	void Scene::display(const std::chrono::steady_clock::time_point &currentTime,
-						const std::chrono::steady_clock::time_point &currentTimeDelta) {
+	void Scene::display(
+			const std::chrono::steady_clock::time_point &currentTime,
+			const std::chrono::steady_clock::time_point &currentTimeDelta
+	) {
 		drawUtils->clearBuffers();
-		for (auto &sceneobj:sceneObjects) {
-			sceneobj->draw(*drawUtils);
-		}
 		batchManager->draw(*drawUtils);
 	}
 
-	void Scene::startLoop() {
+	void Scene::prepareRendering() {
+		globalBufferStorage->updateMatrices(sceneSettings->perspectiveMx, vMat);
 		batchManager->syncWithVideoBuffer();
 		framerate.invalidateFrameRate();
-		std::chrono::steady_clock::time_point last = framerate.frameTime;
-		Cookie::getInstance().getCurrentShader().use();
 		globalBufferStorage->bind();
-		while (!drawUtils->shouldCloseWindow()) {
-			framerate.invalidateFrameRate();
-			display(framerate.frameTime, framerate.frameTime);
-			drawUtils->swapBuffers();
-			last = framerate.frameTime;
-		}
+	}
+
+	void Scene::renderFrame() {
+		framerate.invalidateFrameRate();
+		display(framerate.frameTime, framerate.frameTime);
+		drawUtils->swapBuffers();
 	}
 
 	SceneSettings &Scene::getSettings() {
@@ -54,7 +55,7 @@ namespace cookie {
 
 	void Scene::addObject(const std::shared_ptr<SceneObject> &sceneObject) {
 		sceneObjects.push_back(sceneObject);
-		//batchManager->onNewObject(sceneObject);
+		batchManager->onNewObject(sceneObject);
 	}
 
 	void Scene::removeObject(const std::shared_ptr<SceneObject> &sceneObject) {

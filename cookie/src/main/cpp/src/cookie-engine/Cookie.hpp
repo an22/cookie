@@ -11,6 +11,7 @@
 #include <CgAPI.h>
 #include <memory>
 #include <mutex>
+#include <thread>
 #include "PlatformSpecificData.hpp"
 #include "Initializer.hpp"
 #include "Shader.hpp"
@@ -22,11 +23,18 @@ namespace cookie {
 	private:
 		static std::unique_ptr<Cookie> instance;
 		static std::mutex mutex;
+
+		bool terminate = false;
+
+		std::mutex localMutex;
+		std::thread* renderingLoop;
 		std::unique_ptr<PlatformSpecificData> platformData;
 		std::unique_ptr<Initializer> initializer;
 		std::unique_ptr<Scene> currentScene;
 		std::unique_ptr<Shader> currentShader;
+
 		explicit Cookie(CgAPI api);
+		void loopInternal();
 	public:
 		CgAPI currentAPI;
 		Cookie(Cookie &other) = delete;
@@ -34,6 +42,7 @@ namespace cookie {
 		virtual ~Cookie() = default;
 		void operator=(const Cookie &) = delete;
 		void prepareRendering();
+		void startRendering();
 		void clear();
 
 		template<class T = PlatformSpecificData>

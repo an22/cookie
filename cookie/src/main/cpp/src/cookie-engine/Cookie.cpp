@@ -5,9 +5,9 @@
 //  Created by Antiufieiev Michael on 05.08.2021.
 //
 
+#include <Cube.hpp>
 #include "Cookie.hpp"
 #include "CookieFactory.hpp"
-#include "Macro.h"
 
 namespace cookie {
 
@@ -33,9 +33,33 @@ namespace cookie {
 
 	void Cookie::prepareRendering() {
 		initializer->initGraphicsAPIResources(*platformData);
+		currentShader = CookieFactory::provideShader(
+				"shader/vertex/vertex.glsl",
+				"shader/fragment/fragment.glsl"
+		);
+		setScene(std::make_unique<cookie::Scene>());
+		getCurrentScene().addObject(std::make_shared<cookie::Cube>(0.0f, 0.0f, 0.0f));
+	}
+
+	void Cookie::startRendering() {
+		renderingLoop = new std::thread(&Cookie::loopInternal, this);
+	}
+
+	void Cookie::loopInternal() {
+		prepareRendering();
+		auto &scene = getCurrentScene();
+		scene.prepareRendering();
+		while (!terminate) {
+			std::lock_guard lock(localMutex);
+			scene.renderFrame();
+		}
 	}
 
 	void Cookie::clear() {
+		localMutex.lock();
+		terminate = true;
+		localMutex.unlock();
+		renderingLoop->join();
 		initializer->destroyGraphicsAPIResources(*platformData);
 	}
 

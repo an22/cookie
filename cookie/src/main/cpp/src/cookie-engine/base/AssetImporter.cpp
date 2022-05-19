@@ -20,27 +20,23 @@
 #include "Mesh.hpp"
 #include <memory>
 #include <iostream>
+#include <glm/gtc/type_ptr.hpp>
 
 using namespace tinygltf;
 
 namespace cookie {
 
-	void AssetImporter::parseScene(cookie::SceneObject &root, const Model &model) {
-
-		std::vector<std::shared_ptr<cookie::Material>> materials(model.materials.size());
-
+	void fetchMaterials(
+			const Model &model,
+			std::vector<std::shared_ptr<cookie::Material>> &outMaterials
+	) {
 		for (auto &material: model.materials) {
 			std::vector<cookie::Texture> textures;
 
-			materials.emplace_back(
+			outMaterials.emplace_back(
 					std::make_shared<cookie::Material>(
 							material.name,
-							glm::vec4(
-									material.pbrMetallicRoughness.baseColorFactor[0],
-									material.pbrMetallicRoughness.baseColorFactor[1],
-									material.pbrMetallicRoughness.baseColorFactor[2],
-									material.pbrMetallicRoughness.baseColorFactor[3]
-							),
+							glm::make_vec4(material.pbrMetallicRoughness.baseColorFactor.data()),
 							glm::vec4(0),
 							static_cast<float>(material.pbrMetallicRoughness.roughnessFactor),
 							static_cast<float>(material.pbrMetallicRoughness.metallicFactor),
@@ -51,9 +47,21 @@ namespace cookie {
 					)
 			);
 		}
+	}
 
-		for (const auto &gltfMesh : model.meshes) {
-
+	void AssetImporter::parseSceneRecursively(
+			std::shared_ptr<cookie::SceneObject> &obj,
+			const std::vector<std::shared_ptr<cookie::Material>> &materials,
+			const Model &model,
+			size_t nodeIndex
+	) {
+		auto &node = model.nodes[nodeIndex];
+		obj->name = node.name;
+		if(!node.matrix.empty()) {
+			obj->transform(glm::make_mat4(node.matrix.data()));
+		}
+		if (node.mesh != -1) {
+			auto &mesh = model.meshes[node.mesh];
 			std::vector<cookie::Vertex> outVertices;
 			std::vector<uint32_t> outIndices;
 			std::vector<glm::vec2> outTexCoords;
@@ -62,12 +70,12 @@ namespace cookie {
 			std::unique_ptr<cookie::MeshData> loadedMesh;
 
 			// For each primitive
-			for (const auto &meshPrimitive : gltfMesh.primitives) {
+			for (const auto &meshPrimitive : mesh.primitives) {
 
 				fetchIndices(model, meshPrimitive, outIndices);
 
 				switch (meshPrimitive.mode) {
-					case TINYGLTF_MODE_TRIANGLES:  // this is the simplest case to handle
+					case TINYGLTF_MODE_TRIANGLES: { // this is the simplest case to handle
 						fetchPrimitiveTriangles(
 								model,
 								meshPrimitive,
@@ -76,27 +84,49 @@ namespace cookie {
 								outTexCoords,
 								outNormals
 						);
+						size_t i = 0;
+						for (auto &vertex:outVertices) {
+							vertex.texCoords = outTexCoords[i];
+							vertex.normal = outNormals[i];
+							i++;
+						}
+						material = materials[meshPrimitive.material];
+						// Create a mesh object
+						loadedMesh = std::make_unique<cookie::MeshData>(
+								mesh.name,
+								outVertices,
+								outIndices,
+								material
+						);
+						obj->addComponent(std::make_shared<cookie::Mesh>(std::move(loadedMesh)));
 						break;
+					}
 					default:
 						continue;
 				}
-				// Create a mesh object
-				loadedMesh = std::make_unique<cookie::MeshData>(
-						gltfMesh.name,
-						outVertices,
-						outIndices,
-						material
-				);
-				outIndices.clear();
-				outVertices.clear();
-				outTexCoords.clear();
-				outNormals.clear();
 			}
 
 			// TODO bounding box
-			// TODO handle materials
 			// TODO handle textures
-			root.addComponent(std::make_shared<cookie::Mesh>(std::move(loadedMesh)));
+		}
+		for (size_t child : node.children) {
+			auto childObj = std::make_shared<cookie::SceneObject>();
+			parseSceneRecursively(childObj,materials,model, child);
+			obj->addChild(childObj);
+		}
+	}
+
+	void AssetImporter::parseScene(cookie::SceneObject &root, const Model &model) {
+
+		std::vector<std::shared_ptr<cookie::Material>> materials;
+		fetchMaterials(model, materials);
+
+		auto &scene = model.scenes[0];
+		root.name = model.scenes[0].name;
+		for (size_t nodeIndex:scene.nodes) {
+			auto ptr = std::make_shared<cookie::SceneObject>();
+			parseSceneRecursively(ptr, materials, model, nodeIndex);
+			root.addChild(ptr);
 		}
 
 // TODO Iterate through all texture declaration in glTF file
@@ -142,7 +172,8 @@ namespace cookie {
 			const auto &attribAccessor = model.accessors[attribute.second];
 			const auto &bufferView = model.bufferViews[attribAccessor.bufferView];
 			const auto &buffer = model.buffers[bufferView.buffer];
-			const auto dataPtr = buffer.data.data() +
+			const auto dataPtr = buffer.data
+									   .data() +
 								 bufferView.byteOffset +
 								 attribAccessor.byteOffset;
 			const auto byteStride = attribAccessor.ByteStride(bufferView);
@@ -301,7 +332,8 @@ namespace cookie {
 		const auto &indicesAccessor = model.accessors[meshPrimitive.indices];
 		const auto &bufferView = model.bufferViews[indicesAccessor.bufferView];
 		const auto &buffer = model.buffers[bufferView.buffer];
-		const auto dataAddress = buffer.data.data() +
+		const auto dataAddress = buffer.data
+									   .data() +
 								 bufferView.byteOffset +
 								 indicesAccessor.byteOffset;
 		const auto byteStride = indicesAccessor.ByteStride(bufferView);
@@ -330,12 +362,14 @@ namespace cookie {
 				break;
 		}
 		throw std::runtime_error(
-				"Unsupported GLTF component type, expected: TINYGLTF_COMPONENT_TYPE_INT, TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT, TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT, TINYGLTF_COMPONENT_TYPE_SHORT");
+				"Unsupported GLTF component type, expected: TINYGLTF_COMPONENT_TYPE_INT, TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT, TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT, TINYGLTF_COMPONENT_TYPE_SHORT"
+		);
 	}
 
 	void AssetImporter::importMesh(SceneObject &root, const std::string &path) {
 #ifdef __ANDROID__
-		tinygltf::asset_manager = dynamic_cast<const cookie::AndroidFileManager &>(CookieFactory::getManager()).getManager();
+		tinygltf::asset_manager = dynamic_cast<const cookie::AndroidFileManager &>(CookieFactory::getManager())
+				.getManager();
 #endif
 		std::unique_ptr<tinygltf::Model> scene(readModelFromFile(path));
 		parseScene(root, *scene);

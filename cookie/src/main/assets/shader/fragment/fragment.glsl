@@ -5,20 +5,18 @@ precision mediump float;
 out vec4 color;
 layout (shared) uniform Material
 {
-    vec3 diffuseColor;
-    vec3 specularColor;
-    vec3 ambientColor;
-    vec3 emissiveColor;
-    vec3 transparencyColor;
-
+    vec4 baseColor;
+    vec4 emissiveColor;
+    float roughness;
+    float metallic;
+    float specular;
     float opacity;
     float shininess;
-    float refraction;
+    int doubleSided;
 } material;
 
-layout(binding = 0) uniform sampler2D diffuseTxr;
 in vec2 lerpTexCoord;
 
 void main(void) {
-    color = texture(diffuseTxr, lerpTexCoord);
+    color = vec4(0.8,0.8,0.8,1);
 }

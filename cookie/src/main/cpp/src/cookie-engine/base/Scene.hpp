@@ -37,7 +37,8 @@ namespace cookie {
 		virtual ~Scene();
 		virtual void addObject(const std::shared_ptr<SceneObject> &sceneObject);
 		virtual void removeObject(const std::shared_ptr<SceneObject> &sceneObject);
-		virtual void startLoop();
+		virtual void prepareRendering();
+		virtual void renderFrame();
 		SceneSettings &getSettings();
 	};
 }
