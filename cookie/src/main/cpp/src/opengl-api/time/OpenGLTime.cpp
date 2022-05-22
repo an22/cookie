@@ -6,7 +6,8 @@
 //
 
 #include "OpenGLTime.hpp"
-
-double OpenGLTime::getFrameTime() {
-	return 0.0;//TODO
+namespace cookie {
+	double OpenGLTime::getFrameTime() {
+		return 0.0;//TODO
+	}
 }

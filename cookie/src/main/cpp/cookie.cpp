@@ -58,7 +58,7 @@ JNIEXPORT void JNICALL Java_com_antufeevmichael_cookie_Cookie_nativeSurfaceCreat
 		jobject surface
 ) {
 	cookie::Cookie &engine = cookie::Cookie::getInstance();
-	engine.getPlatformData<OpenGLPlatformSpecificData>()
+	engine.getPlatformData<cookie::OpenGLPlatformSpecificData>()
 		  .setWindow(static_cast<EGLNativeWindowType>(ANativeWindow_fromSurface(env, surface)));
 	engine.startRendering();
 }

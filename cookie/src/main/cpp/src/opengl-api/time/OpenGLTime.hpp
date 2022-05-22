@@ -10,13 +10,13 @@
 
 #include <stdio.h>
 #include "platform_abstracts/Time.hpp"
+namespace cookie {
+	class OpenGLTime : public cookie::Time {
 
-class OpenGLTime : public cookie::Time {
-
-public:
-	double getFrameTime() override;
-
-	~OpenGLTime() override = default;
-};
+	public:
+		double getFrameTime() override;
+		~OpenGLTime() override = default;
+	};
+}
 
 #endif /* OpenGLTime_hpp */

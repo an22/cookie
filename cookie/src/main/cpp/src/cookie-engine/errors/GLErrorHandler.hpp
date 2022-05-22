@@ -8,17 +8,31 @@
 #ifndef GLErrorHandler_hpp
 #define GLErrorHandler_hpp
 
-#include "GLES3/gl3.h"
+#include "EGL/egl.h"
+#include "GLES3/gl32.h"
+#include "Macro.h"
 
-class GLErrorHandler {
+namespace cookie {
 
-public :
-	GLErrorHandler();
-	~GLErrorHandler();
+	class GLErrorHandler {
 
-	void printShaderLog(GLuint shader);
-	void printProgramLog(int prog);
-	bool checkOpenGLError();
-};
+	public :
+		GLErrorHandler() = delete;
+		~GLErrorHandler() = delete;
+		static inline void printShaderLog(uint32_t shader);
+		static inline void printProgramLog(int32_t prog);
+
+		static inline void checkOpenGLError() {
+#ifndef NDEBUG
+			GLenum glErr = eglGetError();
+			while (glErr != EGL_SUCCESS) {
+				LOG_E("%d", glErr);
+				glErr = eglGetError();
+			}
+#endif
+		}
+
+	};
+}
 
 #endif /* GLErrorHandler_hpp */

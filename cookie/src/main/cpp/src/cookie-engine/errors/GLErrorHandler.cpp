@@ -9,43 +9,35 @@
 #include <iostream>
 #include <EGL/egl.h>
 #include "GLErrorHandler.hpp"
+#include "Macro.h"
 
-GLErrorHandler::GLErrorHandler() = default;
-
-GLErrorHandler::~GLErrorHandler() = default;
-
-void GLErrorHandler::printShaderLog(GLuint shader) {
-	int len = 0;
-	int chWrittn = 0;
-	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &len);
-	if (len > 0) {
-		char *log = (char *) malloc(len);
-		glGetShaderInfoLog(shader, len, &chWrittn, log);
-		glDeleteShader(shader);
-		std::cout << "Shader Info Log: " << log << std::endl;
-		free(log);
+namespace cookie {
+	void GLErrorHandler::printShaderLog(uint32_t shader) {
+#ifndef NDEBUG
+		int bufSize = 0;
+		int length = 0;
+		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &bufSize);
+		if (bufSize > 0) {
+			char *log = (char *) malloc(bufSize);
+			glGetShaderInfoLog(shader, bufSize, &length, log);
+			LOG_I("Shader Info Log: %s", log);
+			glDeleteShader(shader);
+			free(log);
+		}
+#endif
 	}
-}
 
-void GLErrorHandler::printProgramLog(int prog) {
-	int len = 0;
-	int chWrittn = 0;
-	glGetProgramiv(prog, GL_INFO_LOG_LENGTH, &len);
-	if (len > 0) {
-		char *log = (char *) malloc(len);
-		glGetProgramInfoLog(prog, len, &chWrittn, log);
-		std::cout << "Program Info Log: " << log << std::endl;
-		free(log);
+	void GLErrorHandler::printProgramLog(int32_t prog) {
+#ifndef NDEBUG
+		int bufSize = 0;
+		int length = 0;
+		glGetProgramiv(prog, GL_INFO_LOG_LENGTH, &bufSize);
+		if (bufSize > 0) {
+			char *log = (char *) malloc(bufSize);
+			glGetProgramInfoLog(prog, bufSize, &length, log);
+			LOG_I("Program Info Log: %s", log);
+			free(log);
+		}
+#endif
 	}
-}
-
-bool GLErrorHandler::checkOpenGLError() {
-	bool foundError = false;
-	GLenum glErr = eglGetError();
-	while (glErr != EGL_SUCCESS) {
-		std::cout << "glError: " << glErr << std::endl;
-		foundError = true;
-		glErr = eglGetError();
-	}
-	return foundError;
 }

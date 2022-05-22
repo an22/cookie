@@ -7,36 +7,39 @@
 
 #include "OpenGLPlatformSpecificData.h"
 
-EGLNativeWindowType OpenGLPlatformSpecificData::getWindow() {
-	return window;
-}
+namespace cookie {
 
-void OpenGLPlatformSpecificData::setWindow(EGLNativeWindowType newWindow) {
-	window = newWindow;
-}
+	EGLNativeWindowType OpenGLPlatformSpecificData::getWindow() {
+		return window;
+	}
 
-EGLDisplay OpenGLPlatformSpecificData::getDisplay() const {
-	return display;
-}
+	void OpenGLPlatformSpecificData::setWindow(EGLNativeWindowType newWindow) {
+		window = newWindow;
+	}
 
-void OpenGLPlatformSpecificData::setDisplay(EGLDisplay display) {
-	OpenGLPlatformSpecificData::display = display;
-}
+	EGLDisplay OpenGLPlatformSpecificData::getDisplay() const {
+		return display;
+	}
 
-EGLSurface OpenGLPlatformSpecificData::getSurface() const {
-	return surface;
-}
+	void OpenGLPlatformSpecificData::setDisplay(EGLDisplay display) {
+		OpenGLPlatformSpecificData::display = display;
+	}
 
-void OpenGLPlatformSpecificData::setSurface(EGLSurface surface) {
-	OpenGLPlatformSpecificData::surface = surface;
-}
+	EGLSurface OpenGLPlatformSpecificData::getSurface() const {
+		return surface;
+	}
 
-EGLContext OpenGLPlatformSpecificData::getContext() const {
-	return context;
-}
+	void OpenGLPlatformSpecificData::setSurface(EGLSurface surface) {
+		OpenGLPlatformSpecificData::surface = surface;
+	}
 
-void OpenGLPlatformSpecificData::setContext(EGLContext context) {
-	OpenGLPlatformSpecificData::context = context;
-}
+	EGLContext OpenGLPlatformSpecificData::getContext() const {
+		return context;
+	}
 
-OpenGLPlatformSpecificData::~OpenGLPlatformSpecificData() = default;
+	void OpenGLPlatformSpecificData::setContext(EGLContext context) {
+		OpenGLPlatformSpecificData::context = context;
+	}
+
+	OpenGLPlatformSpecificData::~OpenGLPlatformSpecificData() = default;
+}
