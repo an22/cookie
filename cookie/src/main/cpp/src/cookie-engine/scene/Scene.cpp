@@ -33,6 +33,7 @@ namespace cookie {
 	) {
 		drawUtils->clearBuffers();
 		batchManager->draw(*drawUtils);
+		drawUtils->swapBuffers();
 	}
 
 	void Scene::prepareRendering() {
@@ -53,7 +54,6 @@ namespace cookie {
 		framerate.invalidateFrameRate();
 		currentShader->use();
 		display(framerate.frameTime, framerate.frameTime);
-		drawUtils->swapBuffers();
 	}
 
 	void Scene::addObject(const std::shared_ptr<SceneObject> &sceneObject) {

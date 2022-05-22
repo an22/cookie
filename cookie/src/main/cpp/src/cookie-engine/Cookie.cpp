@@ -44,7 +44,7 @@ namespace cookie {
 	}
 
 	void Cookie::startRendering() {
-		renderingLoop = new std::thread(&Cookie::loopInternal, this);
+		renderingLoop = std::make_unique<std::thread>(&Cookie::loopInternal, this);
 	}
 
 	void Cookie::loopInternal() {
@@ -67,6 +67,7 @@ namespace cookie {
 	void Cookie::clear() {
 		std::lock_guard lock(localMutex);
 		terminate = true;
+		renderingLoop->join();
 	}
 
 	Scene &Cookie::getCurrentScene() const {

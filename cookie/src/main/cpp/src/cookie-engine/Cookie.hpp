@@ -27,7 +27,7 @@ namespace cookie {
 		bool terminate = false;
 
 		std::mutex localMutex;
-		std::thread* renderingLoop;
+		std::unique_ptr<std::thread> renderingLoop;
 		std::unique_ptr<PlatformSpecificData> platformData;
 		std::unique_ptr<Initializer> initializer;
 		std::unique_ptr<Scene> currentScene;
