@@ -23,29 +23,51 @@ JNIEXPORT void JNICALL Java_com_antufeevmichael_cookie_Cookie_nativeOnCreate(
 			std::move(fileManager)
 	);
 }
-JNIEXPORT void JNICALL Java_com_antufeevmichael_cookie_Cookie_nativeOnStart(JNIEnv *env, jobject obj) {
+JNIEXPORT void JNICALL Java_com_antufeevmichael_cookie_Cookie_nativeOnStart(
+		JNIEnv *env,
+		jobject obj
+) {
 }
-JNIEXPORT void JNICALL Java_com_antufeevmichael_cookie_Cookie_nativeOnResume(JNIEnv *env, jobject obj) {
+JNIEXPORT void JNICALL Java_com_antufeevmichael_cookie_Cookie_nativeOnResume(
+		JNIEnv *env,
+		jobject obj
+) {
 
 }
-JNIEXPORT void JNICALL Java_com_antufeevmichael_cookie_Cookie_nativeOnPause(JNIEnv *env, jobject obj) {
+JNIEXPORT void JNICALL Java_com_antufeevmichael_cookie_Cookie_nativeOnPause(
+		JNIEnv *env,
+		jobject obj
+) {
 
 }
-JNIEXPORT void JNICALL Java_com_antufeevmichael_cookie_Cookie_nativeOnStop(JNIEnv *env, jobject obj) {
+JNIEXPORT void JNICALL Java_com_antufeevmichael_cookie_Cookie_nativeOnStop(
+		JNIEnv *env,
+		jobject obj
+) {
 
 }
-JNIEXPORT void JNICALL Java_com_antufeevmichael_cookie_Cookie_nativeClearSurface(JNIEnv *env, jobject obj) {
-	cookie::Cookie &engine = cookie::Cookie::getInstance();
-	engine.clear();
+JNIEXPORT void JNICALL Java_com_antufeevmichael_cookie_Cookie_nativeSurfaceDestroyed(
+		JNIEnv *env,
+		jobject obj
+) {
+	cookie::Cookie::getInstance().clear();
 }
-JNIEXPORT void JNICALL Java_com_antufeevmichael_cookie_Cookie_nativeSetSurface(
+JNIEXPORT void JNICALL Java_com_antufeevmichael_cookie_Cookie_nativeSurfaceCreated(
 		JNIEnv *env,
 		jobject obj,
 		jobject surface
 ) {
 	cookie::Cookie &engine = cookie::Cookie::getInstance();
-	auto &data = engine.getPlatformData<OpenGLPlatformSpecificData>();
-	data.setWindow(static_cast<EGLNativeWindowType>(ANativeWindow_fromSurface(env, surface)));
+	engine.getPlatformData<OpenGLPlatformSpecificData>()
+		  .setWindow(static_cast<EGLNativeWindowType>(ANativeWindow_fromSurface(env, surface)));
 	engine.startRendering();
+}
+JNIEXPORT void JNICALL Java_com_antufeevmichael_cookie_Cookie_nativeSurfaceSizeChanged(
+		JNIEnv *env,
+		jobject obj,
+		jint width,
+		jint height
+) {
+	cookie::Cookie::getInstance().onWindowResized(width, height);
 }
 }

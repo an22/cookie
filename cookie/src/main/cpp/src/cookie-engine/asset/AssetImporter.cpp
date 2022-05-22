@@ -18,6 +18,7 @@
 #include "MeshStruct.h"
 #include "SceneObject.hpp"
 #include "Mesh.hpp"
+#include "Macro.h"
 #include <memory>
 #include <iostream>
 #include <glm/gtc/type_ptr.hpp>
@@ -47,6 +48,7 @@ namespace cookie {
 					)
 			);
 		}
+		LOG_I("Imported materials count: %zu", outMaterials.size());
 	}
 
 	void AssetImporter::parseSceneRecursively(
@@ -57,7 +59,8 @@ namespace cookie {
 	) {
 		auto &node = model.nodes[nodeIndex];
 		obj->name = node.name;
-		if(!node.matrix.empty()) {
+		LOG_I("Importing node %s", obj->name.c_str());
+		if (!node.matrix.empty()) {
 			obj->transform(glm::make_mat4(node.matrix.data()));
 		}
 		if (node.mesh != -1) {
@@ -73,7 +76,7 @@ namespace cookie {
 			for (const auto &meshPrimitive : mesh.primitives) {
 
 				fetchIndices(model, meshPrimitive, outIndices);
-
+				LOG_I("Primitive mode: %s", std::to_string(meshPrimitive.mode).c_str());
 				switch (meshPrimitive.mode) {
 					case TINYGLTF_MODE_TRIANGLES: { // this is the simplest case to handle
 						fetchPrimitiveTriangles(
@@ -111,7 +114,7 @@ namespace cookie {
 		}
 		for (size_t child : node.children) {
 			auto childObj = std::make_shared<cookie::SceneObject>();
-			parseSceneRecursively(childObj,materials,model, child);
+			parseSceneRecursively(childObj, materials, model, child);
 			obj->addChild(childObj);
 		}
 	}
@@ -123,7 +126,8 @@ namespace cookie {
 
 		auto &scene = model.scenes[0];
 		root.name = model.scenes[0].name;
-		for (size_t nodeIndex:scene.nodes) {
+		LOG_I("Importing scene %s", root.name.c_str());
+		for (size_t nodeIndex : scene.nodes) {
 			auto ptr = std::make_shared<cookie::SceneObject>();
 			parseSceneRecursively(ptr, materials, model, nodeIndex);
 			root.addChild(ptr);
@@ -150,12 +154,10 @@ namespace cookie {
 			std::vector<uint32_t> &outIndices
 	) {
 		auto indices = defineIndicesArray(model, meshPrimitive);
-		std::cout << "indices: ";
 		for (size_t i = 0; i < indices->size(); ++i) {
-			std::cout << (*indices)[i] << " ";
 			outIndices.emplace_back((*indices)[i]);
 		}
-		std::cout << '\n';
+		LOG_I("Indices count %zu", indices->size());
 	}
 
 	void AssetImporter::fetchPrimitiveTriangles(
@@ -166,7 +168,6 @@ namespace cookie {
 			std::vector<glm::vec2> &outTexCoords,
 			std::vector<glm::vec3> &outNormals
 	) {
-		std::cout << "TRIANGLES\n";
 
 		for (const auto &attribute : meshPrimitive.attributes) {
 			const auto &attribAccessor = model.accessors[attribute.second];
@@ -179,10 +180,8 @@ namespace cookie {
 			const auto byteStride = attribAccessor.ByteStride(bufferView);
 			const auto count = attribAccessor.count;
 
-			std::cout << "current attribute has count " << count << " and stride "
-					  << byteStride << " bytes\n";
-
-			std::cout << "attribute string is : " << attribute.first << '\n';
+			LOG_I("Current attribute has count %lu and stride %d bytes", count, byteStride);
+			LOG_I("Attribute : %s", attribute.first.c_str());
 			if (attribute.first == "POSITION") {
 				outVertices.reserve(count);
 				fetchPositions(attribAccessor, dataPtr, count, byteStride, outVertices);
@@ -207,14 +206,14 @@ namespace cookie {
 			std::vector<uint32_t> &indices,
 			std::vector<glm::vec2> &texCoords
 	) {
-		std::cout << "Found texture coordinates\n";
+
+		LOG_I("Texture coordinates type: %d", attribAccessor.type);
 
 		switch (attribAccessor.type) {
 			case TINYGLTF_TYPE_VEC2: {
-				std::cout << "TEXTCOORD is VEC2\n";
+				LOG_I("Texture component type: %d", attribAccessor.componentType);
 				switch (attribAccessor.componentType) {
 					case TINYGLTF_COMPONENT_TYPE_FLOAT: {
-						std::cout << "TEXTCOORD is FLOAT\n";
 						v2fArray uvs(arrayAdapter<v2f>(dataPtr, count, byteStride));
 
 						for (unsigned int f0 : indices) {
@@ -223,7 +222,6 @@ namespace cookie {
 						break;
 					}
 					case TINYGLTF_COMPONENT_TYPE_DOUBLE: {
-						std::cout << "TEXTCOORD is DOUBLE\n";
 						v2dArray uvs(arrayAdapter<v2d>(dataPtr, count, byteStride));
 
 						for (unsigned int f0 : indices) {
@@ -232,12 +230,12 @@ namespace cookie {
 						break;
 					}
 					default:
-						throw std::runtime_error("unrecognized vector type for UV");
+						throw std::runtime_error("Unrecognized vector type for UV");
 				}
 			}
 				break;
 			default:
-				throw std::runtime_error("unreconized componant type for UV");
+				throw std::runtime_error("Unrecognized component type for UV");
 		}
 	}
 
@@ -249,14 +247,14 @@ namespace cookie {
 			std::vector<uint32_t> &indices,
 			std::vector<glm::vec3> &outNormals
 	) {
-		std::cout << "found normal attribute\n";
+
+		LOG_I("Normal type: %d", attribAccessor.type);
 
 		switch (attribAccessor.type) {
 			case TINYGLTF_TYPE_VEC3: {
-				std::cout << "Normal is VEC3\n";
+				LOG_I("Normal component type: %d", attribAccessor.componentType);
 				switch (attribAccessor.componentType) {
 					case TINYGLTF_COMPONENT_TYPE_FLOAT: {
-						std::cout << "Normal is FLOAT\n";
 						v3fArray _normals(arrayAdapter<v3f>(dataPtr, count, byteStride));
 
 						for (size_t i = 0; i < count; i++) {
@@ -266,7 +264,6 @@ namespace cookie {
 						break;
 					}
 					case TINYGLTF_COMPONENT_TYPE_DOUBLE: {
-						std::cout << "Normal is DOUBLE\n";
 						v3dArray _normals(arrayAdapter<v3d>(dataPtr, count, byteStride));
 
 						for (size_t i = 0; i < count; i++) {
@@ -276,12 +273,12 @@ namespace cookie {
 						break;
 					}
 					default:
-						throw std::runtime_error("Unhandeled componant type for normal\n");
+						throw std::runtime_error("Unrecognized component type for normal");
 				}
 				break;
 			}
 			default:
-				throw std::runtime_error("Unhandeled vector type for normal\n");
+				throw std::runtime_error("Unrecognized vector type for normal");
 		}
 	}
 
@@ -292,17 +289,12 @@ namespace cookie {
 			const int byteStride,
 			std::vector<Vertex> &vertices
 	) {
-		std::cout << "found position attribute\n";
-
+		LOG_I("Component type is : %d", attribAccessor.componentType);
 		switch (attribAccessor.componentType) {
 			case TINYGLTF_COMPONENT_TYPE_FLOAT: {
-				std::cout << "Type is FLOAT\n";
 				// 3D vector of float
 				v3fArray positions(arrayAdapter<v3f>(dataPtr, count, byteStride));
 
-				std::cout << "positions's size : "
-						  << positions.size()
-						  << '\n';
 				for (size_t pos = 0; pos < positions.size(); pos++) {
 					Vertex vertex{};
 					vertex.position = positions[pos];
@@ -311,7 +303,7 @@ namespace cookie {
 				break;
 			}
 			case TINYGLTF_COMPONENT_TYPE_DOUBLE: {
-				std::cout << "Type is DOUBLE\n";
+				// 3D vector of double
 				v3dArray positions(arrayAdapter<v3d>(dataPtr, count, byteStride));
 				for (size_t pos = 0; pos < positions.size(); pos++) {
 					Vertex vertex{};
@@ -323,6 +315,7 @@ namespace cookie {
 			default:
 				break;
 		}
+		LOG_I("Vertices count: %zu", vertices.size());
 	}
 
 	std::unique_ptr<intArrayBase> AssetImporter::defineIndicesArray(
@@ -362,16 +355,21 @@ namespace cookie {
 				break;
 		}
 		throw std::runtime_error(
-				"Unsupported GLTF component type, expected: TINYGLTF_COMPONENT_TYPE_INT, TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT, TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT, TINYGLTF_COMPONENT_TYPE_SHORT"
+				"Unsupported GLTF component type, expected: TINYGLTF_COMPONENT_TYPE_INT, "
+				"TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT, TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT, "
+				"TINYGLTF_COMPONENT_TYPE_SHORT"
 		);
 	}
 
 	void AssetImporter::importMesh(SceneObject &root, const std::string &path) {
 #ifdef __ANDROID__
-		tinygltf::asset_manager = dynamic_cast<const cookie::AndroidFileManager &>(CookieFactory::getManager())
-				.getManager();
+		if(!tinygltf::asset_manager) {
+			tinygltf::asset_manager = dynamic_cast<const cookie::AndroidFileManager &>(CookieFactory::getManager())
+					.getManager();
+		}
 #endif
 		std::unique_ptr<tinygltf::Model> scene(readModelFromFile(path));
+		LOG_I("Importing model at: %s", path.c_str());
 		parseScene(root, *scene);
 	}
 
@@ -382,16 +380,11 @@ namespace cookie {
 		std::string warn;
 		loader.LoadBinaryFromFile(model, &err, &warn, path);
 		if (!warn.empty()) {
-			printf("Warn: %s\n", warn.c_str());
+			LOG_W("%s", warn.c_str());
 		}
-
 		if (!err.empty()) {
-			printf("Err: %s\n", err.c_str());
+			throw std::runtime_error(err.c_str());
 		}
-		SceneObject so;
-
-		parseScene(so, *model);
-
 		return model;
 	}
 }

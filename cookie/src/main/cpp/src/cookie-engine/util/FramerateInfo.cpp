@@ -6,6 +6,7 @@
 //
 
 #include <iostream>
+#include "Macro.h"
 #include "FramerateInfo.hpp"
 #include "CookieFactory.hpp"
 
@@ -23,7 +24,7 @@ namespace cookie {
 		frameTime = time->getProgramTime();
 		framerateTimestamp = frameTime;
 		if (framerateTimestamp - lastTimestamp >= std::chrono::seconds(1)) {
-			std::cout << framerate << std::endl;
+			LOG_I("FPS: %d", framerate);
 			framerate = 0;
 			lastTimestamp = framerateTimestamp;
 		}

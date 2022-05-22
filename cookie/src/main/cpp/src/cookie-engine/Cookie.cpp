@@ -8,6 +8,7 @@
 #include <Cube.hpp>
 #include "Cookie.hpp"
 #include "CookieFactory.hpp"
+#include "Macro.h"
 
 namespace cookie {
 
@@ -32,13 +33,14 @@ namespace cookie {
 	}
 
 	void Cookie::prepareRendering() {
+		std::lock_guard lock(localMutex);
 		initializer->initGraphicsAPIResources(*platformData);
-		currentShader = CookieFactory::provideShader(
-				"shader/vertex/vertex.glsl",
-				"shader/fragment/fragment.glsl"
-		);
-		setScene(std::make_unique<cookie::Scene>());
-		getCurrentScene().addObject(std::make_shared<cookie::Cube>(0.0f, 0.0f, 0.0f));
+		currentScene = std::make_unique<Scene>();//TODO DELETE
+		if (currentScene) {
+			currentScene->prepareRendering();
+		} else {
+			throw std::runtime_error("No scene to render. ABORT");
+		}
 	}
 
 	void Cookie::startRendering() {
@@ -46,24 +48,38 @@ namespace cookie {
 	}
 
 	void Cookie::loopInternal() {
-		prepareRendering();
-		auto &scene = getCurrentScene();
-		scene.prepareRendering();
-		while (!terminate) {
-			std::lock_guard lock(localMutex);
-			scene.renderFrame();
+		try {
+			prepareRendering();
+			while (true) {
+				std::lock_guard lock(localMutex);
+				if (terminate) {
+					initializer->destroyGraphicsAPIResources(*platformData);
+					break;
+				}
+				currentScene->renderFrame();
+			}
+		} catch (const std::exception &e) {
+			LOG_E("%s", e.what());
+			clear();
 		}
 	}
 
 	void Cookie::clear() {
-		localMutex.lock();
+		std::lock_guard lock(localMutex);
 		terminate = true;
-		localMutex.unlock();
-		renderingLoop->join();
-		initializer->destroyGraphicsAPIResources(*platformData);
 	}
 
 	Scene &Cookie::getCurrentScene() const {
 		return *currentScene;
+	}
+
+	void Cookie::onWindowResized(int32_t width, int32_t height) {
+		std::lock_guard lock(localMutex);
+		if (terminate) return;
+		platformData->setWidth(width);
+		platformData->setHeight(height);
+		if (currentScene) {
+			currentScene->resize(width, height);
+		}
 	}
 }

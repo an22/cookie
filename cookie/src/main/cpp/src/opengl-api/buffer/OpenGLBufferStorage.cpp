@@ -10,7 +10,7 @@
 #include <OpenGLShader.hpp>
 #include <Cookie.hpp>
 #include "OpenGLBufferStorage.hpp"
-#include "Material.h"
+#include "asset/Material.h"
 #include "GLErrorHandler.hpp"
 
 OpenGLBufferStorage::OpenGLBufferStorage() : cookie::BufferStorage() {
@@ -103,9 +103,10 @@ void OpenGLBufferStorage::bind() const {
 	glBindTexture(GL_TEXTURE_BUFFER, texMatrices);
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, tboMatrices);
 	glBindBuffer(GL_UNIFORM_BUFFER, uboMaterial);
-	auto& shader = cookie::Cookie::getInstance().getCurrentShader<OpenGLShader>();
-	unsigned int matrices_index = glGetUniformBlockIndex(shader.id, "Material");
-	glUniformBlockBinding(shader.id, matrices_index, 1);
+	GLint id;
+	glGetIntegerv(GL_CURRENT_PROGRAM, &id);
+	unsigned int matrices_index = glGetUniformBlockIndex(id, "Material");
+	glUniformBlockBinding(id, matrices_index, 1);
 	handler.checkOpenGLError();
 	glBindBufferBase(GL_UNIFORM_BUFFER, 1, uboMaterial);
 }

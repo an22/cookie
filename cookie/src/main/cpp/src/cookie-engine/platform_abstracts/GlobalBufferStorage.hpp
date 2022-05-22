@@ -6,7 +6,7 @@
 #define COOKIE_ENGINE_CROSSBATCHBUFFERSTORAGE_HPP
 
 #include "glm/glm.hpp"
-#include "MeshStruct.h"
+#include "asset/MeshStruct.h"
 
 namespace cookie {
 	class GlobalBufferStorage {

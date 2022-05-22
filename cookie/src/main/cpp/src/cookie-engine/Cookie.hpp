@@ -31,7 +31,6 @@ namespace cookie {
 		std::unique_ptr<PlatformSpecificData> platformData;
 		std::unique_ptr<Initializer> initializer;
 		std::unique_ptr<Scene> currentScene;
-		std::unique_ptr<Shader> currentShader;
 
 		explicit Cookie(CgAPI api);
 		void loopInternal();
@@ -43,6 +42,7 @@ namespace cookie {
 		void operator=(const Cookie &) = delete;
 		void prepareRendering();
 		void startRendering();
+		void onWindowResized(int32_t width, int32_t height);
 		void clear();
 
 		template<class T = PlatformSpecificData>
@@ -52,14 +52,6 @@ namespace cookie {
 					"type parameter of this function must derive from cookie::PlatformSpecificData"
 			);
 			return dynamic_cast<T &>(*platformData);
-		}
-		template<class T = Shader>
-		T &getCurrentShader() const {
-			static_assert(
-					std::is_base_of<Shader, T>::value,
-					"type parameter of this function must derive from cookie::Shader"
-			);
-			return dynamic_cast<T &>(*currentShader);
 		}
 
 		Scene &getCurrentScene() const;

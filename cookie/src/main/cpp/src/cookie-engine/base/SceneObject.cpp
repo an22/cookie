@@ -7,7 +7,7 @@
 
 #include "SceneObject.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-#include "AssetImporter.hpp"
+#include "asset/AssetImporter.hpp"
 #include <Mesh.hpp>
 
 namespace cookie {

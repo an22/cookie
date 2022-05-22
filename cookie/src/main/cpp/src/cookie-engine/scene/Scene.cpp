@@ -3,6 +3,7 @@
 //
 #include <Mesh.hpp>
 #include <CookieFactory.hpp>
+#include <Cube.hpp>
 #include "Scene.hpp"
 #include "Cookie.hpp"
 
@@ -22,8 +23,6 @@ namespace cookie {
 				glm::vec3(0.0f),
 				glm::vec3(0.0f, 1.0f, 0.0f)
 		);
-		drawUtils->enableDepthTest();
-		drawUtils->cullFace();
 	}
 
 	Scene::~Scene() = default;
@@ -37,20 +36,24 @@ namespace cookie {
 	}
 
 	void Scene::prepareRendering() {
-		globalBufferStorage->updateMatrices(sceneSettings->perspectiveMx, vMat);
-		batchManager->syncWithVideoBuffer();
+		fillScene();
+		drawUtils->enableDepthTest();
+		drawUtils->cullFace();
 		framerate.invalidateFrameRate();
+		batchManager->syncWithVideoBuffer();
+		globalBufferStorage->updateMatrices(sceneSettings->perspectiveMx, vMat);
 		globalBufferStorage->bind();
+		currentShader = CookieFactory::provideShader(
+				"shader/vertex/vertex.glsl",
+				"shader/fragment/fragment.glsl"
+		);
 	}
 
 	void Scene::renderFrame() {
 		framerate.invalidateFrameRate();
+		currentShader->use();
 		display(framerate.frameTime, framerate.frameTime);
 		drawUtils->swapBuffers();
-	}
-
-	SceneSettings &Scene::getSettings() {
-		return *sceneSettings;
 	}
 
 	void Scene::addObject(const std::shared_ptr<SceneObject> &sceneObject) {
@@ -62,5 +65,17 @@ namespace cookie {
 		sceneObjects.erase(
 				std::find(sceneObjects.begin(), sceneObjects.end(), sceneObject)
 		);
+	}
+
+	SceneSettings &Scene::getSettings() {
+		return *sceneSettings;
+	}
+
+	void Scene::fillScene() {
+		addObject(std::make_shared<cookie::Cube>(0.0f, 0.0f, 0.0f));
+	}
+
+	void Scene::resize(int32_t width, int32_t height) {
+		drawUtils->setViewport(width, height);
 	}
 }

@@ -7,7 +7,7 @@
 #include "Cookie.hpp"
 #include "OpenGlGlobalBufferStorage.hpp"
 #include "OpenGLShader.hpp"
-#include "MeshStruct.h"
+#include "asset/MeshStruct.h"
 
 void OpenGLGlobalBufferStorage::updateMatrices(const glm::mat4 &projection, const glm::mat4 &view) {
 	GLErrorHandler handler;
@@ -33,9 +33,10 @@ OpenGLGlobalBufferStorage::OpenGLGlobalBufferStorage() {
 
 void OpenGLGlobalBufferStorage::bind() {
 	GLErrorHandler handler;
-	auto& shader = cookie::Cookie::getInstance().getCurrentShader();
-	unsigned int matrices_index = glGetUniformBlockIndex(shader.id, "Matrices");
-	glUniformBlockBinding(shader.id, matrices_index, 0);
+	GLint id;
+	glGetIntegerv(GL_CURRENT_PROGRAM, &id);
+	unsigned int matrices_index = glGetUniformBlockIndex(id, "Matrices");
+	glUniformBlockBinding(id, matrices_index, 0);
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, uboMatrices);
 	handler.checkOpenGLError();
 }

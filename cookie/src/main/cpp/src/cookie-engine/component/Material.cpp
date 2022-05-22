@@ -2,7 +2,7 @@
 // Created by Antiufieiev Michael on 12.08.2021.
 //
 
-#include "Material.h"
+#include "asset/Material.h"
 
 #include <utility>
 #include "Cookie.hpp"

@@ -14,13 +14,6 @@
 #include "OpenGLPlatformSpecificData.h"
 #include "Cookie.hpp"
 
-void windowReshapeCallback(EGLNativeWindowType *window, int newWidth, int newHeight) {
-	glViewport(0, 0, newWidth, newHeight); // sets screen region associated with framebuffer
-	cookie::Cookie::getInstance().getCurrentScene()
-								 .getSettings()
-								 .onWindowResized(newWidth, newHeight);
-}
-
 void errorCallback(int code, const char *description) {
 	//TODO proper error handling
 	std::cout << description << std::endl;
@@ -109,7 +102,7 @@ bool OpenGLInitializer::initGraphicsAPIResources(cookie::PlatformSpecificData &d
 void OpenGLInitializer::destroyGraphicsAPIResources(cookie::PlatformSpecificData &data) const {
 	auto &platformData = dynamic_cast<OpenGLPlatformSpecificData &>(data);
 	eglMakeCurrent(platformData.getDisplay(), EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
-	eglDestroyContext(platformData.getDisplay(), platformData.getContext());
 	eglDestroySurface(platformData.getDisplay(), platformData.getSurface());
-	eglTerminate(platformData.getWindow());
+	eglDestroyContext(platformData.getDisplay(), platformData.getContext());
+	eglTerminate(platformData.getDisplay());
 }

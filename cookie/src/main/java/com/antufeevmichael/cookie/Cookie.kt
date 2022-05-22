@@ -14,8 +14,9 @@ class Cookie {
     external fun nativeOnResume()
     external fun nativeOnPause()
     external fun nativeOnStop()
-    external fun nativeClearSurface()
-    external fun nativeSetSurface(surface: Surface)
+    external fun nativeSurfaceDestroyed()
+    external fun nativeSurfaceCreated(surface: Surface)
+    external fun nativeSurfaceSizeChanged(width: Int, height: Int)
 
     companion object {
         // Used to load the 'cookie' library on application startup.

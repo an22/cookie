@@ -10,7 +10,7 @@
 
 #include <memory>
 #include <vector>
-#include "MeshStruct.h"
+#include "asset/MeshStruct.h"
 #include "PlatformSpecificBufferData.h"
 
 namespace cookie {

@@ -24,14 +24,15 @@ class MainActivity : AppCompatActivity(), SurfaceHolder.Callback {
     }
 
     override fun surfaceCreated(holder: SurfaceHolder) {
+        cookie.nativeSurfaceCreated(holder.surface)
     }
 
     override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
-        cookie.nativeSetSurface(holder.surface)
+        cookie.nativeSurfaceSizeChanged(width, height)
     }
 
     override fun surfaceDestroyed(holder: SurfaceHolder) {
-        cookie.nativeClearSurface()
+        cookie.nativeSurfaceDestroyed()
     }
 
     override fun onStart() {

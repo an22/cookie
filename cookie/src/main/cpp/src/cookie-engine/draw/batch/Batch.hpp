@@ -6,7 +6,7 @@
 #define COOKIE_ENGINE_BATCH_HPP
 
 #include "memory"
-#include "Material.h"
+#include "asset/Material.h"
 #include "SceneObject.hpp"
 #include "BufferStorage.hpp"
 #include "BatchConfig.hpp"

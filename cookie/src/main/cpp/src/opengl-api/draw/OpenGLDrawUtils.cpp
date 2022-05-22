@@ -19,8 +19,8 @@ void OpenGLDrawUtils::clearBuffers() const {
 
 void OpenGLDrawUtils::swapBuffers() const {
 	GLErrorHandler handler;
-	auto& platformData = cookie::Cookie::getInstance().getPlatformData<OpenGLPlatformSpecificData>();
-	if(!eglSwapBuffers(platformData.getDisplay(), platformData.getSurface())) {
+	auto &platformData = cookie::Cookie::getInstance().getPlatformData<OpenGLPlatformSpecificData>();
+	if (!eglSwapBuffers(platformData.getDisplay(), platformData.getSurface())) {
 		handler.checkOpenGLError();
 		throw std::runtime_error("CANT SWAP BUFFERS");
 	}
@@ -46,6 +46,10 @@ void OpenGLDrawUtils::cullFace() const {
 	glEnable(GL_CULL_FACE);
 }
 
+void OpenGLDrawUtils::setViewport(int32_t width, int32_t height) const {
+	glViewport(0, 0, width, height);
+}
+
 void OpenGLDrawUtils::drawMultiElementsWithIndexOffset(
 		unsigned int meshCount,
 		const int32_t *startOffset,
@@ -53,6 +57,7 @@ void OpenGLDrawUtils::drawMultiElementsWithIndexOffset(
 		const int32_t *vertexOffset
 ) const {
 	GLErrorHandler handler;
+	//glMultiDrawElementsBaseVertex
 	/*std::vector<void *> pointers(meshCount);
 	for (int i = 0; i < meshCount; i++) {
 		pointers[i] = reinterpret_cast<void *>(startOffset[i]);
@@ -69,5 +74,4 @@ void OpenGLDrawUtils::drawMultiElementsWithIndexOffset(
 	handler.checkOpenGLError();
 }
 
-OpenGLDrawUtils::OpenGLDrawUtils() {
-}
+OpenGLDrawUtils::OpenGLDrawUtils() = default;
