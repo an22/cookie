@@ -45,6 +45,9 @@ namespace cookie {
 
 	void Cookie::startRendering() {
 		renderingLoop = std::make_unique<std::thread>(&Cookie::loopInternal, this);
+#if defined (__unix__) || (defined (__APPLE__) && defined (__MACH__))
+		pthread_setname_np(renderingLoop->native_handle(), "CookieRenderer");
+#endif
 	}
 
 	void Cookie::loopInternal() {
@@ -53,20 +56,29 @@ namespace cookie {
 			while (true) {
 				std::lock_guard lock(localMutex);
 				if (terminate) {
-					initializer->destroyGraphicsAPIResources(*platformData);
+					terminateInternal();
 					break;
 				}
 				currentScene->renderFrame();
 			}
 		} catch (const std::exception &e) {
 			LOG_E("%s", e.what());
-			clear();
+			clearInternal();
 		}
 	}
 
-	void Cookie::clear() {
+	void Cookie::terminateInternal() {
+		terminate = false;
+		initializer->destroyGraphicsAPIResources(*platformData);
+	}
+
+	void Cookie::clearInternal() {
 		std::lock_guard lock(localMutex);
 		terminate = true;
+	}
+
+	void Cookie::clear() {
+		clearInternal();
 		renderingLoop->join();
 	}
 

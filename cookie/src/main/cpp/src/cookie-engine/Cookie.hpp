@@ -34,6 +34,8 @@ namespace cookie {
 
 		explicit Cookie(CgAPI api);
 		void loopInternal();
+		void clearInternal();
+		void terminateInternal();
 	public:
 		CgAPI currentAPI;
 		Cookie(Cookie &other) = delete;

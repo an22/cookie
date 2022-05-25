@@ -9,12 +9,12 @@
 void cookie::BatchManager::onNewObject(const std::shared_ptr<SceneObject> &sceneObject) {
 	auto meshComponent = sceneObject->getComponent<Mesh>();
 	if (meshComponent != nullptr && !meshComponent->getVertices().empty()) {
-		auto& batch = batchMap[meshComponent->getMaterial()];
-		if(batch == nullptr) {
+		auto &batch = batchMap[meshComponent->getMaterial()];
+		if (batch == nullptr) {
 			std::unique_ptr<Batch> newBatch = std::make_unique<Batch>(meshComponent->getMaterial());
 			newBatch->addObject(sceneObject);
 			batchMap[meshComponent->getMaterial()] = std::move(newBatch);
-		}else {
+		} else {
 			batch->addObject(sceneObject);
 		}
 	}
@@ -26,8 +26,6 @@ void cookie::BatchManager::onNewObject(const std::shared_ptr<SceneObject> &scene
 	}
 }
 
-
-//TODO multithreading
 void cookie::BatchManager::syncWithVideoBuffer() {
 	for (auto &entry: batchMap) {
 		entry.second->syncWithVideoBuffer();

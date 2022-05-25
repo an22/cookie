@@ -237,6 +237,7 @@ namespace cookie {
 				const int byteStride,
 				std::vector<Vertex> &vertices
 		);
+		static inline void fetchMatrix(std::shared_ptr<cookie::SceneObject> &obj, const tinygltf::Node &node);
 		static inline void parseScene(cookie::SceneObject &root, const tinygltf::Model &model);
 		static inline tinygltf::Model *readModelFromFile(const std::string &path);
 	public:

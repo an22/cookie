@@ -7,29 +7,41 @@
 
 #include "SceneObject.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/matrix_decompose.hpp>
 #include "asset/AssetImporter.hpp"
 #include <Mesh.hpp>
 
 namespace cookie {
-	int SceneObject::objCount = 0;
 
-	SceneObject::SceneObject() : position(glm::vec3(0, 0, 0)),
-								 modelMat(glm::mat4(1)),
-								 children() {
+	SceneObject::SceneObject() : transformation(
+			Transformation(
+					glm::vec3(0.0f, 0.0f, 0.0f),
+					glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
+					glm::vec3(1.0f, 1.0f, 1.0f)
+			)), children() {
 	}
 
-	SceneObject::SceneObject(glm::mat4 transformation) : position(glm::vec3(transformation[3])),
-														 modelMat(transformation),
-														 children() {
+	SceneObject::SceneObject(glm::mat4 transformation) : transformation(
+			Transformation(
+					glm::vec3(0, 0, 0),
+					glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
+					glm::vec3(1.0f, 1.0f, 1.0f)
+			)
+	), children() {
 	}
 
-	SceneObject::SceneObject(glm::vec3 pos) : position(pos),
-											  modelMat(glm::translate(glm::mat4(1), pos)),
-											  children() {
+	SceneObject::SceneObject(glm::vec3 pos) : transformation(
+			Transformation(
+					glm::vec3(0, 0, 0),
+					glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
+					glm::vec3(1.0f, 1.0f, 1.0f)
+			)), children() {
 	}
 
-	SceneObject::SceneObject(const std::string &path, float x, float y, float z) : SceneObject(path,
-																							   glm::vec3(x, y, z)) {
+	SceneObject::SceneObject(const std::string &path, float x, float y, float z) : SceneObject(
+			path,
+			glm::vec3(x, y, z)) {
 	}
 
 	SceneObject::SceneObject(const std::string &path, glm::vec3 pos) : SceneObject(pos) {
@@ -38,33 +50,16 @@ namespace cookie {
 
 	SceneObject::~SceneObject() = default;
 
-	const glm::mat4 &SceneObject::getModelMat() {
-		return modelMat;
+	const glm::mat4 &SceneObject::getModelMat() const {
+		return transformation.modelMat;
 	}
 
 	bool SceneObject::isStatic() const {
 		return is_static;
 	}
 
-	void SceneObject::transform(const glm::mat4 &transformation) {
-		if (is_static) {
-			return;
-		}
-		modelMat = transformation * modelMat;
-	}
-
 	void SceneObject::setStatic(bool isStatic) {
 		this->is_static = isStatic;
-	}
-
-	void SceneObject::setPosition(const glm::vec3 &newPosition) {
-		position = newPosition;
-		modelMat = glm::translate(glm::mat4(1.0f), position);
-	}
-
-	void SceneObject::setPosition(float x, float y, float z) {
-		this->position = glm::vec3(x, y, z);
-		modelMat = glm::translate(glm::mat4(1.0f), position);
 	}
 
 	void SceneObject::draw(const cookie::DrawUtils &utils) {
@@ -101,5 +96,54 @@ namespace cookie {
 
 	SceneObject::PtrSceneObjVector::iterator SceneObject::childrenEnd() noexcept {
 		return children.end();
+	}
+
+	Transformation::Transformation(
+			const glm::vec3 &position,
+			const glm::quat &rotation,
+			const glm::vec3 &scale
+	) : translation(position), rotation(rotation), scaling(scale), modelMat(glm::mat4(1)) {
+		regenerateModelMatrix();
+	}
+
+	void Transformation::translate(const glm::vec3 &vTranslate) {
+		translation += vTranslate;
+		regenerateModelMatrix();
+	}
+
+	void Transformation::scale(const glm::vec3 &vScale) {
+		scaling *= vScale;
+		regenerateModelMatrix();
+	}
+
+	void Transformation::rotate(const glm::quat &qRotate) {
+		rotation *= qRotate;
+		regenerateModelMatrix();
+	}
+
+	void Transformation::transform(
+			const glm::vec3 &vTranslate,
+			const glm::quat &qRotate,
+			const glm::vec3 &vScale
+	) {
+		translation += vTranslate;
+		scaling *= vScale;
+		rotation *= qRotate;
+		regenerateModelMatrix();
+	}
+
+	void Transformation::regenerateModelMatrix() {
+		modelMat = glm::mat4(1);
+		modelMat = glm::translate(modelMat, translation);
+		modelMat = glm::scale(modelMat, scaling);
+		modelMat = glm::toMat4(rotation) * modelMat;
+	}
+
+	void Transformation::setModelMatrix(const glm::mat4 &matModel) {
+		glm::vec3 skew;
+		glm::vec4 perspective;
+		glm::decompose(matModel, scaling, rotation, translation, skew, perspective);
+		rotation = glm::conjugate(rotation);
+		modelMat = matModel;
 	}
 }

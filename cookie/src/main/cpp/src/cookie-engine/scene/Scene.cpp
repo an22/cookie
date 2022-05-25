@@ -16,11 +16,11 @@ namespace cookie {
 		auto width = Cookie::getInstance().getPlatformData().width();
 		auto height = Cookie::getInstance().getPlatformData().height();
 		sceneSettings = std::make_unique<SceneSettings>(
-				width, height, 2.0f, 3.0f, 9.0f, 1.0472f, 1.0f, 100.0f
+				width, height, 0.0f, 0.0f, 0.2f, 1.0472f, 0.1f, 1000.0f
 		);
 		vMat = glm::lookAt(
 				sceneSettings->cameraPos,
-				glm::vec3(0.0f),
+				glm::vec3(0.0f,0.0f,0.0f),
 				glm::vec3(0.0f, 1.0f, 0.0f)
 		);
 	}

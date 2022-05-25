@@ -1,6 +1,6 @@
 #version 320 es
 
-precision mediump float;
+precision highp float;
 
 out vec4 color;
 layout (shared) uniform Material

@@ -57,12 +57,10 @@ namespace cookie {
 			const Model &model,
 			size_t nodeIndex
 	) {
-		auto &node = model.nodes[nodeIndex];
+		const auto &node = model.nodes[nodeIndex];
 		obj->name = node.name;
 		LOG_I("Importing node %s", obj->name.c_str());
-		if (!node.matrix.empty()) {
-			obj->transform(glm::make_mat4(node.matrix.data()));
-		}
+		fetchMatrix(obj, node);
 		if (node.mesh != -1) {
 			auto &mesh = model.meshes[node.mesh];
 			std::vector<cookie::Vertex> outVertices;
@@ -88,9 +86,15 @@ namespace cookie {
 								outNormals
 						);
 						size_t i = 0;
+						bool hasTexCoords = outTexCoords.size() == outVertices.size();
+						bool hasNormals = outNormals.size() == outVertices.size();
 						for (auto &vertex:outVertices) {
-							vertex.texCoords = outTexCoords[i];
-							vertex.normal = outNormals[i];
+							if (hasTexCoords) {
+								vertex.texCoords = outTexCoords[i];
+							}
+							if (hasNormals) {
+								vertex.normal = outNormals[i];
+							}
 							i++;
 						}
 						material = materials[meshPrimitive.material];
@@ -114,8 +118,30 @@ namespace cookie {
 		}
 		for (size_t child : node.children) {
 			auto childObj = std::make_shared<cookie::SceneObject>();
-			parseSceneRecursively(childObj, materials, model, child);
 			obj->addChild(childObj);
+			parseSceneRecursively(childObj, materials, model, child);
+		}
+	}
+
+	void AssetImporter::fetchMatrix(std::shared_ptr<cookie::SceneObject> &obj, const Node &node) {
+		if (!node.matrix.empty()) {
+			LOG_I("Importing matrix");
+			auto mat = glm::make_mat4(node.matrix.data());
+			obj->transformation.setModelMatrix(mat);
+		} else {
+			glm::vec3 translation(0.0f);
+			glm::quat rotation(1.0f, 0.0f, 0.0f, 0.0f);
+			glm::vec3 scale(1.0f);
+			if (!node.translation.empty()) {
+				translation = glm::make_vec3(node.translation.data());
+			}
+			if (!node.rotation.empty()) {
+				rotation = glm::make_quat(node.rotation.data());
+			}
+			if (!node.scale.empty()) {
+				scale = glm::make_vec3(node.scale.data());
+			}
+			obj->transformation.transform(translation, rotation, scale);
 		}
 	}
 
@@ -129,8 +155,8 @@ namespace cookie {
 		LOG_I("Importing scene %s", root.name.c_str());
 		for (size_t nodeIndex : scene.nodes) {
 			auto ptr = std::make_shared<cookie::SceneObject>();
-			parseSceneRecursively(ptr, materials, model, nodeIndex);
 			root.addChild(ptr);
+			parseSceneRecursively(ptr, materials, model, nodeIndex);
 		}
 
 // TODO Iterate through all texture declaration in glTF file
@@ -363,7 +389,7 @@ namespace cookie {
 
 	void AssetImporter::importMesh(SceneObject &root, const std::string &path) {
 #ifdef __ANDROID__
-		if(!tinygltf::asset_manager) {
+		if (!tinygltf::asset_manager) {
 			tinygltf::asset_manager = dynamic_cast<const cookie::AndroidFileManager &>(CookieFactory::getManager())
 					.getManager();
 		}
@@ -378,7 +404,11 @@ namespace cookie {
 		tinygltf::TinyGLTF loader;
 		std::string err;
 		std::string warn;
-		loader.LoadBinaryFromFile(model, &err, &warn, path);
+		if (!loader.LoadBinaryFromFile(model, &err, &warn, path)) {
+			err.clear();
+			warn.clear();
+			loader.LoadASCIIFromFile(model, &err, &warn, path);
+		}
 		if (!warn.empty()) {
 			LOG_W("%s", warn.c_str());
 		}
