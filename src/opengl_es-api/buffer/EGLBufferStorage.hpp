@@ -22,7 +22,7 @@ namespace cookie {
 		GLuint uboMaterial{};
 		GLuint vboVertex{};
 		GLuint vboIndex{};
-		GLuint tboMatrices{};
+		GLuint sboMatrices{};
 		GLuint texMatrices{};
 		std::unique_ptr<OpenGLPSBufferData> bufferData;
 		void setupVertexElementBuffer(const cookie::MeshData &meshData) const;

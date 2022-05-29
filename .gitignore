@@ -16,7 +16,6 @@ cmake-build-debug
 local.properties
 /CMakeSettings.json
 /out/
-/assets/
 /cmake-build-release/
 /CMakeFiles/
 /.idea/

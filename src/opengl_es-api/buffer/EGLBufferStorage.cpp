@@ -20,7 +20,7 @@ namespace cookie {
 		glGenBuffers(1, &vboVertex);
 		glGenBuffers(1, &uboMaterial);
 		glGenBuffers(1, &vboIndex);
-		glGenBuffers(1, &tboMatrices);
+		glGenBuffers(1, &sboMatrices);
 		glGenTextures(1, &texMatrices);
 	}
 
@@ -28,7 +28,7 @@ namespace cookie {
 		glDeleteBuffers(1, &vboVertex);
 		glDeleteBuffers(1, &uboMaterial);
 		glDeleteBuffers(1, &vboIndex);
-		glDeleteBuffers(1, &tboMatrices);
+		glDeleteBuffers(1, &sboMatrices);
 		glDeleteTextures(1, &texMatrices);
 		glDeleteVertexArrays(1, &vao);
 	}
@@ -90,7 +90,7 @@ namespace cookie {
 	}
 
 	inline void EGLBufferStorage::setupMatricesBuffer(const std::vector<glm::mat4> &matrices) const {
-		glBindBuffer(GL_TEXTURE_BUFFER, tboMatrices);
+		glBindBuffer(GL_TEXTURE_BUFFER, sboMatrices);
 		glBufferData(
 				GL_TEXTURE_BUFFER,
 				sizeof(glm::mat4) * matrices.size(),
@@ -98,7 +98,7 @@ namespace cookie {
 				GL_STATIC_DRAW
 		);
 		glBindTexture(GL_TEXTURE_BUFFER, texMatrices);
-		glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, tboMatrices);
+		glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, sboMatrices);
 		EGLErrorHandler::checkOpenGLError();
 		glBindBuffer(GL_TEXTURE_BUFFER, 0);
 	}
@@ -117,9 +117,9 @@ namespace cookie {
 
 	void EGLBufferStorage::bind() const {
 		glBindVertexArray(vao);
-		glBindBuffer(GL_TEXTURE_BUFFER, tboMatrices);
+		glBindBuffer(GL_TEXTURE_BUFFER, sboMatrices);
 		glBindTexture(GL_TEXTURE_BUFFER, texMatrices);
-		glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, tboMatrices);
+		glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, sboMatrices);
 		glBindBuffer(GL_UNIFORM_BUFFER, uboMaterial);
 		GLint id;
 		glGetIntegerv(GL_CURRENT_PROGRAM, &id);
