@@ -6,6 +6,7 @@
 #define COOKIE_ENGINE_CGAPI_H
 
 enum class CgAPI {
+	OpenGLES3,
 	OpenGL,
 	Vulkan,
 	DirectX

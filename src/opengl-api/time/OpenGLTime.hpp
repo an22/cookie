@@ -8,16 +8,18 @@
 #ifndef OpenGLTime_hpp
 #define OpenGLTime_hpp
 
-#include <stdio.h>
+#if COOKIE_OPENGL
+
 #include "platform_abstracts/Time.hpp"
 
-class OpenGLTime : public cookie::Time {
+namespace cookie {
+	class OpenGLTime : public cookie::Time {
 
-public:
-	double getProgramTime() override;
-	double getFrameTime() override;
+	public:
+		double getFrameTime() override;
+		~OpenGLTime() override = default;
+	};
+}
 
-	~OpenGLTime() override = default;
-};
-
+#endif
 #endif /* OpenGLTime_hpp */

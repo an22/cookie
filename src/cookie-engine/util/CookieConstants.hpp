@@ -11,6 +11,7 @@
 #include <string>
 
 namespace cookie {
+	const std::string MATERIAL_UNIFORM_BLOCK = "Material";
 	const std::string MODEL_MATRIX = "m_matrix";
 	const std::string MV_MATRIX = "mv_matrix";
 	const std::string MVP_MATRIX = "mvp_matrix";

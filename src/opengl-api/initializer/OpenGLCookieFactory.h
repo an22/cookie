@@ -5,24 +5,30 @@
 #ifndef COOKIE_ENGINE_OPENGLCOOKIEFACTORY_H
 #define COOKIE_ENGINE_OPENGLCOOKIEFACTORY_H
 
+#if COOKIE_OPENGL
+
 #include "CookieFactory.hpp"
 
-class OpenGLCookieFactory : public cookie::CookieFactory {
+namespace cookie {
+	class OpenGLCookieFactory : public cookie::CookieFactory {
 
-public:
-	explicit OpenGLCookieFactory(CgAPI api);
-	~OpenGLCookieFactory() override = default;
+	public:
+		explicit OpenGLCookieFactory(CgAPI api);
+		~OpenGLCookieFactory() override = default;
+		[[nodiscard]] std::unique_ptr<cookie::Time> provideTimeManagerImpl() const override;
+		[[nodiscard]] std::unique_ptr<cookie::Shader> provideShaderImpl(
+				const std::string &vertexPath,
+				const std::string &fragmentPath
+		) const override;
+		[[nodiscard]] std::unique_ptr<cookie::BufferStorage> provideBufferStorageImpl() const override;
+		[[nodiscard]] std::unique_ptr<cookie::Initializer> provideInitializerImpl() const override;
+		[[nodiscard]] std::unique_ptr<cookie::DrawUtils> provideDrawUtilsImpl() const override;
+		[[nodiscard]] std::unique_ptr<cookie::PlatformSpecificBufferData> provideBufferDataImpl(cookie::BufferType bufferType) const override;
+		[[nodiscard]] std::unique_ptr<cookie::PlatformSpecificData> createPlatformSpecificContainerImpl() const override;
+		[[nodiscard]] std::unique_ptr<cookie::TextureProcessor> provideTextureProcessorImpl() const override;
+		[[nodiscard]] std::unique_ptr<cookie::GlobalBufferStorage> provideGlobalBufferStorageImpl() const override;
+	};
+}
 
-	std::unique_ptr<cookie::Time> provideTimeManagerImpl() const override;
-	std::unique_ptr<cookie::Shader>provideShaderImpl(const std::string &vertexPath, const std::string &fragmentPath) const override;
-	std::unique_ptr<cookie::BufferStorage> provideBufferStorageImpl() const override;
-	std::unique_ptr<cookie::Initializer> provideInitializerImpl() const override;
-	std::unique_ptr<cookie::DrawUtils> provideDrawUtilsImpl() const override;
-	std::unique_ptr<cookie::PlatformSpecificBufferData> provideBufferDataImpl(cookie::BufferType bufferType) const override;
-	std::unique_ptr<cookie::PlatformSpecificData> createPlatformSpecificContainerImpl() const override;
-	std::unique_ptr<cookie::TextureProcessor> provideTextureProcessorImpl() const override;
-	std::unique_ptr<cookie::CrossBatchBufferStorage> provideCrossBatchBufferStorageImpl() const override;
-};
-
-
+#endif
 #endif //COOKIE_ENGINE_OPENGLCOOKIEFACTORY_H

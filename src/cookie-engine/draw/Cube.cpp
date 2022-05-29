@@ -6,6 +6,6 @@
 
 namespace cookie {
 
-	Cube::Cube(float x, float y, float z) : SceneObject(R"(assets/IronMan.obj)", x, y, z) {
+	Cube::Cube(float x, float y, float z) : SceneObject(R"(D:\Hope\Projects\CookieEngine\assets\adamHead\adamHead.gltf)", glm::vec3(x, y, z)) {
 	}
 }

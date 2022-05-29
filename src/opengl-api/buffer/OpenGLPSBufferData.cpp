@@ -1,6 +1,9 @@
 //
 // Created by Antiufieiev Michael on 08.08.2021.
 //
+#include "config.hpp"
+
+#if COOKIE_OPENGL
 
 #include "OpenGLPSBufferData.h"
 
@@ -14,3 +17,4 @@ OpenGLPSBufferData::OpenGLPSBufferData(cookie::BufferType bufferType) {
 		}
 	}
 }
+#endif

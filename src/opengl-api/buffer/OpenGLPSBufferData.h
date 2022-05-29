@@ -5,8 +5,10 @@
 #ifndef COOKIE_ENGINE_OPENGLPSBUFFERDATA_H
 #define COOKIE_ENGINE_OPENGLPSBUFFERDATA_H
 
+#if COOKIE_OPENGL
+
 #include "PlatformSpecificBufferData.h"
-#include <gl/glew.h>
+#include <GL/glew.h>
 
 struct OpenGLPSBufferData : public cookie::PlatformSpecificBufferData {
 	GLenum usage;
@@ -15,4 +17,5 @@ struct OpenGLPSBufferData : public cookie::PlatformSpecificBufferData {
 	explicit OpenGLPSBufferData(cookie::BufferType bufferType);
 };
 
+#endif
 #endif //COOKIE_ENGINE_OPENGLPSBUFFERDATA_H

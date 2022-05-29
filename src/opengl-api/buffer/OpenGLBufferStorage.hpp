@@ -8,39 +8,39 @@
 #ifndef OpenGLBufferStorage_hpp
 #define OpenGLBufferStorage_hpp
 
-#include <gl/glew.h>
+#if COOKIE_OPENGL
+
 #include "BufferStorage.hpp"
+#include "GL/glew.h"
 #include "PlatformSpecificBufferData.h"
 #include "OpenGLPSBufferData.h"
 
-class OpenGLBufferStorage : public cookie::BufferStorage {
-private:
-	GLuint vao{};
-	GLuint uboMaterial{};
-	GLuint vboVertex{};
-	GLuint vboIndex{};
-	GLuint tboMatrices{};
-	GLuint texMatrices{};
+namespace cookie {
 
-	std::unique_ptr<OpenGLPSBufferData> bufferData;
+	class OpenGLBufferStorage : public cookie::BufferStorage {
+	private:
+		GLuint vao{};
+		GLuint uboMaterial{};
+		GLuint vboVertex{};
+		GLuint vboIndex{};
+		GLuint sboMatrices{};
+		std::unique_ptr<OpenGLPSBufferData> bufferData;
+		void setupVertexElementBuffer(const cookie::MeshData &meshData) const;
+		void setupMatricesBuffer(const std::vector<glm::mat4> &matrices) const;
+		void setupMaterialBuffer(const cookie::MeshData &meshData) const;
 
-	void setupVertexElementBuffer(const cookie::MeshData &meshData) const;
-	void setupMatricesBuffer(const std::vector<glm::mat4>& matrices) const;
-	void setupMaterialBuffer(const cookie::MeshData &meshData) const;
+	public:
+		explicit OpenGLBufferStorage();
+		void bind() const override;
+		void unbind() const override;
+		void saveToBuffer(
+				const cookie::MeshData &meshData,
+				const std::vector<glm::mat4> &matrices,
+				std::unique_ptr<cookie::PlatformSpecificBufferData> data
+		) const override;
+		~OpenGLBufferStorage() override;
+	};
+}
 
-public:
-	explicit OpenGLBufferStorage();
-
-
-	void bind() const override;
-    void unbind() const override;
-	void saveToBuffer(
-			const cookie::MeshData &meshData,
-			const std::vector<glm::mat4>& matrices,
-			std::unique_ptr<cookie::PlatformSpecificBufferData> data
-	) const override;
-
-	~OpenGLBufferStorage() override;
-};
-
+#endif
 #endif /* OpenGLBufferStorage_hpp */

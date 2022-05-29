@@ -8,9 +8,10 @@
 #ifndef Cookie_hpp
 #define Cookie_hpp
 
-#include <CgAPI.h>
-#include <memory>
+#include "CgAPI.h"
 #include <mutex>
+#include <thread>
+#include <memory>
 #include "PlatformSpecificData.hpp"
 #include "Initializer.hpp"
 #include "Shader.hpp"
@@ -19,26 +20,45 @@
 namespace cookie {
 
 	class Cookie {
-	private:
+	protected:
 		static std::unique_ptr<Cookie> instance;
 		static std::mutex mutex;
 
-		explicit Cookie(CgAPI api);
-	public:
+		bool terminate = false;
 
+		std::mutex localMutex;
+		std::unique_ptr<std::thread> renderingLoop;
 		std::unique_ptr<PlatformSpecificData> platformData;
 		std::unique_ptr<Initializer> initializer;
-		std::shared_ptr<Scene> currentScene;
-		std::unique_ptr<Shader> defaultShader;
-		CgAPI currentAPI;
+		std::unique_ptr<Scene> currentScene;
 
+		explicit Cookie(CgAPI api);
+		void loopInternal();
+		void clearInternal();
+		void terminateInternal();
+		void prepareRendering();
+	public:
+		CgAPI currentAPI;
 		Cookie(Cookie &other) = delete;
 		Cookie(Cookie &&other) = delete;
+		virtual ~Cookie() = default;
 		void operator=(const Cookie &) = delete;
-		~Cookie();
+		void startRendering();
+		void onWindowResized(int32_t width, int32_t height);
+		void clear();
 
-		void setScene(std::shared_ptr<Scene> scene);
-		static Cookie& getInstance(CgAPI api = CgAPI::OpenGL);
+		template<class T = PlatformSpecificData>
+		T &getPlatformData() const {
+			static_assert(
+					std::is_base_of<PlatformSpecificData, T>::value,
+					"type parameter of this function must derive from cookie::PlatformSpecificData"
+			);
+			return dynamic_cast<T &>(*platformData);
+		}
+
+		Scene &getCurrentScene() const;
+		void setScene(std::unique_ptr<Scene> scene);
+		static Cookie &getInstance(CgAPI api = CgAPI::OpenGL);
 	};
 }
 #endif /* Cookie_hpp */

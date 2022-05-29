@@ -4,14 +4,16 @@
 //
 //  Created by Antiufieiev Michael on 05.08.2021.
 //
+#include "config.hpp"
+
+#if COOKIE_OPENGL
 
 #include "OpenGLTime.hpp"
-#include <GLFW/glfw3.h>
 
-double OpenGLTime::getProgramTime() {
-	return glfwGetTime();
+namespace cookie {
+	double OpenGLTime::getFrameTime() {
+		return 0.0;//TODO
+	}
 }
 
-double OpenGLTime::getFrameTime() {
-	return 0.0;//TODO
-}
+#endif

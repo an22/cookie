@@ -2,7 +2,9 @@
 // Created by Antiufieiev Michael on 12.08.2021.
 //
 
-#include "Material.h"
+#include "asset/Material.h"
+
+#include <utility>
 #include "Cookie.hpp"
 
 namespace cookie {
@@ -10,20 +12,35 @@ namespace cookie {
 	}
 
 	Material::Material(
+			std::string name,
+			const glm::vec4 &baseColor,
+			const glm::vec4 &emissiveColor,
+			float roughness,
+			float metallic,
+			float specular,
+			float opacity,
+			bool doubleSided,
 			std::vector<Texture> &textures
-	) : textures(std::move(textures)) {
+	) noexcept: GPUMaterial(
+			baseColor,
+			emissiveColor,
+			roughness,
+			metallic,
+			specular,
+			opacity,
+			doubleSided
+	), name(std::move(name)), textures(std::move(textures)) {
 	}
 
 	Material::Material(Material &&mat) noexcept:
 			GPUMaterial(
-					mat.diffuseColor,
-					mat.specularColor,
-					mat.ambientColor,
+					mat.baseColor,
 					mat.emissiveColor,
-					mat.transparencyColor,
+					mat.roughness,
+					mat.metallic,
+					mat.specular,
 					mat.opacity,
-					mat.shininess,
-					mat.refraction
+					mat.doubleSided
 			),
 			textures(std::move(mat.textures)),
 			name(std::move(mat.name)) {
@@ -31,13 +48,13 @@ namespace cookie {
 	}
 
 	Texture::Texture(uint32_t id, std::string path, Type type) : id(id),
-																	 path(std::move(path)),
-																	 type(type) {
+																 path(std::move(path)),
+																 type(type) {
 	}
 
 	Texture::Texture(uint32_t id, std::string path) : id(id),
-														  path(std::move(path)),
-														  type(Type::DIFFUSE) {
+													  path(std::move(path)),
+													  type(Type::DIFFUSE) {
 	}
 
 	Texture::Texture(Texture &&texture) noexcept: id(texture.id),
@@ -46,12 +63,16 @@ namespace cookie {
 		texture.id = 0;
 	}
 
-	GPUMaterial::GPUMaterial(const glm::vec3 &diffuseColor, const glm::vec3 &specularColor,
-							 const glm::vec3 &ambientColor, const glm::vec3 &emissiveColor,
-							 const glm::vec3 &transparencyColor, float opacity, float shininess, float refraction)
-			: diffuseColor(diffuseColor), specularColor(specularColor), ambientColor(ambientColor),
-			  emissiveColor(emissiveColor), transparencyColor(transparencyColor), opacity(opacity),
-			  shininess(shininess), refraction(refraction) {}
+	GPUMaterial::GPUMaterial(const glm::vec4 &baseColor,
+							 const glm::vec4 &emissiveColor,
+							 float roughness,
+							 float metallic,
+							 float specular,
+							 float opacity,
+							 bool doubleSided)
+			: baseColor(baseColor), emissiveColor(emissiveColor), roughness(roughness),
+			  metallic(metallic), specular(specular), opacity(opacity),
+			  doubleSided(doubleSided) {}
 
 	GPUMaterial::GPUMaterial() = default;
 }

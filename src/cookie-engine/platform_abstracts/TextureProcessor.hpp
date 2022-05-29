@@ -6,7 +6,7 @@
 #define COOKIE_ENGINE_TEXTUREPROCESSOR_HPP
 
 #include <ktx.h>
-#include "MeshStruct.h"
+#include "asset/MeshStruct.h"
 #include "Shader.hpp"
 
 namespace cookie {

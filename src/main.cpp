@@ -1,22 +1,21 @@
 //
-//  main.cpp
-// cookie-engine
+// Created by Michael on 5/26/2022.
 //
-//  Created by Antiufieiev Michael on 21.06.2021.
-//
+
+
 #include <iostream>
 #include "Cookie.hpp"
-#include "Cube.hpp"
+#include "CookieFactory.hpp"
+#include "DefaultFileManager.hpp"
+#include "Macro.h"
 
 int main() {
 	try {
+		cookie::CookieFactory::init(CgAPI::OpenGL, std::make_unique<cookie::DefaultFileManager>());
 		cookie::Cookie& engine = cookie::Cookie::getInstance(CgAPI::OpenGL);
-		auto scene = std::make_shared<cookie::Scene>();
-		engine.setScene(scene);
-		scene->addObject(std::make_shared<cookie::Cube>(0.0f, 0.0f, 0.0f));
-		engine.currentScene->startLoop();
+		engine.startRendering();
 	} catch (std::exception &e) {
-		std::cout << e.what() << std::endl;
+		LOG_E(e.what());
 	}
 	return 0;
 }
