@@ -21,7 +21,6 @@ namespace cookie {
 		glGenBuffers(1, &uboMaterial);
 		glGenBuffers(1, &vboIndex);
 		glGenBuffers(1, &sboMatrices);
-		glGenTextures(1, &texMatrices);
 	}
 
 	EGLBufferStorage::~EGLBufferStorage() {
@@ -29,7 +28,6 @@ namespace cookie {
 		glDeleteBuffers(1, &uboMaterial);
 		glDeleteBuffers(1, &vboIndex);
 		glDeleteBuffers(1, &sboMatrices);
-		glDeleteTextures(1, &texMatrices);
 		glDeleteVertexArrays(1, &vao);
 	}
 
@@ -90,17 +88,15 @@ namespace cookie {
 	}
 
 	inline void EGLBufferStorage::setupMatricesBuffer(const std::vector<glm::mat4> &matrices) const {
-		glBindBuffer(GL_TEXTURE_BUFFER, sboMatrices);
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, sboMatrices);
 		glBufferData(
-				GL_TEXTURE_BUFFER,
+				GL_SHADER_STORAGE_BUFFER,
 				sizeof(glm::mat4) * matrices.size(),
 				matrices.data(),
-				GL_STATIC_DRAW
+				GL_DYNAMIC_DRAW
 		);
-		glBindTexture(GL_TEXTURE_BUFFER, texMatrices);
-		glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, sboMatrices);
-		EGLErrorHandler::checkOpenGLError();
-		glBindBuffer(GL_TEXTURE_BUFFER, 0);
+		GLErrorHandler::checkOpenGLError();
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 	}
 
 	void EGLBufferStorage::setupMaterialBuffer(const cookie::MeshData &meshData) const {
@@ -117,24 +113,22 @@ namespace cookie {
 
 	void EGLBufferStorage::bind() const {
 		glBindVertexArray(vao);
-		glBindBuffer(GL_TEXTURE_BUFFER, sboMatrices);
-		glBindTexture(GL_TEXTURE_BUFFER, texMatrices);
-		glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, sboMatrices);
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, sboMatrices);
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, sboMatrices);
 		glBindBuffer(GL_UNIFORM_BUFFER, uboMaterial);
 		GLint id;
 		glGetIntegerv(GL_CURRENT_PROGRAM, &id);
-		unsigned int matrices_index = glGetUniformBlockIndex(id, "Material");
-		glUniformBlockBinding(id, matrices_index, 1);
-		glBindBufferBase(GL_UNIFORM_BUFFER, 1, uboMaterial);
-		EGLErrorHandler::checkOpenGLError();
+		unsigned int matrices_index = glGetUniformBlockIndex(id, MATERIAL_UNIFORM_BLOCK.c_str());
+		glUniformBlockBinding(id, matrices_index, 2);
+		glBindBufferBase(GL_UNIFORM_BUFFER, 2, uboMaterial);
+		GLErrorHandler::checkOpenGLError();
 	}
 
 	void EGLBufferStorage::unbind() const {
 		glBindVertexArray(0);
-		glBindBuffer(GL_TEXTURE_BUFFER, 0);
-		glBindTexture(GL_TEXTURE_BUFFER, 0);
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 		glBindBuffer(GL_UNIFORM_BUFFER, 0);
-		EGLErrorHandler::checkOpenGLError();
+		GLErrorHandler::checkOpenGLError();
 	}
 }
 
