@@ -7,7 +7,7 @@
 #include <OpenGLPlatformSpecificData.h>
 #include "core.hpp"
 #include "CookieFactory.hpp"
-#include "AndroidFileManager.hpp"
+#include "platform/android/AndroidFileManager.hpp"
 #include "tiny_gltf.h"
 
 extern "C" {
