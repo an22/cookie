@@ -71,7 +71,7 @@ namespace cookie {
 		static std::unique_ptr<cookie::PlatformSpecificData> createPlatformSpecificContainer();
 		static std::unique_ptr<cookie::TextureProcessor> provideTextureProcessor();
 		static std::unique_ptr<cookie::GlobalBufferStorage> provideGlobalBufferStorage();
-		static std::unique_ptr<cookie::SceneSectorManager> provideSceneSectorManager(float sectorSize, const glm::vec4& bounds);
+		static std::unique_ptr<cookie::SceneSectorManager> provideSceneSectorManager(float sectorSize, const Bounds& bounds);
 	};
 }
 

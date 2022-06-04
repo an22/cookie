@@ -5,7 +5,7 @@
 #include <iostream>
 #include <iterator>
 #include "Batch.hpp"
-#include "Mesh.hpp"
+#include "MeshComponent.hpp"
 #include "CookieFactory.hpp"
 #include "PlatformSpecificBufferData.h"
 
@@ -64,7 +64,7 @@ void cookie::Batch::combineMeshData(std::vector<Vertex> &vertices, std::vector<u
 	uint32_t indexOffset = 0;
 	int32_t i = 0;
 	for (auto &sceneObject: sceneObjects) {
-		const auto &mesh = sceneObject->getComponent<Mesh>();
+		const auto &mesh = sceneObject->getComponent<MeshComponent>();
 		const auto &meshIndices = mesh->getIndices();
 		auto &meshVertices = mesh->getVertices();
 
@@ -90,7 +90,7 @@ void cookie::Batch::calculateVertexAndIndexSize(uint32_t &vertexCount, uint32_t 
 	vertexCount = 0;
 	indexCount = 0;
 	for (auto &sceneObject: sceneObjects) {
-		const auto &mesh = sceneObject->getComponent<Mesh>();
+		const auto &mesh = sceneObject->getComponent<MeshComponent>();
 		vertexCount += mesh->getVertices().size();
 		indexCount += mesh->getIndices().size();
 	}

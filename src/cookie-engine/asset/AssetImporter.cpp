@@ -18,7 +18,7 @@
 #include "CookieFactory.hpp"
 #include "MeshStruct.h"
 #include "SceneObject.hpp"
-#include "Mesh.hpp"
+#include "MeshComponent.hpp"
 #include "Macro.h"
 #include "Utils.hpp"
 #include <memory>
@@ -60,8 +60,8 @@ namespace cookie {
 			size_t nodeIndex
 	) {
 		const auto &node = model.nodes[nodeIndex];
-		obj.name = node.name;
-		LOG_I("Importing node %s", obj.name.c_str());
+		obj.setName(node.name);
+		LOG_I("Importing node %s", obj.getName().c_str());
 		fetchMatrix(obj, node);
 		if (node.mesh != -1) {
 			auto &mesh = model.meshes[node.mesh];
@@ -71,6 +71,7 @@ namespace cookie {
 			std::vector<glm::vec3> outNormals;
 			std::shared_ptr<cookie::Material> material;
 			std::unique_ptr<cookie::MeshData> loadedMesh;
+			Bounds bounds{};
 
 			// For each primitive
 			for (const auto &meshPrimitive: mesh.primitives) {
@@ -91,6 +92,12 @@ namespace cookie {
 						bool hasTexCoords = outTexCoords.size() == outVertices.size();
 						bool hasNormals = outNormals.size() == outVertices.size();
 						for (auto &vertex: outVertices) {
+							if (bounds.min.x > vertex.position.x) bounds.min.x = vertex.position.x;
+							if (bounds.min.z > vertex.position.z) bounds.min.z = vertex.position.z;
+							if (bounds.min.y > vertex.position.y) bounds.min.y = vertex.position.y;
+							if (bounds.max.x < vertex.position.x) bounds.max.x = vertex.position.x;
+							if (bounds.max.z < vertex.position.z) bounds.max.z = vertex.position.z;
+							if (bounds.max.y < vertex.position.y) bounds.max.y = vertex.position.y;
 							if (hasTexCoords) {
 								vertex.texCoords = outTexCoords[i];
 							}
@@ -114,9 +121,9 @@ namespace cookie {
 					outIndices,
 					material
 			);
-			obj.addComponent(std::make_shared<cookie::Mesh>(std::move(loadedMesh)));
+			bounds.calculatePoints();
+			obj.addComponent(std::make_shared<cookie::MeshComponent>(std::move(loadedMesh), bounds));
 
-			// TODO bounding box
 			// TODO handle textures
 		}
 		for (size_t child: node.children) {
@@ -130,7 +137,7 @@ namespace cookie {
 		if (!node.matrix.empty()) {
 			LOG_I("Importing matrix");
 			auto mat = glm::make_mat4(node.matrix.data());
-			obj.transformation->setModelMatrix(mat);
+			obj.getTransformation()->setModelMatrix(mat);
 		} else {
 			glm::vec3 translation(0.0f);
 			auto rotation = glm::identity<glm::quat>();
@@ -149,7 +156,7 @@ namespace cookie {
 			if (node.scale.size() == 3) {
 				scale = glm::make_vec3(node.scale.data());
 			}
-			obj.transformation->transform(translation, rotation, scale);
+			obj.getTransformation()->transform(translation, rotation, scale);
 		}
 	}
 
@@ -397,7 +404,6 @@ namespace cookie {
 		std::unique_ptr<tinygltf::Model> scene(readModelFromFile(path));
 		LOG_I("Importing model at: %s", path.c_str());
 		parseScene(root, *scene);
-		root.invalidate();
 	}
 
 	tinygltf::Model *AssetImporter::readModelFromFile(const std::string &path) {

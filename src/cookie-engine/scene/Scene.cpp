@@ -1,7 +1,7 @@
 //
 // Created by Antiufieiev Michael on 07.08.2021.
 //
-#include <Mesh.hpp>
+#include <MeshComponent.hpp>
 #include <CookieFactory.hpp>
 #include <Cube.hpp>
 #include "Scene.hpp"
@@ -12,7 +12,7 @@ namespace cookie {
 	Scene::Scene() : drawUtils(CookieFactory::provideDrawUtils()),
 					 batchManager(std::make_unique<BatchManager>()),
 					 globalBufferStorage(CookieFactory::provideGlobalBufferStorage()),
-					 sceneSectorManager(CookieFactory::provideSceneSectorManager(1, glm::vec4(1))) {
+					 sceneSectorManager(CookieFactory::provideSceneSectorManager(1, Bounds())) {
 		auto width = Cookie::getInstance().getPlatformData().width();
 		auto height = Cookie::getInstance().getPlatformData().height();
 		sceneSettings = std::make_unique<SceneSettings>(
@@ -55,6 +55,7 @@ namespace cookie {
 		framerate.invalidateFrameRate();
 		currentShader->use();
 		display(framerate.frameTime, framerate.frameTime);
+		sceneSectorManager->update();
 	}
 
 	void Scene::addObject(const std::shared_ptr<SceneObject> &sceneObject) {

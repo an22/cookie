@@ -8,7 +8,7 @@
 #include <vector>
 #include <string>
 #include "Component.hpp"
-#include <glm/vec4.hpp>
+#include "vec4.hpp"
 
 namespace cookie {
 

@@ -6,7 +6,7 @@
 #define COOKIE_ENGINE_BATCHMANAGER_HPP
 
 #include <unordered_map>
-#include "asset/Material.h"
+#include "cookie-engine/component/Material.h"
 #include "Batch.hpp"
 #include "DrawUtils.h"
 

@@ -11,15 +11,18 @@
 #include <vector>
 #include "Sector.hpp"
 #include "Ray.hpp"
+#include "Bounds.hpp"
+#include "SceneObject.hpp"
 
 namespace cookie {
 	class SceneSectorManager {
 	private:
-		float sectorSize;
-		glm::vec4 bounds;
+		Bounds bounds;
+		std::vector<std::shared_ptr<SceneObject>> objects;
+		std::unordered_map<glm::ivec3, std::shared_ptr<Sector>, std::hash<glm::ivec3>> sectorMap;
 	public:
-		std::unordered_map<glm::i32vec3, cookie::Sector, std::hash<glm::i32vec3>> sectorMap;
-		SceneSectorManager(float sectorSize, const glm::vec4 &bounds);
+		SceneSectorManager(float sectorSize, const Bounds &bounds);
+		void update();
 	};
 }
 

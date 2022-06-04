@@ -92,7 +92,7 @@ namespace cookie {
 
 	std::unique_ptr<cookie::SceneSectorManager> CookieFactory::provideSceneSectorManager(
 			float sectorSize,
-			const glm::vec4 &bounds
+			const Bounds &bounds
 	) {
 		return std::make_unique<cookie::SceneSectorManager>(sectorSize, bounds);
 	}

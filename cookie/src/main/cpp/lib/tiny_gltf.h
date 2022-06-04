@@ -4375,7 +4375,7 @@ static bool ParseAccessor(Accessor *accessor, std::string *err, const json &o,
 
 #ifdef TINYGLTF_ENABLE_DRACO
 
-static void DecodeIndexBuffer(draco::Mesh *mesh, size_t componentSize,
+static void DecodeIndexBuffer(draco::MeshComponent *mesh, size_t componentSize,
                               std::vector<uint8_t> &outBuffer) {
   if (componentSize == 4) {
     assert(sizeof(mesh->face(draco::FaceIndex(0))[0]) == componentSize);
@@ -4384,7 +4384,7 @@ static void DecodeIndexBuffer(draco::Mesh *mesh, size_t componentSize,
   } else {
     size_t faceStride = componentSize * 3;
     for (draco::FaceIndex f(0); f < mesh->num_faces(); ++f) {
-      const draco::Mesh::Face &face = mesh->face(f);
+      const draco::MeshComponent::Face &face = mesh->face(f);
       if (componentSize == 2) {
         uint16_t indices[3] = {(uint16_t)face[0].value(),
                                (uint16_t)face[1].value(),
@@ -4403,7 +4403,7 @@ static void DecodeIndexBuffer(draco::Mesh *mesh, size_t componentSize,
 }
 
 template <typename T>
-static bool GetAttributeForAllPoints(draco::Mesh *mesh,
+static bool GetAttributeForAllPoints(draco::MeshComponent *mesh,
                                      const draco::PointAttribute *pAttribute,
                                      std::vector<uint8_t> &outBuffer) {
   size_t byteOffset = 0;
@@ -4422,7 +4422,7 @@ static bool GetAttributeForAllPoints(draco::Mesh *mesh,
   return true;
 }
 
-static bool GetAttributeForAllPoints(uint32_t componentType, draco::Mesh *mesh,
+static bool GetAttributeForAllPoints(uint32_t componentType, draco::MeshComponent *mesh,
                                      const draco::PointAttribute *pAttribute,
                                      std::vector<uint8_t> &outBuffer) {
   bool decodeResult = false;
@@ -4496,7 +4496,7 @@ static bool ParseDracoExtension(Primitive *primitive, Model *model,
   if (!decodeResult.ok()) {
     return false;
   }
-  const std::unique_ptr<draco::Mesh> &mesh = decodeResult.value();
+  const std::unique_ptr<draco::MeshComponent> &mesh = decodeResult.value();
 
   // create new bufferView for indices
   if (primitive->indices >= 0) {
@@ -5705,7 +5705,7 @@ bool TinyGLTF::LoadFromString(Model *model, std::string *err, std::string *warn,
     }
   }
 
-  // 6. Parse Mesh
+  // 6. Parse MeshComponent
   {
     bool success = ForEachInArray(v, "meshes", [&](const json &o) {
       if (!IsObject(o)) {
@@ -5730,8 +5730,8 @@ bool TinyGLTF::LoadFromString(Model *model, std::string *err, std::string *warn,
   }
 
   // Assign missing bufferView target types
-  // - Look for missing Mesh indices
-  // - Look for missing Mesh attributes
+  // - Look for missing MeshComponent indices
+  // - Look for missing MeshComponent attributes
   for (auto &mesh : model->meshes) {
     for (auto &primitive : mesh.primitives) {
       if (primitive.indices >

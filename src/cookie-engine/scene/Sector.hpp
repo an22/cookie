@@ -5,11 +5,12 @@
 #ifndef COOKIE_SECTOR_HPP
 #define COOKIE_SECTOR_HPP
 
-#include <list>
+#include <unordered_set>
+#include <cstdint>
 
 namespace cookie {
 	struct Sector {
-		std::list<int32_t> faceIndexList;
+		std::unordered_set<uint32_t> indexList;
 	};
 }
 

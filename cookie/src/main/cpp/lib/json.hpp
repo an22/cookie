@@ -19787,7 +19787,7 @@ m_value(std::move(other.m_value))
 // check that passed value is valid
 other.assert_invariant(false);
 
-// invalidate payload
+// invalidateTransformation payload
 other.m_type = value_t::null;
 other.m_value = {};
 
