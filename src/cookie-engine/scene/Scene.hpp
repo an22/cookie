@@ -9,14 +9,18 @@
 
 #include <glm/glm.hpp>
 #include <memory>
-#include "DrawUtils.h"
+#include <vector>
 #include "FramerateInfo.hpp"
-#include "SceneSectorManager.hpp"
-#include "SceneSettings.hpp"
-#include "GlobalBufferStorage.hpp"
-#include "draw/batch/BatchManager.hpp"
 
 namespace cookie {
+	class SceneSettings;
+	class BatchManager;
+	class SceneSectorManager;
+	class GlobalBufferStorage;
+	class DrawUtils;
+	class SceneObject;
+	class Shader;
+
 	class Scene {
 	private:
 		std::unique_ptr<SceneSectorManager> sceneSectorManager;

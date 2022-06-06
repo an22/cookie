@@ -8,14 +8,12 @@
 
 #if COOKIE_OPENGL
 
-#include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <string>
 #include "OpenGLShader.hpp"
 #include "CookieFactory.hpp"
-#include <fstream>
-#include <sstream>
+#include "FileManager.hpp"
 
 namespace cookie {
 	OpenGLShader::OpenGLShader(const std::string &vertexPath, const std::string &fragmentPath) : cookie::Shader() {

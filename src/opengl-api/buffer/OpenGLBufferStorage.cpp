@@ -9,6 +9,7 @@
 #if COOKIE_OPENGL
 
 #include "CookieConstants.hpp"
+#include "Material.h"
 #include "OpenGLBufferStorage.hpp"
 #include "GLErrorHandler.hpp"
 
@@ -31,8 +32,7 @@ namespace cookie {
 
 	void OpenGLBufferStorage::saveToBuffer(
 			const cookie::MeshData &meshData,
-			const std::vector<glm::mat4> &matrices,
-			std::unique_ptr<cookie::PlatformSpecificBufferData> data
+			const std::vector<glm::mat4> &matrices
 	) const {
 		setupVertexElementBuffer(meshData);
 		setupMaterialBuffer(meshData);

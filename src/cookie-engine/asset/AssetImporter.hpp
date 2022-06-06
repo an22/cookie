@@ -5,8 +5,6 @@
 #ifndef COOKIE_ENGINE_ASSETIMPORTER_HPP
 #define COOKIE_ENGINE_ASSETIMPORTER_HPP
 
-#include "MeshStruct.h"
-#include "SceneObject.hpp"
 #include <string>
 #include <vector>
 #include <tiny_gltf.h>
@@ -190,55 +188,9 @@ namespace cookie {
 		}
 	};
 
+	class SceneObject;
+
 	class AssetImporter {
-	private:
-		static inline void parseSceneRecursively(
-				cookie::SceneObject &obj,
-				const std::vector<std::shared_ptr<cookie::Material>> &materials,
-				const tinygltf::Model &model,
-				size_t nodeIndex
-		);
-		static inline std::unique_ptr<intArrayBase> defineIndicesArray(
-				const tinygltf::Model &model,
-				const tinygltf::Primitive &meshPrimitive
-		);
-		static inline void fetchIndices(
-				const tinygltf::Model &model,
-				const tinygltf::Primitive &meshPrimitive,
-				std::vector<uint32_t> &outIndices
-		);
-		static inline void fetchPrimitiveTriangles(
-				const tinygltf::Model &model,
-				const tinygltf::Primitive &meshPrimitive,
-				std::vector<uint32_t> &indices,
-				std::vector<Vertex> &outVertices,
-				std::vector<glm::vec2> &outTexCoords,
-				std::vector<glm::vec3> &outNormals
-		);
-		static inline void fetchTexCoords(
-				const tinygltf::Accessor &attribAccessor,
-				const unsigned char *dataPtr,
-				size_t count,
-				int byteStride,
-				std::vector<glm::vec2> &texCoords
-		);
-		static inline void fetchNormals(
-				const tinygltf::Accessor &attribAccessor,
-				const unsigned char *dataPtr,
-				size_t count,
-				int byteStride,
-				std::vector<glm::vec3> &normals
-		);
-		static inline void fetchPositions(
-				const tinygltf::Accessor &attribAccessor,
-				const unsigned char *dataPtr,
-				size_t count,
-				int byteStride,
-				std::vector<Vertex> &vertices
-		);
-		static inline void fetchMatrix(cookie::SceneObject &obj, const tinygltf::Node &node);
-		static inline void parseScene(cookie::SceneObject &root, const tinygltf::Model &model);
-		static inline tinygltf::Model *readModelFromFile(const std::string &path);
 	public:
 		static void importMesh(SceneObject &root, const std::string &path);
 	};

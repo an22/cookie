@@ -15,13 +15,14 @@
 #include <string>
 #include <unordered_map>
 #include <typeindex>
-#include <DrawUtils.h>
-#include <Time.hpp>
-#include <type_quat.hpp>
-#include "Component.hpp"
-#include "Transformation.hpp"
+#include <glm/detail/type_quat.hpp>
 
 namespace cookie {
+
+	class DrawUtils;
+	class SceneObject;
+	class Transformation;
+	class Component;
 
 	class SceneObject {
 		typedef std::vector<std::shared_ptr<SceneObject>> PtrSceneObjVector;

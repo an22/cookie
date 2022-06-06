@@ -3,8 +3,9 @@
 //
 
 #include <MeshComponent.hpp>
-#include <EGLErrorHandler.hpp>
 #include "BatchManager.hpp"
+#include "SceneObject.hpp"
+#include "BufferStorage.hpp"
 
 void cookie::BatchManager::onNewObject(const std::shared_ptr<SceneObject> &sceneObject) {
 	auto meshComponent = sceneObject->getComponent<MeshComponent>();

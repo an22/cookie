@@ -7,26 +7,11 @@
 
 #include <vector>
 #include <string>
-#include "Component.hpp"
-#include "vec4.hpp"
+#include <glm/vec4.hpp>
 
 namespace cookie {
 
-	struct Texture {
-		enum class Type : char {
-			SPECULAR = 's',
-			DIFFUSE = 'd'
-		};
-		uint32_t id;
-		std::string path;
-		Type type;
-
-		Texture(uint32_t id, std::string path, Type type);
-		Texture(uint32_t id, std::string path);
-		Texture(const Texture &) = delete;
-		Texture &operator=(const Texture &) = delete;
-		Texture(Texture &&) noexcept;
-	};
+	class Texture;
 
 	struct GPUMaterial {
 		glm::vec4 baseColor;
@@ -48,7 +33,7 @@ namespace cookie {
 				bool doubleSided
 		);
 
-		virtual ~GPUMaterial() = default;
+		virtual ~GPUMaterial();
 	};
 
 	class Material : public GPUMaterial {
@@ -70,7 +55,7 @@ namespace cookie {
 				std::vector<Texture> &textures
 		) noexcept;
 		Material(Material &&) noexcept;
-		~Material() override = default;
+		~Material() override;
 		void onPreDraw();
 	};
 }

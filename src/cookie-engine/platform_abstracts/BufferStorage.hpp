@@ -11,7 +11,6 @@
 #include <memory>
 #include <vector>
 #include "asset/MeshStruct.h"
-#include "PlatformSpecificBufferData.h"
 
 namespace cookie {
 	class BufferStorage {
@@ -24,8 +23,7 @@ namespace cookie {
         virtual void unbind() const =  0;
 		virtual void saveToBuffer(
 				const MeshData &meshData,
-				const std::vector<glm::mat4> &matrices,
-				std::unique_ptr<PlatformSpecificBufferData> data
+				const std::vector<glm::mat4> &matrices
 		) const = 0;
 	};
 }

@@ -5,10 +5,12 @@
 //  Created by Antiufieiev Michael on 06.08.2021.
 //
 
-#include "MeshComponent.hpp"
-#include "CookieFactory.hpp"
-#include "DrawUtils.h"
 #include <utility>
+#include "CookieFactory.hpp"
+#include "MeshComponent.hpp"
+#include "MeshStruct.h"
+#include "TextureProcessor.hpp"
+#include "DrawUtils.h"
 
 namespace cookie {
 

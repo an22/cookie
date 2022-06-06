@@ -8,7 +8,6 @@
 #include "OpenGLCookieFactory.h"
 #include "OpenGlGlobalBufferStorage.hpp"
 #include "OpenGLTextureProcessor.hpp"
-#include "OpenGLPSBufferData.h"
 #include "OpenGLPlatformSpecificData.h"
 #include "OpenGLDrawUtils.h"
 #include "OpenGLTime.hpp"
@@ -38,12 +37,6 @@ namespace cookie {
 
 	std::unique_ptr<cookie::DrawUtils> OpenGLCookieFactory::provideDrawUtilsImpl() const {
 		return std::unique_ptr<cookie::DrawUtils>(new OpenGLDrawUtils());
-	}
-
-	std::unique_ptr<cookie::PlatformSpecificBufferData> OpenGLCookieFactory::provideBufferDataImpl(
-			cookie::BufferType bufferType
-	) const {
-		return std::unique_ptr<cookie::PlatformSpecificBufferData>(new OpenGLPSBufferData(bufferType));
 	}
 
 	std::unique_ptr<cookie::PlatformSpecificData> OpenGLCookieFactory::createPlatformSpecificContainerImpl() const {

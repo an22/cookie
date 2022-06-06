@@ -23,7 +23,6 @@ namespace cookie {
 		[[nodiscard]] std::unique_ptr<cookie::BufferStorage> provideBufferStorageImpl() const override;
 		[[nodiscard]] std::unique_ptr<cookie::Initializer> provideInitializerImpl() const override;
 		[[nodiscard]] std::unique_ptr<cookie::DrawUtils> provideDrawUtilsImpl() const override;
-		[[nodiscard]] std::unique_ptr<cookie::PlatformSpecificBufferData> provideBufferDataImpl(cookie::BufferType bufferType) const override;
 		[[nodiscard]] std::unique_ptr<cookie::PlatformSpecificData> createPlatformSpecificContainerImpl() const override;
 		[[nodiscard]] std::unique_ptr<cookie::TextureProcessor> provideTextureProcessorImpl() const override;
 		[[nodiscard]] std::unique_ptr<cookie::GlobalBufferStorage> provideGlobalBufferStorageImpl() const override;

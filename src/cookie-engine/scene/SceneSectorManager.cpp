@@ -5,6 +5,9 @@
 #include "SceneSectorManager.hpp"
 #include "MeshComponent.hpp"
 #include "SectorComponent.hpp"
+#include "Transformation.hpp"
+#include "SceneObject.hpp"
+#include "Sector.hpp"
 
 cookie::SceneSectorManager::SceneSectorManager(float sectorSize, const Bounds &bounds)
 		: sectorMap(), bounds(bounds), objects() {
@@ -45,3 +48,5 @@ void cookie::SceneSectorManager::update() {
 		}
 	}
 }
+
+cookie::SceneSectorManager::~SceneSectorManager() = default;

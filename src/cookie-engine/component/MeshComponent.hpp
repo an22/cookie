@@ -11,9 +11,14 @@
 #include <vector>
 #include <memory>
 #include "Bounds.hpp"
-#include "TextureProcessor.hpp"
+#include "Component.hpp"
 
 namespace cookie {
+
+	struct MeshData;
+	struct Vertex;
+	class TextureProcessor;
+	class Material;
 
 	class MeshComponent : public Component {
 	private:

@@ -6,10 +6,16 @@
 //
 
 #include "SceneObject.hpp"
-#include "asset/AssetImporter.hpp"
+#include "AssetImporter.hpp"
 #include "SectorComponent.hpp"
-#include <MeshComponent.hpp>
+#include "Sector.hpp"
+#include "MeshComponent.hpp"
+#include "MeshStruct.h"
+#include "Material.h"
+#include "TextureProcessor.hpp"
+#include "DrawUtils.h"
 #include "Transformation.hpp"
+#include "Shader.hpp"
 
 namespace cookie {
 

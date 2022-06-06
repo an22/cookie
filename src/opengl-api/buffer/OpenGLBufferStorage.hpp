@@ -12,8 +12,6 @@
 
 #include "BufferStorage.hpp"
 #include "GL/glew.h"
-#include "PlatformSpecificBufferData.h"
-#include "OpenGLPSBufferData.h"
 
 namespace cookie {
 
@@ -24,7 +22,6 @@ namespace cookie {
 		GLuint vboVertex{};
 		GLuint vboIndex{};
 		GLuint sboMatrices{};
-		std::unique_ptr<OpenGLPSBufferData> bufferData;
 		void setupVertexElementBuffer(const cookie::MeshData &meshData) const;
 		void setupMatricesBuffer(const std::vector<glm::mat4> &matrices) const;
 		void setupMaterialBuffer(const cookie::MeshData &meshData) const;
@@ -35,8 +32,7 @@ namespace cookie {
 		void unbind() const override;
 		void saveToBuffer(
 				const cookie::MeshData &meshData,
-				const std::vector<glm::mat4> &matrices,
-				std::unique_ptr<cookie::PlatformSpecificBufferData> data
+				const std::vector<glm::mat4> &matrices
 		) const override;
 		~OpenGLBufferStorage() override;
 	};

@@ -4,8 +4,10 @@
 
 #include <stdexcept>
 #include "TextureProcessor.hpp"
+#include "Shader.hpp"
+#include "Texture.hpp"
 
-std::unique_ptr<cookie::Texture> cookie::TextureProcessor::readTextureAt(const std::string &path, Texture::Type type) {
+std::unique_ptr<cookie::Texture> cookie::TextureProcessor::readTextureAt(const std::string &path, TextureType type) {
 	ktxTexture *texture;
 	KTX_error_code errorCode = ktxTexture_CreateFromNamedFile(
 			path.c_str(),
@@ -19,3 +21,7 @@ std::unique_ptr<cookie::Texture> cookie::TextureProcessor::readTextureAt(const s
 	ktxTexture_Destroy(texture);
 	return std::make_unique<Texture>(id, path, type);
 }
+
+cookie::TextureProcessor::TextureProcessor() = default;
+
+cookie::TextureProcessor::~TextureProcessor() = default;

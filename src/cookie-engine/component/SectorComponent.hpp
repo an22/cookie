@@ -8,10 +8,12 @@
 #include <unordered_set>
 #include <memory>
 #include "Component.hpp"
-#include "Sector.hpp"
 
 
 namespace cookie {
+
+	class Sector;
+
 	class SectorComponent : public Component {
 	private:
 		std::unordered_set<std::shared_ptr<Sector>> sectors;

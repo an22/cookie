@@ -5,6 +5,7 @@
 #include "Material.h"
 
 #include <utility>
+#include "Texture.hpp"
 #include "Cookie.hpp"
 
 namespace cookie {
@@ -47,21 +48,7 @@ namespace cookie {
 
 	}
 
-	Texture::Texture(uint32_t id, std::string path, Type type) : id(id),
-																 path(std::move(path)),
-																 type(type) {
-	}
-
-	Texture::Texture(uint32_t id, std::string path) : id(id),
-													  path(std::move(path)),
-													  type(Type::DIFFUSE) {
-	}
-
-	Texture::Texture(Texture &&texture) noexcept: id(texture.id),
-												  path(std::move(texture.path)),
-												  type(texture.type) {
-		texture.id = 0;
-	}
+	Material::~Material() = default;
 
 	GPUMaterial::GPUMaterial(const glm::vec4 &baseColor,
 							 const glm::vec4 &emissiveColor,
@@ -73,6 +60,8 @@ namespace cookie {
 			: baseColor(baseColor), emissiveColor(emissiveColor), roughness(roughness),
 			  metallic(metallic), specular(specular), opacity(opacity),
 			  doubleSided(doubleSided) {}
+
+	GPUMaterial::~GPUMaterial() = default;
 
 	GPUMaterial::GPUMaterial() = default;
 }

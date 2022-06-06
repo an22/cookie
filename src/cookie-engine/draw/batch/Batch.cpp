@@ -2,12 +2,17 @@
 // Created by Antiufieiev Michael on 10.10.2021.
 //
 
-#include <iostream>
 #include <iterator>
-#include "Batch.hpp"
-#include "MeshComponent.hpp"
 #include "CookieFactory.hpp"
-#include "PlatformSpecificBufferData.h"
+#include "Batch.hpp"
+#include "SceneObject.hpp"
+#include "MeshComponent.hpp"
+#include "MeshStruct.h"
+#include "Material.h"
+#include "TextureProcessor.hpp"
+#include "BufferStorage.hpp"
+#include "Shader.hpp"
+#include "DrawUtils.h"
 
 void cookie::Batch::addObject(std::shared_ptr<SceneObject> sceneObject) {
 	sceneObjects.push_back(std::move(sceneObject));
@@ -22,6 +27,8 @@ cookie::Batch::Batch(const std::shared_ptr<Material> &material) : bufferStorage(
 																  material(std::shared_ptr(material)),
 																  sceneObjects{} {
 }
+
+cookie::Batch::~Batch() = default;
 
 void cookie::Batch::syncWithVideoBuffer() {
 	uint32_t vertexSize;
@@ -42,8 +49,7 @@ void cookie::Batch::syncWithVideoBuffer() {
 	MeshData meshData("", vertices, indices, material);
 	bufferStorage->saveToBuffer(
 			meshData,
-			matrices,
-			CookieFactory::provideBufferData(cookie::BufferType::VERTEX_BUFFER)
+			matrices
 	);
 }
 
@@ -56,7 +62,7 @@ void cookie::Batch::draw(const DrawUtils &drawUtils) {
 			config.indicesSize.data(),
 			config.baseVertexOffset.data()
 	);
-    bufferStorage->unbind();
+	bufferStorage->unbind();
 }
 
 void cookie::Batch::combineMeshData(std::vector<Vertex> &vertices, std::vector<uint32_t> &indices, std::vector<glm::mat4> &matrices) {
@@ -71,8 +77,8 @@ void cookie::Batch::combineMeshData(std::vector<Vertex> &vertices, std::vector<u
 		for (auto &vertex: meshVertices) {
 			vertex.matrixOffset = i;
 		}
-		std::copy (meshVertices.begin(), meshVertices.end(), std::back_inserter(vertices));
-		std::copy (meshIndices.begin(), meshIndices.end(), std::back_inserter(indices));
+		std::copy(meshVertices.begin(), meshVertices.end(), std::back_inserter(vertices));
+		std::copy(meshIndices.begin(), meshIndices.end(), std::back_inserter(indices));
 
 		matrices.emplace_back(sceneObject->getModelMat());
 

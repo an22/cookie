@@ -1,6 +1,3 @@
-# For more information about using CMake with Android Studio, read the
-# documentation: https://d.android.com/studio/projects/add-native-code.html
-
 # Sets the minimum version of CMake required to build the native library.
 
 cmake_minimum_required(VERSION 3.18.1)
@@ -13,7 +10,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 MACRO(HEADER_DIRECTORIES return_list)
-    FILE(GLOB_RECURSE new_list *.h *.hpp)
+    FILE(GLOB_RECURSE new_list src/*.h src/*.hpp)
     SET(dir_list "")
     FOREACH (file_path ${new_list})
         GET_FILENAME_COMPONENT(dir_path ${file_path} PATH)
@@ -23,7 +20,7 @@ MACRO(HEADER_DIRECTORIES return_list)
     SET(${return_list} ${dir_list})
 ENDMACRO()
 
-add_subdirectory(cookie/src/main/cpp/lib/glm)
+add_subdirectory(lib/glm)
 
 #Find shared libraries
 find_library(glm SHARED)

@@ -5,7 +5,7 @@
 #ifndef COOKIE_ENGINE_TRANSFORMATION_HPP
 #define COOKIE_ENGINE_TRANSFORMATION_HPP
 
-#include <glm.hpp>
+#include <glm/glm.hpp>
 #include <vector>
 #include <memory>
 #include <glm/gtx/quaternion.hpp>

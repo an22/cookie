@@ -6,15 +6,15 @@
 #define COOKIE_SCENESECTORMANAGER_HPP
 
 #include <unordered_map>
-#include <glm.hpp>
+#include <glm/glm.hpp>
 #include <glm/gtx/hash.hpp>
 #include <vector>
-#include "Sector.hpp"
-#include "Ray.hpp"
 #include "Bounds.hpp"
-#include "SceneObject.hpp"
 
 namespace cookie {
+	class SceneObject;
+	class Sector;
+
 	class SceneSectorManager {
 	private:
 		Bounds bounds;
@@ -22,6 +22,7 @@ namespace cookie {
 		std::unordered_map<glm::ivec3, std::shared_ptr<Sector>, std::hash<glm::ivec3>> sectorMap;
 	public:
 		SceneSectorManager(float sectorSize, const Bounds &bounds);
+		~SceneSectorManager();
 		void update();
 	};
 }

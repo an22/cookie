@@ -1,11 +1,15 @@
 //
 // Created by Antiufieiev Michael on 07.08.2021.
 //
-#include <MeshComponent.hpp>
-#include <CookieFactory.hpp>
-#include <Cube.hpp>
+#include "CookieFactory.hpp"
+#include "Cube.hpp"
 #include "Scene.hpp"
 #include "Cookie.hpp"
+#include "SceneSettings.hpp"
+#include "BatchManager.hpp"
+#include "SceneSectorManager.hpp"
+#include "GlobalBufferStorage.hpp"
+#include "MeshComponent.hpp"
 
 namespace cookie {
 
