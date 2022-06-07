@@ -41,14 +41,29 @@ namespace cookie {
 
 	inline void OpenGLBufferStorage::setupVertexElementBuffer(const cookie::MeshData &meshData) const {
 		glBindVertexArray(vao);
-		glBindBuffer(GL_ARRAY_BUFFER, vboVertex);
-		glBufferData(
-				GL_ARRAY_BUFFER,
-				sizeof(cookie::Vertex) * meshData.vertices.size(),
-				meshData.vertices.data(),
-				GL_STATIC_DRAW
-		);
+		fillVertexBuffer(meshData);
+		fillElementsBuffer(meshData);
+		setAttributePointers();
+		GLErrorHandler::checkOpenGLError();
+		glBindVertexArray(0);
+	}
 
+	inline void OpenGLBufferStorage::setAttributePointers() {
+		// vertex coords
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) nullptr);
+		// vertex normals
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) offsetof(Vertex, normal));
+		// vertex texture coords
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) offsetof(Vertex, texCoords));
+		// matrix index
+		glEnableVertexAttribArray(3);
+		glVertexAttribIPointer(3, 1, GL_INT, sizeof(Vertex), (void *) offsetof(Vertex, matrixOffset));
+	}
+
+	inline void OpenGLBufferStorage::fillElementsBuffer(const MeshData &meshData) const {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIndex);
 		glBufferData(
 				GL_ELEMENT_ARRAY_BUFFER,
@@ -56,33 +71,16 @@ namespace cookie {
 				meshData.indices.data(),
 				GL_STATIC_DRAW
 		);
-		// vertex coords
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(cookie::Vertex), (void *) nullptr);
-		// vertex normals
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(
-				1,
-				3,
-				GL_FLOAT,
-				GL_FALSE,
-				sizeof(cookie::Vertex),
-				(void *) offsetof(cookie::Vertex, normal));
-		// vertex texture coords
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(
-				2, 2, GL_FLOAT, GL_FALSE, sizeof(cookie::Vertex),
-				(void *) offsetof(cookie::Vertex, texCoords));
+	}
 
-		glEnableVertexAttribArray(3);
-		glVertexAttribIPointer(
-				3,
-				1,
-				GL_INT,
-				sizeof(cookie::Vertex),
-				(void *) offsetof(cookie::Vertex, matrixOffset));
-		GLErrorHandler::checkOpenGLError();
-		glBindVertexArray(0);
+	inline void OpenGLBufferStorage::fillVertexBuffer(const MeshData &meshData) const {
+		glBindBuffer(GL_ARRAY_BUFFER, vboVertex);
+		glBufferData(
+				GL_ARRAY_BUFFER,
+				sizeof(Vertex) * meshData.vertices.size(),
+				meshData.vertices.data(),
+				GL_STATIC_DRAW
+		);
 	}
 
 	inline void OpenGLBufferStorage::setupMatricesBuffer(const std::vector<glm::mat4> &matrices) const {

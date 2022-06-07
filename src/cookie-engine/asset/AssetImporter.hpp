@@ -48,14 +48,14 @@ namespace cookie {
 	struct intArrayBase {
 		virtual ~intArrayBase() = default;
 		virtual unsigned int operator[](size_t) const = 0;
-		virtual size_t size() const = 0;
+		[[nodiscard]] virtual size_t size() const = 0;
 	};
 
 /// Interface of any adapted array that returns float data
 	struct floatArrayBase {
 		virtual ~floatArrayBase() = default;
 		virtual float operator[](size_t) const = 0;
-		virtual size_t size() const = 0;
+		[[nodiscard]] virtual size_t size() const = 0;
 	};
 
 /// An array that loads interger types, returns them as int
@@ -63,14 +63,14 @@ namespace cookie {
 	struct intArray : public intArrayBase {
 		arrayAdapter<T> adapter;
 
-		intArray(const arrayAdapter<T> &a) : adapter(a) {
+		explicit intArray(const arrayAdapter<T> &a) : adapter(a) {
 		}
 
 		unsigned int operator[](size_t position) const override {
 			return static_cast<unsigned int>(adapter[position]);
 		}
 
-		size_t size() const override {
+		[[nodiscard]] size_t size() const override {
 			return adapter.elemCount;
 		}
 	};
@@ -79,14 +79,14 @@ namespace cookie {
 	struct floatArray : public floatArrayBase {
 		arrayAdapter<T> adapter;
 
-		floatArray(const arrayAdapter<T> &a) : adapter(a) {
+		explicit floatArray(const arrayAdapter<T> &a) : adapter(a) {
 		}
 
 		float operator[](size_t position) const override {
 			return static_cast<float>(adapter[position]);
 		}
 
-		size_t size() const override {
+		[[nodiscard]] size_t size() const override {
 			return adapter.elemCount;
 		}
 	};
@@ -101,14 +101,14 @@ namespace cookie {
 	struct v2fArray {
 		arrayAdapter<v2f> adapter;
 
-		v2fArray(const arrayAdapter<v2f> &a) : adapter(a) {
+		explicit v2fArray(const arrayAdapter<v2f> &a) : adapter(a) {
 		}
 
 		v2f operator[](size_t position) const {
 			return adapter[position];
 		}
 
-		size_t size() const {
+		[[nodiscard]] size_t size() const {
 			return adapter.elemCount;
 		}
 	};
@@ -116,14 +116,14 @@ namespace cookie {
 	struct v3fArray {
 		arrayAdapter<v3f> adapter;
 
-		v3fArray(const arrayAdapter<v3f> &a) : adapter(a) {
+		explicit v3fArray(const arrayAdapter<v3f> &a) : adapter(a) {
 		}
 
 		v3f operator[](size_t position) const {
 			return adapter[position];
 		}
 
-		size_t size() const {
+		[[nodiscard]] size_t size() const {
 			return adapter.elemCount;
 		}
 	};
@@ -131,14 +131,14 @@ namespace cookie {
 	struct v4fArray {
 		arrayAdapter<v4f> adapter;
 
-		v4fArray(const arrayAdapter<v4f> &a) : adapter(a) {
+		explicit v4fArray(const arrayAdapter<v4f> &a) : adapter(a) {
 		}
 
 		v4f operator[](size_t position) const {
 			return adapter[position];
 		}
 
-		size_t size() const {
+		[[nodiscard]] size_t size() const {
 			return adapter.elemCount;
 		}
 	};
@@ -146,14 +146,14 @@ namespace cookie {
 	struct v2dArray {
 		arrayAdapter<v2d> adapter;
 
-		v2dArray(const arrayAdapter<v2d> &a) : adapter(a) {
+		explicit v2dArray(const arrayAdapter<v2d> &a) : adapter(a) {
 		}
 
 		v2d operator[](size_t position) const {
 			return adapter[position];
 		}
 
-		size_t size() const {
+		[[nodiscard]] size_t size() const {
 			return adapter.elemCount;
 		}
 	};
@@ -161,14 +161,14 @@ namespace cookie {
 	struct v3dArray {
 		arrayAdapter<v3d> adapter;
 
-		v3dArray(const arrayAdapter<v3d> &a) : adapter(a) {
+		explicit v3dArray(const arrayAdapter<v3d> &a) : adapter(a) {
 		}
 
 		v3d operator[](size_t position) const {
 			return adapter[position];
 		}
 
-		size_t size() const {
+		[[nodiscard]] size_t size() const {
 			return adapter.elemCount;
 		}
 	};
@@ -176,14 +176,14 @@ namespace cookie {
 	struct v4dArray {
 		arrayAdapter<v4d> adapter;
 
-		v4dArray(const arrayAdapter<v4d> &a) : adapter(a) {
+		explicit v4dArray(const arrayAdapter<v4d> &a) : adapter(a) {
 		}
 
 		v4d operator[](size_t position) const {
 			return adapter[position];
 		}
 
-		size_t size() const {
+		[[nodiscard]] size_t size() const {
 			return adapter.elemCount;
 		}
 	};

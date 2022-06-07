@@ -26,10 +26,8 @@ namespace cookie {
 		static inline void checkOpenGLError() {
 #ifndef NDEBUG
 			GLenum glErr = glGetError();
-			const GLubyte* string;
 			while (glErr != GL_NO_ERROR) {
-				string = gluErrorString(glErr);
-				LOG_E("%s", string);
+				LOG_E("%s", gluErrorString(glErr));
 				glErr = glGetError();
 			}
 #endif

@@ -25,7 +25,9 @@ namespace cookie {
 		void setupVertexElementBuffer(const cookie::MeshData &meshData) const;
 		void setupMatricesBuffer(const std::vector<glm::mat4> &matrices) const;
 		void setupMaterialBuffer(const cookie::MeshData &meshData) const;
-
+		void fillElementsBuffer(const MeshData &meshData) const;
+		void fillVertexBuffer(const MeshData &meshData) const;
+		static void setAttributePointers();
 	public:
 		explicit OpenGLBufferStorage();
 		void bind() const override;

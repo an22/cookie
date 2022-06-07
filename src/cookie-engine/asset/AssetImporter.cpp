@@ -90,10 +90,7 @@ namespace cookie {
 		const auto &indicesAccessor = model.accessors[meshPrimitive.indices];
 		const auto &bufferView = model.bufferViews[indicesAccessor.bufferView];
 		const auto &buffer = model.buffers[bufferView.buffer];
-		const auto dataAddress = buffer.data
-										 .data() +
-								 bufferView.byteOffset +
-								 indicesAccessor.byteOffset;
+		const auto dataAddress = buffer.data.data() + bufferView.byteOffset + indicesAccessor.byteOffset;
 		const auto byteStride = indicesAccessor.ByteStride(bufferView);
 		const auto count = indicesAccessor.count;
 
@@ -101,21 +98,13 @@ namespace cookie {
 		// This permit to get a type agnostic way of reading the index buffer
 		switch (indicesAccessor.componentType) {
 			case TINYGLTF_COMPONENT_TYPE_INT:
-				return std::make_unique<intArray<int32_t>>(
-						arrayAdapter<int32_t>(dataAddress, count, byteStride)
-				);
+				return std::make_unique<intArray<int32_t>>(arrayAdapter<int32_t>(dataAddress, count, byteStride));
 			case TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT:
-				return std::make_unique<intArray<uint32_t>>(
-						arrayAdapter<uint32_t>(dataAddress, count, byteStride)
-				);
+				return std::make_unique<intArray<uint32_t>>(arrayAdapter<uint32_t>(dataAddress, count, byteStride));
 			case TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT:
-				return std::make_unique<intArray<uint16_t>>(
-						arrayAdapter<uint16_t>(dataAddress, count, byteStride)
-				);
+				return std::make_unique<intArray<uint16_t>>(arrayAdapter<uint16_t>(dataAddress, count, byteStride));
 			case TINYGLTF_COMPONENT_TYPE_SHORT:
-				return std::make_unique<intArray<int16_t>>(
-						arrayAdapter<int16_t>(dataAddress, count, byteStride)
-				);
+				return std::make_unique<intArray<int16_t>>(arrayAdapter<int16_t>(dataAddress, count, byteStride));
 			default:
 				break;
 		}
@@ -185,7 +174,6 @@ namespace cookie {
 			const int byteStride,
 			std::vector<glm::vec3> &outNormals
 	) {
-
 		LOG_I("Normal type: %d", attribAccessor.type);
 
 		switch (attribAccessor.type) {

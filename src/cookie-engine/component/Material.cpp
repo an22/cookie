@@ -13,7 +13,7 @@ namespace cookie {
 	}
 
 	Material::Material(
-			std::string name,
+			std::string  name,
 			const glm::vec4 &baseColor,
 			const glm::vec4 &emissiveColor,
 			float roughness,
