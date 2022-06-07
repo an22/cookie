@@ -1,0 +1,12 @@
+//
+// Created by Michael on 5/26/2022.
+//
+
+#ifndef COOKIE_ENGINE_CONFIG_HPP
+#define COOKIE_ENGINE_CONFIG_HPP
+
+#define COOKIE_OPENGL 1
+#define COOKIE_EGL 0
+#define COOKIE_VULKAN 0
+
+#endif //COOKIE_ENGINE_CONFIG_HPP

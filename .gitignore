@@ -10,6 +10,12 @@
 .DS_Store
 /build
 /captures
+cmake-build-debug
 .externalNativeBuild
 .cxx
 local.properties
+/CMakeSettings.json
+/out/
+/cmake-build-release/
+/CMakeFiles/
+/.idea/

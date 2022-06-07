@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.antufeevmichael.cookie">
+<manifest package="com.antufeevmichael.cookie"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-feature android:glEsVersion="0x00030002" android:required="true"/>
+    <application android:allowNativeHeapPointerTagging="false"/>
 
 </manifest>
