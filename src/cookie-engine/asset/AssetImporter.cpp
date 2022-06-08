@@ -299,7 +299,9 @@ namespace cookie {
 			std::vector<glm::vec3> outNormals;
 			std::shared_ptr<cookie::Material> material;
 			std::unique_ptr<cookie::MeshData> loadedMesh;
-			Bounds bounds{};
+
+			glm::vec3 min(std::numeric_limits<float>::max());
+			glm::vec3 max(std::numeric_limits<float>::min());
 
 			// For each primitive
 			for (const auto &meshPrimitive: mesh.primitives) {
@@ -320,12 +322,12 @@ namespace cookie {
 						bool hasTexCoords = outTexCoords.size() == outVertices.size();
 						bool hasNormals = outNormals.size() == outVertices.size();
 						for (auto &vertex: outVertices) {
-							if (bounds.min.x > vertex.position.x) bounds.min.x = vertex.position.x;
-							if (bounds.min.z > vertex.position.z) bounds.min.z = vertex.position.z;
-							if (bounds.min.y > vertex.position.y) bounds.min.y = vertex.position.y;
-							if (bounds.max.x < vertex.position.x) bounds.max.x = vertex.position.x;
-							if (bounds.max.z < vertex.position.z) bounds.max.z = vertex.position.z;
-							if (bounds.max.y < vertex.position.y) bounds.max.y = vertex.position.y;
+							if (min.x > vertex.position.x) min.x = vertex.position.x;
+							if (min.z > vertex.position.z) min.z = vertex.position.z;
+							if (min.y > vertex.position.y) min.y = vertex.position.y;
+							if (max.x < vertex.position.x) max.x = vertex.position.x;
+							if (max.z < vertex.position.z) max.z = vertex.position.z;
+							if (max.y < vertex.position.y) max.y = vertex.position.y;
 							if (hasTexCoords) {
 								vertex.texCoords = outTexCoords[i];
 							}
@@ -349,8 +351,11 @@ namespace cookie {
 					outIndices,
 					material
 			);
-			bounds.calculatePoints();
-			obj.addComponent(std::make_shared<cookie::MeshComponent>(std::move(loadedMesh), bounds));
+			obj.addComponent(std::make_shared<cookie::MeshComponent>(
+									 std::move(loadedMesh),
+									 Bounds(glm::vec4(min, 1), glm::vec4(max, 1))
+							 )
+			);
 
 			// TODO handle textures
 		}

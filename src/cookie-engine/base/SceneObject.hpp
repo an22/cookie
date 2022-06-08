@@ -31,7 +31,7 @@ namespace cookie {
 		static std::atomic_uint32_t current_id;
 		uint32_t id;
 		std::string name;
-		bool is_static = false;
+		bool is_static;
 
 		ComponentMap components;
 		PtrSceneObjVector children;
@@ -39,10 +39,7 @@ namespace cookie {
 		std::shared_ptr<Transformation> transformation;
 	public:
 
-		SceneObject(const std::string &path, float x, float y, float z);
-		SceneObject(const std::string &path, glm::vec3 pos);
-		explicit SceneObject(glm::vec3 pos);
-		explicit SceneObject(glm::mat4 mTransformation);
+		explicit SceneObject(const std::string &path);
 		SceneObject();
 		virtual ~SceneObject();
 

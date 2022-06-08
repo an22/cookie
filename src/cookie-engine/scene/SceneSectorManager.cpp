@@ -19,7 +19,6 @@ void cookie::SceneSectorManager::update() {
 	std::shared_ptr<MeshComponent> mesh;
 	std::shared_ptr<SectorComponent> sectors;
 	std::shared_ptr<Sector> currentSector;
-	Bounds objBounds{};
 	glm::ivec3 cell{};
 	for (auto &obj: objects) {
 		mesh = obj->getComponent<MeshComponent>();
@@ -27,10 +26,10 @@ void cookie::SceneSectorManager::update() {
 		if (obj->getTransformation()->isChanged() && mesh != nullptr) {
 			obj->getTransformation()->setIsChanged(false);
 			sectors->clear();
-			objBounds = mesh->getBounds();
-			for (uint32_t x = floor(objBounds.min.x); x < (uint32_t) ceil(objBounds.max.x); x++) {
-				for (uint32_t y = floor(objBounds.min.y); y < (uint32_t) ceil(objBounds.max.y); y++) {
-					for (uint32_t z = floor(objBounds.min.z); z < (uint32_t) ceil(objBounds.max.z); y++) {
+			const Bounds& objBounds = mesh->getBounds();
+			for (auto x = static_cast<int32_t>(floor(objBounds.min.x)); x <= static_cast<int32_t>(floor(objBounds.max.x)); x++) {
+				for (auto y = static_cast<int32_t>(floor(objBounds.min.y)); y <= static_cast<int32_t>(floor(objBounds.max.y)); y++) {
+					for (auto z = static_cast<int32_t>(floor(objBounds.min.z)); z <= static_cast<int32_t>(floor(objBounds.max.z)); z++) {
 						cell = {x, y, z};
 						auto sectorIt = sectorMap.find(cell);
 						if (sectorIt != sectorMap.end()) {
@@ -46,6 +45,26 @@ void cookie::SceneSectorManager::update() {
 				}
 			}
 		}
+	}
+}
+
+void cookie::SceneSectorManager::addObject(const std::shared_ptr<SceneObject> &sceneObject) {
+	objects.emplace_back(sceneObject);
+	auto it = sceneObject->childrenBegin();
+	auto end = sceneObject->childrenEnd();
+	while (it != end) {
+		addObject(*it);
+		it++;
+	}
+}
+
+void cookie::SceneSectorManager::removeObject(const std::shared_ptr<SceneObject> &sceneObject) {
+	objects.erase(std::find(objects.begin(), objects.end(), sceneObject));
+	auto it = sceneObject->childrenBegin();
+	auto end = sceneObject->childrenEnd();
+	while (it != end) {
+		removeObject(*it);
+		it++;
 	}
 }
 

@@ -6,17 +6,19 @@
 #define COOKIE_ENGINE_BOUNDS_HPP
 
 #include <glm/glm.hpp>
+#include <vector>
+
 namespace cookie {
 	struct Bounds {
-		glm::vec4 points[8];
+		std::vector<glm::vec4> points;
 		glm::vec4 min;
 		glm::vec4 max;
 
-		Bounds();
+		Bounds(const glm::vec4 &min, const glm::vec4 &max);
 		Bounds(const Bounds &bounds);
 		~Bounds();
 		void calculatePoints();
-		void transform(const glm::mat4 &transformation);
+		Bounds transform(const glm::mat4 &transformation);
 	};
 }
 

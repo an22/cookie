@@ -16,7 +16,7 @@ namespace cookie {
 	Scene::Scene() : drawUtils(CookieFactory::provideDrawUtils()),
 					 batchManager(std::make_unique<BatchManager>()),
 					 globalBufferStorage(CookieFactory::provideGlobalBufferStorage()),
-					 sceneSectorManager(CookieFactory::provideSceneSectorManager(1, Bounds())) {
+					 sceneSectorManager(CookieFactory::provideSceneSectorManager(1, Bounds(glm::vec4(-100,-100,-100,1),glm::vec4(100,100,100,1)))) {
 		auto width = Cookie::getInstance().getPlatformData().width();
 		auto height = Cookie::getInstance().getPlatformData().height();
 		sceneSettings = std::make_unique<SceneSettings>(
@@ -58,19 +58,19 @@ namespace cookie {
 	void Scene::renderFrame() {
 		framerate.invalidateFrameRate();
 		currentShader->use();
-		display(framerate.frameTime, framerate.frameTime);
 		sceneSectorManager->update();
+		display(framerate.frameTime, framerate.frameTime);
 	}
 
 	void Scene::addObject(const std::shared_ptr<SceneObject> &sceneObject) {
 		sceneObjects.push_back(sceneObject);
 		batchManager->onNewObject(sceneObject);
+		sceneSectorManager->addObject(sceneObject);
 	}
 
 	void Scene::removeObject(const std::shared_ptr<SceneObject> &sceneObject) {
-		sceneObjects.erase(
-				std::find(sceneObjects.begin(), sceneObjects.end(), sceneObject)
-		);
+		sceneObjects.erase(std::find(sceneObjects.begin(), sceneObjects.end(), sceneObject));
+		sceneSectorManager->removeObject(sceneObject);
 	}
 
 	SceneSettings &Scene::getSettings() {
@@ -78,7 +78,7 @@ namespace cookie {
 	}
 
 	void Scene::fillScene() {
-		addObject(std::make_shared<cookie::Cube>(0.0f, 0.0f, 0.0f));
+		addObject(std::make_shared<cookie::Cube>());
 	}
 
 	void Scene::resize(int32_t width, int32_t height) {

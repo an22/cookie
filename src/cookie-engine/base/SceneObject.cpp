@@ -27,24 +27,11 @@ namespace cookie {
 							glm::vec3(0.0f),
 							glm::identity<glm::quat>(),
 							glm::vec3(1.0f)
-					))), children(), id(current_id++) {
+					))), children(), id(current_id++), is_static(true) {
 		addComponent(std::make_shared<SectorComponent>());
 	}
 
-	SceneObject::SceneObject(glm::mat4 transformation) : SceneObject() {
-
-	}
-
-	SceneObject::SceneObject(glm::vec3 pos) : SceneObject() {
-		transformation->translate(pos);
-	}
-
-	SceneObject::SceneObject(const std::string &path, float x, float y, float z) : SceneObject(
-			path,
-			glm::vec3(x, y, z)) {
-	}
-
-	SceneObject::SceneObject(const std::string &path, glm::vec3 pos) : SceneObject(pos) {
+	SceneObject::SceneObject(const std::string &path) : SceneObject() {
 		AssetImporter::importMesh(*this, path);
 	}
 
@@ -79,8 +66,8 @@ namespace cookie {
 	}
 
 	void SceneObject::addChild(const std::shared_ptr<SceneObject> &child) {
-		transformation->addChild(child->transformation);
 		child->transformation->setParent(transformation);
+		transformation->addChild(child->transformation);
 		children.push_back(std::shared_ptr(child));
 	}
 
