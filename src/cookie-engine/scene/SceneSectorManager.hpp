@@ -23,6 +23,8 @@ namespace cookie {
 	public:
 		SceneSectorManager(float sectorSize, const Bounds &bounds);
 		~SceneSectorManager();
+		void addObject(const std::shared_ptr<SceneObject> &sceneObject);
+		void removeObject(const std::shared_ptr<SceneObject> &sceneObject);
 		void update();
 	};
 }

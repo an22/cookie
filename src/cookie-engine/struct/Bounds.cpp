@@ -5,7 +5,7 @@
 #include <limits>
 
 namespace cookie {
-	void Bounds::transform(const glm::mat4 &transformation) {
+	Bounds Bounds::transform(const glm::mat4 &transformation) {
 		min = {std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), 1};
 		max = {std::numeric_limits<float>::min(), std::numeric_limits<float>::min(), std::numeric_limits<float>::min(), 1};
 		for (auto &point: points) {
@@ -17,11 +17,7 @@ namespace cookie {
 			if (max.z < point.z) max.z = point.z;
 			if (max.y < point.y) max.y = point.y;
 		}
-	}
-
-	Bounds::Bounds() : min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), 1),
-					   max(std::numeric_limits<float>::min(), std::numeric_limits<float>::min(), std::numeric_limits<float>::min(), 1) {
-
+		return { min, max };
 	}
 
 	void Bounds::calculatePoints() {
@@ -33,6 +29,10 @@ namespace cookie {
 		points[5] = {max.x, max.y, min.z, 1};
 		points[6] = max;
 		points[7] = {min.x, max.y, max.z, 1};
+	}
+
+	Bounds::Bounds(const glm::vec4 &min, const glm::vec4 &max) : min(min), max(max), points(8) {
+		calculatePoints();
 	}
 
 	Bounds::~Bounds() = default;

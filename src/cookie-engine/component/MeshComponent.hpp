@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <memory>
+#include <glm/mat4x4.hpp>
 #include "Bounds.hpp"
 #include "Component.hpp"
 
@@ -25,14 +26,15 @@ namespace cookie {
 		std::unique_ptr<TextureProcessor> textureProcessor;
 		// mesh data
 		std::unique_ptr<MeshData> meshData;
-		Bounds bounds;
+		Bounds staticBounds;
+		Bounds transformedBounds;
 	public:
 		[[nodiscard]] const Bounds &getBounds() const;
 		[[nodiscard]] std::vector<Vertex> &getVertices() const;
 		[[nodiscard]] const std::vector<unsigned int> &getIndices() const;
 		[[nodiscard]] std::shared_ptr<Material> getMaterial() const;
+		void updateMatrix(const glm::mat4& transformation);
 		MeshComponent(std::unique_ptr<MeshData> meshData, const Bounds& _bounds);
-		MeshComponent();
 		~MeshComponent() override = default;
 	};
 }

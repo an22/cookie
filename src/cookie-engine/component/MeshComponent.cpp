@@ -19,12 +19,8 @@ namespace cookie {
 			const Bounds &_bounds
 	) : meshData(std::move(meshData)),
 		textureProcessor(CookieFactory::provideTextureProcessor()),
-		bounds(_bounds) {
-	}
-
-	MeshComponent::MeshComponent() : meshData(std::make_unique<MeshData>()),
-									 textureProcessor(CookieFactory::provideTextureProcessor()),
-									 bounds() {
+		staticBounds(_bounds),
+		transformedBounds(_bounds) {
 	}
 
 	std::vector<Vertex> &MeshComponent::getVertices() const {
@@ -40,6 +36,11 @@ namespace cookie {
 	}
 
 	const Bounds &MeshComponent::getBounds() const {
-		return bounds;
+		return staticBounds;
 	}
+
+	void MeshComponent::updateMatrix(const glm::mat4 &transformation) {
+		transformedBounds = staticBounds.transform(transformation);
+	}
+
 }
