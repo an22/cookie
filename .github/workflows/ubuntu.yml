@@ -17,7 +17,7 @@ env:
 
 jobs:
   build:
-    # The CMake configure and build commands are platform agnostic and should work equally
+    # The CMake configure and build commands are platform-agnostic and should work equally
     # well on Windows or Mac.  You can convert this to a matrix build if you need
     # cross-platform coverage.
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
@@ -42,6 +42,7 @@ jobs:
           sudo apt-get -y install libglew-dev
           sudo apt-get -y install libglm-dev
           sudo apt-get -y install libglfw3-dev
+          sudo apt-get -y install assimp
       - name: Setup GCC
         run: |
           sudo rm /usr/bin/gcc

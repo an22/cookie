@@ -1,0 +1,7 @@
+/cmake-build-debug/
+/cookie-engine.xcodeproj/
+.idea/*
+/CMakeFiles/
+/cmake-build-release/
+/out
+/.vs

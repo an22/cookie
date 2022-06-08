@@ -9,65 +9,84 @@
 #define SceneObject_hpp
 
 #include <glm/glm.hpp>
+#include <vector>
+#include <atomic>
 #include <memory>
+#include <string>
 #include <unordered_map>
 #include <typeindex>
-#include <DrawUtils.h>
-#include <Time.hpp>
-#include <CookieFactory.hpp>
-#include "Component.hpp"
+#include <glm/detail/type_quat.hpp>
 
 namespace cookie {
-    class SceneObject {
-    private:
-        std::unique_ptr<Time> time = CookieFactory::provideTimeManager();
-    protected:
-        bool is_static = false;
-        glm::vec3 position{};
-        glm::mat4 modelMat{};
-        std::unordered_map<std::type_index, std::unique_ptr<Component>> components;
-    public:
-        explicit SceneObject(glm::vec3 pos);
-        SceneObject();
-        SceneObject(float x, float y, float z);
-        virtual ~SceneObject() = 0;
 
-        const glm::mat4 &getModelMat();
+	class DrawUtils;
+	class SceneObject;
+	class Transformation;
+	class Component;
 
-        [[nodiscard]] bool isStatic() const;
+	class SceneObject {
+		typedef std::vector<std::shared_ptr<SceneObject>> PtrSceneObjVector;
+		typedef std::unordered_map<std::type_index, std::shared_ptr<Component>> ComponentMap;
+	protected:
+		static std::atomic_uint32_t current_id;
+		uint32_t id;
+		std::string name;
+		bool is_static;
 
-        virtual void transform(const glm::mat4 &transformation);
-        virtual void setStatic(bool isStatic);
-        virtual void setPosition(const glm::vec3 &position);
-        virtual void setPosition(float x, float y, float z);
+		ComponentMap components;
+		PtrSceneObjVector children;
 
-        virtual void draw(DrawUtils &utils, glm::mat4 &viewMatrix, glm::mat4 &projMatrix);
+		std::shared_ptr<Transformation> transformation;
+	public:
 
-        template<class ComponentType>
-        void addComponent(std::unique_ptr<ComponentType> component) {
-            static_assert(std::is_base_of<Component, ComponentType>::value,
-                          "type parameter of this class must derive from Component class");
-            components[typeid(ComponentType)] = std::move(component);
-        }
+		explicit SceneObject(const std::string &path);
+		SceneObject();
+		virtual ~SceneObject();
 
-        template<class ComponentType>
-        ComponentType &removeComponent() {
-            auto component = std::move(components[typeid(ComponentType)]);
-            components.erase(typeid(ComponentType));
-            return dynamic_cast<ComponentType>(component);
-        }
+		[[nodiscard]] const std::shared_ptr<Transformation> &getTransformation() const;
+		[[nodiscard]] const std::string &getName() const;
+		[[nodiscard]] uint32_t getId() const;
+		[[nodiscard]] const glm::mat4 &getModelMat() const;
+		[[nodiscard]] bool isStatic() const;
 
-        template<class ComponentType>
-        ComponentType *getComponent() {
-            auto item = components.find(typeid(ComponentType));
-            if (item != components.end()) {
-                return dynamic_cast<ComponentType *>(item->second.get());
-            }
-            return nullptr;
-        }
+		virtual void setStatic(bool isStatic);
+		void setName(const std::string &name);
 
-    };
+		virtual void draw(const DrawUtils &utils);
+
+		virtual void addChild(const std::shared_ptr<SceneObject> &child);
+		virtual std::shared_ptr<SceneObject> getChildAt(unsigned int position);
+		virtual void removeChild(const std::shared_ptr<SceneObject> &child);
+
+		PtrSceneObjVector::iterator childrenBegin() noexcept;
+		PtrSceneObjVector::iterator childrenEnd() noexcept;
+
+		//Templates
+		template<class ComponentType>
+		void addComponent(std::shared_ptr<ComponentType> component) {
+			static_assert(
+					std::is_base_of<Component, ComponentType>::value,
+					"type parameter of this class must derive from Component class"
+			);
+			components[typeid(ComponentType)] = std::shared_ptr(component);
+		}
+
+		template<class ComponentType>
+		ComponentType &removeComponent() {
+			auto component = std::move(components[typeid(ComponentType)]);
+			components.erase(typeid(ComponentType));
+			return dynamic_cast<ComponentType>(component);
+		}
+
+		template<class ComponentType>
+		std::shared_ptr<ComponentType> getComponent() {
+			auto item = components.find(typeid(ComponentType));
+			if (item != components.end()) {
+				return std::dynamic_pointer_cast<ComponentType>(item->second);
+			}
+			return nullptr;
+		}
+	};
 }
-
 
 #endif /* SceneObject_hpp */

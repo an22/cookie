@@ -8,14 +8,16 @@
 #ifndef Initializer_hpp
 #define Initializer_hpp
 
+#include "PlatformSpecificData.hpp"
+
 namespace cookie {
 	class Initializer {
 	public:
 		Initializer() = default;
 		virtual ~Initializer() = default;
 
-		virtual void initGraphicsAPIResources() const = 0;
-		virtual void destroyGraphicsAPIResources() const = 0;
+		virtual void initGraphicsAPIResources(PlatformSpecificData& data) const = 0;
+		virtual void destroyGraphicsAPIResources(PlatformSpecificData& data) const = 0;
 	};
 }
 #endif /* Initializer_hpp */

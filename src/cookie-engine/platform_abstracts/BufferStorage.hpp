@@ -8,24 +8,24 @@
 #ifndef BufferStorage_hpp
 #define BufferStorage_hpp
 
-#include <cstdio>
 #include <memory>
-#include "MeshStruct.h"
-#include "PlatformSpecificBufferData.h"
+#include <vector>
+#include "asset/MeshStruct.h"
 
 namespace cookie {
-    class BufferStorage {
+	class BufferStorage {
 
-    public:
-        explicit BufferStorage();
-        virtual ~BufferStorage();
+	public:
+		explicit BufferStorage();
+		virtual ~BufferStorage();
 
-        virtual void bind() = 0;
-        virtual void saveToBuffer(
-                const MeshData &meshData,
-                std::unique_ptr<PlatformSpecificBufferData> data
-        ) = 0;
-    };
+		virtual void bind() const = 0;
+        virtual void unbind() const =  0;
+		virtual void saveToBuffer(
+				const MeshData &meshData,
+				const std::vector<glm::mat4> &matrices
+		) const = 0;
+	};
 }
 
 #endif /* BufferStorage_hpp */

@@ -8,6 +8,8 @@
 #ifndef Time_hpp
 #define Time_hpp
 
+#include <chrono>
+
 namespace cookie {
 
 	class Time {
@@ -15,7 +17,7 @@ namespace cookie {
 	public:
 		Time() = default;
 		virtual ~Time() = default;
-		virtual double getProgramTime() = 0;
+		std::chrono::steady_clock::time_point getProgramTime();
 		virtual double getFrameTime() = 0;
 	};
 }
