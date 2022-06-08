@@ -1,6 +1,7 @@
 # cookie
 ![ci_status](https://github.com/an22/cookie/actions/workflows/macOS.yml/badge.svg?branch=develop)
 ![ci_status](https://github.com/an22/cookie/actions/workflows/ubuntu.yml/badge.svg?branch=develop)
+![ci_status](https://github.com/an22/cookie/actions/workflows/windows.yml/badge.svg?branch=develop)
 
 [![CodeFactor](https://www.codefactor.io/repository/github/an22/cookie/badge)](https://www.codefactor.io/repository/github/an22/cookie)
 
