@@ -8,8 +8,25 @@
 #include "config.hpp"
 #include "Util.h"
 #include "CookieFactory.hpp"
+#include "SceneSectorManager.hpp"
+#include "TextureProcessor.hpp"
+#include "DrawUtils.h"
+#include "Time.hpp"
+#include "Shader.hpp"
+#include "BufferStorage.hpp"
+#include "Initializer.hpp"
+#include "PlatformSpecificData.hpp"
+#include "GlobalBufferStorage.hpp"
+#include "FileManager.hpp"
+#include "Bounds.hpp"
+
+#if COOKIE_EGL
 #include "EGLCookieFactory.h"
+#endif
+#if COOKIE_OPENGL
 #include "OpenGLCookieFactory.h"
+#endif
+
 #include <memory>
 
 namespace cookie {
@@ -28,12 +45,11 @@ namespace cookie {
 				break;
 #endif
 #if COOKIE_EGL
-			case CgAPI::OpenGLES3:
-				instance = std::unique_ptr<CookieFactory>(new EGLCookieFactory(api));
-				break;
+				case CgAPI::OpenGLES3:
+					instance = std::unique_ptr<CookieFactory>(new EGLCookieFactory(api));
+					break;
 #endif
 				//TODO case Vulkan:
-				//TODO case DirectX:
 			default:
 				cookie::throwAPIUnsupported();
 		}
@@ -73,11 +89,6 @@ namespace cookie {
 		return getFactory().provideDrawUtilsImpl();
 	}
 
-	std::unique_ptr<cookie::PlatformSpecificBufferData>
-	CookieFactory::provideBufferData(cookie::BufferType bufferType) {
-		return getFactory().provideBufferDataImpl(bufferType);
-	}
-
 	std::unique_ptr<cookie::PlatformSpecificData> CookieFactory::createPlatformSpecificContainer() {
 		return getFactory().createPlatformSpecificContainerImpl();
 	}
@@ -92,7 +103,7 @@ namespace cookie {
 
 	std::unique_ptr<cookie::SceneSectorManager> CookieFactory::provideSceneSectorManager(
 			float sectorSize,
-			const glm::vec4 &bounds
+			const Bounds &bounds
 	) {
 		return std::make_unique<cookie::SceneSectorManager>(sectorSize, bounds);
 	}

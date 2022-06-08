@@ -13,7 +13,7 @@
 namespace cookie {
 	class Cube : public SceneObject {
 	public:
-		Cube(float x, float y, float z);
+		Cube();
 
 		~Cube() override = default;
 	};

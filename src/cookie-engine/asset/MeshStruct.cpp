@@ -3,8 +3,7 @@
 //
 
 #include "MeshStruct.h"
-
-#include <utility>
+#include "Material.h"
 
 namespace cookie {
 
@@ -25,13 +24,18 @@ namespace cookie {
 													  material(std::move(meshData.material)) {
 	}
 
+	MeshData::MeshData() = default;
+
+	MeshData::~MeshData() = default;
+
 	Vertex::Vertex(
 			const glm::vec3 &position,
 			const glm::vec3 &normal,
 			const glm::vec2 &texCoords
 	) : position(position),
 		normal(normal),
-		texCoords(texCoords) {
+		texCoords(texCoords),
+		matrixOffset(-1) {
 	}
 
 	Vertex::Vertex(Vertex &&vertex) noexcept: position(vertex.position),
@@ -40,19 +44,11 @@ namespace cookie {
 											  matrixOffset(vertex.matrixOffset) {
 	}
 
-	Vertex::Vertex(const Vertex &vertex) : position(vertex.position),
-										   texCoords(vertex.texCoords),
-										   normal(vertex.normal),
-										   matrixOffset(vertex.matrixOffset) {
+	Vertex::~Vertex() = default;
 
-	}
+	Vertex::Vertex() = default;
 
-	Vertex &Vertex::operator=(const Vertex &vertex) {
-		this->position = vertex.position;
-		this->normal = vertex.normal;
-		this->texCoords = vertex.texCoords;
-		this->matrixOffset = vertex.matrixOffset;
+	Vertex::Vertex(const Vertex &vertex) = default;
 
-		return *this;
-	}
+	Vertex &Vertex::operator=(const Vertex &vertex) = default;
 }

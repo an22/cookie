@@ -15,8 +15,8 @@ namespace cookie {
 	std::unique_ptr<Cookie> Cookie::instance;
 
 	Cookie::Cookie(CgAPI api) : platformData(CookieFactory::createPlatformSpecificContainer()),
-								initializer(CookieFactory::provideInitializer()) {
-		currentAPI = api;
+								initializer(CookieFactory::provideInitializer()),
+								currentAPI(api) {
 	}
 
 	void Cookie::setScene(std::unique_ptr<Scene> scene) {

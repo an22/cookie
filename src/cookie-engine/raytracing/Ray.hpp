@@ -5,7 +5,7 @@
 #ifndef COOKIE_RAY_HPP
 #define COOKIE_RAY_HPP
 
-#include <glm.hpp>
+#include <glm/glm.hpp>
 
 class Ray {
 private:
@@ -13,9 +13,9 @@ private:
 	glm::vec3 dir;
 public:
 	Ray(const glm::vec3 &from, const glm::vec3 &to);
-	const glm::vec3 &getFrom() const;
+	[[nodiscard]] const glm::vec3 &getFrom() const;
 	void setFrom(const glm::vec3 &from);
-	const glm::vec3 &getDir() const;
+	[[nodiscard]] const glm::vec3 &getDir() const;
 	void setDir(const glm::vec3 &to);
 };
 

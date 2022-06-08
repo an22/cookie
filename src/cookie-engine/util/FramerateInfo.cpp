@@ -5,7 +5,7 @@
 //  Created by Antiufieiev Michael on 06.08.2021.
 //
 
-#include <iostream>
+#include "Time.hpp"
 #include "Macro.h"
 #include "FramerateInfo.hpp"
 #include "CookieFactory.hpp"
@@ -29,4 +29,6 @@ namespace cookie {
 			lastTimestamp = framerateTimestamp;
 		}
 	}
+
+	FramerateInfo::~FramerateInfo() = default;
 }

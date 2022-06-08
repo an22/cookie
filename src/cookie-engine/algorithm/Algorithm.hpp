@@ -5,7 +5,7 @@
 #ifndef COOKIE_ALGORITHM_HPP
 #define COOKIE_ALGORITHM_HPP
 #include <vector>
-#include <glm.hpp>
+#include <glm/glm.hpp>
 
 namespace cookie {
 	inline glm::i32vec3 nextBox(const glm::vec3 &at);

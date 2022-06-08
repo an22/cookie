@@ -15,7 +15,7 @@ namespace cookie {
 	private:
 		AAssetManager *manager;
 	public:
-		AndroidFileManager(AAssetManager *mgr);
+		explicit AndroidFileManager(AAssetManager *mgr);
 		AAssetManager *getManager() const;
 		std::byte *readEntireFile(
 				const std::string &path,

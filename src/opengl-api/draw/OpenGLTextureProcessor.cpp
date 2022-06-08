@@ -8,6 +8,7 @@
 #include <GL/glew.h>
 #include <stdexcept>
 #include "OpenGLTextureProcessor.hpp"
+#include "Texture.hpp"
 
 namespace cookie {
 	void OpenGLTextureProcessor::bindTexturesToShader(
@@ -23,11 +24,11 @@ namespace cookie {
 			// retrieve texture number (the N in diffuse_textureN)
 			const auto &texture = textures[i];
 			switch (texture.type) {
-				case cookie::Texture::Type::SPECULAR:
+				case cookie::TextureType::SPECULAR:
 					name = "specularTxr";
 					number = std::to_string(++specularCount);
 					break;
-				case cookie::Texture::Type::DIFFUSE:
+				case cookie::TextureType::DIFFUSE:
 					name = "diffuseTxr";
 					number = std::to_string(++diffuseCount);
 					break;

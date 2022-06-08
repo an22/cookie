@@ -10,21 +10,24 @@
 
 #include <memory>
 #include <mutex>
-#include <glm.hpp>
-#include "SceneSectorManager.hpp"
-#include "TextureProcessor.hpp"
-#include "DrawUtils.h"
-#include "Time.hpp"
-#include "Shader.hpp"
-#include "BufferStorage.hpp"
-#include "Initializer.hpp"
-#include "PlatformSpecificBufferData.h"
-#include "PlatformSpecificData.hpp"
-#include "GlobalBufferStorage.hpp"
-#include "FileManager.hpp"
+#include <glm/glm.hpp>
 #include "CgAPI.h"
 
 namespace cookie {
+
+	class FileManager;
+	class Time;
+	class Shader;
+	class BufferStorage;
+	class Initializer;
+	class DrawUtils;
+	class PlatformSpecificBufferData;
+	class PlatformSpecificData;
+	class TextureProcessor;
+	class GlobalBufferStorage;
+	class SceneSectorManager;
+	struct Bounds;
+
 	class CookieFactory {
 
 	private:
@@ -43,7 +46,6 @@ namespace cookie {
 		[[nodiscard]] virtual std::unique_ptr<cookie::BufferStorage> provideBufferStorageImpl() const = 0;
 		[[nodiscard]] virtual std::unique_ptr<cookie::Initializer> provideInitializerImpl() const = 0;
 		[[nodiscard]] virtual std::unique_ptr<cookie::DrawUtils> provideDrawUtilsImpl() const = 0;
-		[[nodiscard]] virtual std::unique_ptr<cookie::PlatformSpecificBufferData>provideBufferDataImpl(cookie::BufferType bufferType) const = 0;
 		[[nodiscard]] virtual std::unique_ptr<cookie::PlatformSpecificData> createPlatformSpecificContainerImpl() const = 0;
 		[[nodiscard]] virtual std::unique_ptr<cookie::TextureProcessor> provideTextureProcessorImpl() const = 0;
 		[[nodiscard]] virtual std::unique_ptr<cookie::GlobalBufferStorage> provideGlobalBufferStorageImpl() const = 0;
@@ -67,11 +69,10 @@ namespace cookie {
 		static std::unique_ptr<cookie::BufferStorage> provideBufferStorage();
 		static std::unique_ptr<cookie::Initializer> provideInitializer();
 		static std::unique_ptr<cookie::DrawUtils> provideDrawUtils();
-		static std::unique_ptr<cookie::PlatformSpecificBufferData> provideBufferData(cookie::BufferType bufferType);
 		static std::unique_ptr<cookie::PlatformSpecificData> createPlatformSpecificContainer();
 		static std::unique_ptr<cookie::TextureProcessor> provideTextureProcessor();
 		static std::unique_ptr<cookie::GlobalBufferStorage> provideGlobalBufferStorage();
-		static std::unique_ptr<cookie::SceneSectorManager> provideSceneSectorManager(float sectorSize, const glm::vec4& bounds);
+		static std::unique_ptr<cookie::SceneSectorManager> provideSceneSectorManager(float sectorSize, const Bounds& bounds);
 	};
 }
 

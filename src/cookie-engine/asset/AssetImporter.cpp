@@ -12,25 +12,28 @@
 #include "AndroidFileManager.hpp"
 
 #define TINYGLTF_ANDROID_LOAD_FROM_ASSETS
+
 #endif
 
-#include "AssetImporter.hpp"
-#include "CookieFactory.hpp"
-#include "MeshStruct.h"
-#include "SceneObject.hpp"
-#include "Mesh.hpp"
-#include "Macro.h"
-#include "Utils.hpp"
 #include <memory>
-#include <iostream>
 #include <glm/gtc/type_ptr.hpp>
-
-using namespace tinygltf;
+#include "Utils.hpp"
+#include "Macro.h"
+#include "CookieFactory.hpp"
+#include "MeshComponent.hpp"
+#include "TextureProcessor.hpp"
+#include "AssetImporter.hpp"
+#include "SceneObject.hpp"
+#include "Transformation.hpp"
+#include "MeshStruct.h"
+#include "Material.h"
+#include "Texture.hpp"
+#include "Bounds.hpp"
 
 namespace cookie {
 
-	void fetchMaterials(
-			const Model &model,
+	inline void fetchMaterials(
+			const tinygltf::Model &model,
 			std::vector<std::shared_ptr<cookie::Material>> &outMaterials
 	) {
 		for (auto &material: model.materials) {
@@ -53,84 +56,11 @@ namespace cookie {
 		LOG_I("Imported materials count: %zu", outMaterials.size());
 	}
 
-	void AssetImporter::parseSceneRecursively(
-			cookie::SceneObject &obj,
-			const std::vector<std::shared_ptr<cookie::Material>> &materials,
-			const Model &model,
-			size_t nodeIndex
-	) {
-		const auto &node = model.nodes[nodeIndex];
-		obj.name = node.name;
-		LOG_I("Importing node %s", obj.name.c_str());
-		fetchMatrix(obj, node);
-		if (node.mesh != -1) {
-			auto &mesh = model.meshes[node.mesh];
-			std::vector<cookie::Vertex> outVertices;
-			std::vector<uint32_t> outIndices;
-			std::vector<glm::vec2> outTexCoords;
-			std::vector<glm::vec3> outNormals;
-			std::shared_ptr<cookie::Material> material;
-			std::unique_ptr<cookie::MeshData> loadedMesh;
-
-			// For each primitive
-			for (const auto &meshPrimitive: mesh.primitives) {
-
-				fetchIndices(model, meshPrimitive, outIndices);
-				LOG_I("Primitive mode: %s", std::to_string(meshPrimitive.mode).c_str());
-				switch (meshPrimitive.mode) {
-					case TINYGLTF_MODE_TRIANGLES: { // this is the simplest case to handle
-						fetchPrimitiveTriangles(
-								model,
-								meshPrimitive,
-								outIndices,
-								outVertices,
-								outTexCoords,
-								outNormals
-						);
-						size_t i = 0;
-						bool hasTexCoords = outTexCoords.size() == outVertices.size();
-						bool hasNormals = outNormals.size() == outVertices.size();
-						for (auto &vertex: outVertices) {
-							if (hasTexCoords) {
-								vertex.texCoords = outTexCoords[i];
-							}
-							if (hasNormals) {
-								vertex.normal = outNormals[i];
-							}
-							i++;
-						}
-						break;
-					}
-					default:
-						continue;
-				}
-			}
-
-			material = materials[0];
-			// Create a mesh object
-			loadedMesh = std::make_unique<cookie::MeshData>(
-					mesh.name,
-					outVertices,
-					outIndices,
-					material
-			);
-			obj.addComponent(std::make_shared<cookie::Mesh>(std::move(loadedMesh)));
-
-			// TODO bounding box
-			// TODO handle textures
-		}
-		for (size_t child: node.children) {
-			auto childObj = std::make_shared<cookie::SceneObject>();
-			parseSceneRecursively(*childObj, materials, model, child);
-			obj.addChild(childObj);
-		}
-	}
-
-	void AssetImporter::fetchMatrix(cookie::SceneObject &obj, const Node &node) {
+	inline void fetchMatrix(cookie::SceneObject &obj, const tinygltf::Node &node) {
 		if (!node.matrix.empty()) {
 			LOG_I("Importing matrix");
 			auto mat = glm::make_mat4(node.matrix.data());
-			obj.transformation->setModelMatrix(mat);
+			obj.getTransformation()->setModelMatrix(mat);
 		} else {
 			glm::vec3 translation(0.0f);
 			auto rotation = glm::identity<glm::quat>();
@@ -149,37 +79,45 @@ namespace cookie {
 			if (node.scale.size() == 3) {
 				scale = glm::make_vec3(node.scale.data());
 			}
-			obj.transformation->transform(translation, rotation, scale);
+			obj.getTransformation()->transform(translation, rotation, scale);
 		}
 	}
 
-	void AssetImporter::parseScene(cookie::SceneObject &root, const Model &model) {
+	inline std::unique_ptr<intArrayBase> defineIndicesArray(
+			const tinygltf::Model &model,
+			const tinygltf::Primitive &meshPrimitive
+	) {
+		const auto &indicesAccessor = model.accessors[meshPrimitive.indices];
+		const auto &bufferView = model.bufferViews[indicesAccessor.bufferView];
+		const auto &buffer = model.buffers[bufferView.buffer];
+		const auto dataAddress = buffer.data.data() + bufferView.byteOffset + indicesAccessor.byteOffset;
+		const auto byteStride = indicesAccessor.ByteStride(bufferView);
+		const auto count = indicesAccessor.count;
 
-		std::vector<std::shared_ptr<cookie::Material>> materials;
-		fetchMaterials(model, materials);
-
-		auto &scene = model.scenes[model.defaultScene];
-		LOG_I("Importing scene %s", scene.name.c_str());
-		parseSceneRecursively(root, materials, model, 0);
-
-// TODO Iterate through all texture declaration in glTF file
-//		for (const auto &gltfTexture: model.textures) {
-//			std::cout << "Found texture!";
-//			Texture loadedTexture;
-//			const auto &image = model.images[gltfTexture.source];
-//			loadedTexture.components = image.component;
-//			loadedTexture.width = image.width;
-//			loadedTexture.height = image.height;
-//			const auto size = image.component * image.width * image.height * sizeof(unsigned char);
-//			loadedTexture.image = new unsigned char[size];
-//			memcpy(loadedTexture.image, image.image.data(), size);
-//			textures->emplace_back(loadedTexture);
-//		}
+		// Allocate the index array in the pointer-to-base declared in the parent scope
+		// This permit to get a type agnostic way of reading the index buffer
+		switch (indicesAccessor.componentType) {
+			case TINYGLTF_COMPONENT_TYPE_INT:
+				return std::make_unique<intArray<int32_t>>(arrayAdapter<int32_t>(dataAddress, count, byteStride));
+			case TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT:
+				return std::make_unique<intArray<uint32_t>>(arrayAdapter<uint32_t>(dataAddress, count, byteStride));
+			case TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT:
+				return std::make_unique<intArray<uint16_t>>(arrayAdapter<uint16_t>(dataAddress, count, byteStride));
+			case TINYGLTF_COMPONENT_TYPE_SHORT:
+				return std::make_unique<intArray<int16_t>>(arrayAdapter<int16_t>(dataAddress, count, byteStride));
+			default:
+				break;
+		}
+		throw std::runtime_error(
+				"Unsupported GLTF component type, expected: TINYGLTF_COMPONENT_TYPE_INT, "
+				"TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT, TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT, "
+				"TINYGLTF_COMPONENT_TYPE_SHORT"
+		);
 	}
 
-	void AssetImporter::fetchIndices(
-			const Model &model,
-			const Primitive &meshPrimitive,
+	inline void fetchIndices(
+			const tinygltf::Model &model,
+			const tinygltf::Primitive &meshPrimitive,
 			std::vector<uint32_t> &outIndices
 	) {
 		auto indices = defineIndicesArray(model, meshPrimitive);
@@ -189,45 +127,8 @@ namespace cookie {
 		LOG_I("Indices count %zu", indices->size());
 	}
 
-	void AssetImporter::fetchPrimitiveTriangles(
-			const Model &model,
-			const Primitive &meshPrimitive,
-			std::vector<uint32_t> &indices,
-			std::vector<Vertex> &outVertices,
-			std::vector<glm::vec2> &outTexCoords,
-			std::vector<glm::vec3> &outNormals
-	) {
-
-		for (const auto &attribute: meshPrimitive.attributes) {
-			const auto &attribAccessor = model.accessors[attribute.second];
-			const auto &bufferView = model.bufferViews[attribAccessor.bufferView];
-			const auto &buffer = model.buffers[bufferView.buffer];
-			const auto dataPtr = buffer.data.data() +
-								 bufferView.byteOffset +
-								 attribAccessor.byteOffset;
-			const auto byteStride = attribAccessor.ByteStride(bufferView);
-			const auto count = attribAccessor.count;
-
-			LOG_I("Current attribute has count %zu and stride %d bytes", count, byteStride);
-			LOG_I("Attribute : %s", attribute.first.c_str());
-			if (attribute.first == "POSITION") {
-				outVertices.reserve(count);
-				fetchPositions(attribAccessor, dataPtr, count, byteStride, outVertices);
-			}
-			if (attribute.first == "NORMAL") {
-				outNormals.reserve(count);
-				fetchNormals(attribAccessor, dataPtr, count, byteStride, outNormals);
-			}
-
-			if (attribute.first == "TEXCOORD_0") {
-				outTexCoords.reserve(count);
-				fetchTexCoords(attribAccessor, dataPtr, count, byteStride, outTexCoords);
-			}
-		}
-	}
-
-	void AssetImporter::fetchTexCoords(
-			const Accessor &attribAccessor,
+	inline void fetchTexCoords(
+			const tinygltf::Accessor &attribAccessor,
 			const unsigned char *dataPtr,
 			size_t count,
 			const int byteStride,
@@ -266,14 +167,13 @@ namespace cookie {
 		}
 	}
 
-	void AssetImporter::fetchNormals(
-			const Accessor &attribAccessor,
+	inline void fetchNormals(
+			const tinygltf::Accessor &attribAccessor,
 			const unsigned char *dataPtr,
 			size_t count,
 			const int byteStride,
 			std::vector<glm::vec3> &outNormals
 	) {
-
 		LOG_I("Normal type: %d", attribAccessor.type);
 
 		switch (attribAccessor.type) {
@@ -308,8 +208,8 @@ namespace cookie {
 		}
 	}
 
-	void AssetImporter::fetchPositions(
-			const Accessor &attribAccessor,
+	inline void fetchPositions(
+			const tinygltf::Accessor &attribAccessor,
 			const unsigned char *dataPtr,
 			size_t count,
 			const int byteStride,
@@ -344,63 +244,153 @@ namespace cookie {
 		LOG_I("Vertices count: %zu", vertices.size());
 	}
 
-	std::unique_ptr<intArrayBase> AssetImporter::defineIndicesArray(
+	inline void fetchPrimitiveTriangles(
 			const tinygltf::Model &model,
-			const tinygltf::Primitive &meshPrimitive
+			const tinygltf::Primitive &meshPrimitive,
+			std::vector<uint32_t> &indices,
+			std::vector<Vertex> &outVertices,
+			std::vector<glm::vec2> &outTexCoords,
+			std::vector<glm::vec3> &outNormals
 	) {
-		const auto &indicesAccessor = model.accessors[meshPrimitive.indices];
-		const auto &bufferView = model.bufferViews[indicesAccessor.bufferView];
-		const auto &buffer = model.buffers[bufferView.buffer];
-		const auto dataAddress = buffer.data
-										 .data() +
+
+		for (const auto &attribute: meshPrimitive.attributes) {
+			const auto &attribAccessor = model.accessors[attribute.second];
+			const auto &bufferView = model.bufferViews[attribAccessor.bufferView];
+			const auto &buffer = model.buffers[bufferView.buffer];
+			const auto dataPtr = buffer.data.data() +
 								 bufferView.byteOffset +
-								 indicesAccessor.byteOffset;
-		const auto byteStride = indicesAccessor.ByteStride(bufferView);
-		const auto count = indicesAccessor.count;
+								 attribAccessor.byteOffset;
+			const auto byteStride = attribAccessor.ByteStride(bufferView);
+			const auto count = attribAccessor.count;
 
-		// Allocate the index array in the pointer-to-base declared in the parent scope
-		// This permit to get a type agnostic way of reading the index buffer
-		switch (indicesAccessor.componentType) {
-			case TINYGLTF_COMPONENT_TYPE_INT:
-				return std::make_unique<intArray<int32_t>>(
-						arrayAdapter<int32_t>(dataAddress, count, byteStride)
-				);
-			case TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT:
-				return std::make_unique<intArray<uint32_t>>(
-						arrayAdapter<uint32_t>(dataAddress, count, byteStride)
-				);
-			case TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT:
-				return std::make_unique<intArray<uint16_t>>(
-						arrayAdapter<uint16_t>(dataAddress, count, byteStride)
-				);
-			case TINYGLTF_COMPONENT_TYPE_SHORT:
-				return std::make_unique<intArray<int16_t>>(
-						arrayAdapter<int16_t>(dataAddress, count, byteStride)
-				);
-			default:
-				break;
+			LOG_I("Current attribute has count %zu and stride %d bytes", count, byteStride);
+			LOG_I("Attribute : %s", attribute.first.c_str());
+			if (attribute.first == "POSITION") {
+				outVertices.reserve(count);
+				fetchPositions(attribAccessor, dataPtr, count, byteStride, outVertices);
+			}
+			if (attribute.first == "NORMAL") {
+				outNormals.reserve(count);
+				fetchNormals(attribAccessor, dataPtr, count, byteStride, outNormals);
+			}
+
+			if (attribute.first == "TEXCOORD_0") {
+				outTexCoords.reserve(count);
+				fetchTexCoords(attribAccessor, dataPtr, count, byteStride, outTexCoords);
+			}
 		}
-		throw std::runtime_error(
-				"Unsupported GLTF component type, expected: TINYGLTF_COMPONENT_TYPE_INT, "
-				"TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT, TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT, "
-				"TINYGLTF_COMPONENT_TYPE_SHORT"
-		);
 	}
 
-	void AssetImporter::importMesh(SceneObject &root, const std::string &path) {
-#ifdef __ANDROID__
-		if (!tinygltf::asset_manager) {
-			tinygltf::asset_manager = dynamic_cast<const cookie::AndroidFileManager &>(CookieFactory::getManager())
-					.getManager();
+	inline void parseSceneRecursively(
+			cookie::SceneObject &obj,
+			const std::vector<std::shared_ptr<cookie::Material>> &materials,
+			const tinygltf::Model &model,
+			size_t nodeIndex
+	) {
+		const auto &node = model.nodes[nodeIndex];
+		obj.setName(node.name);
+		LOG_I("Importing node %s", obj.getName().c_str());
+		fetchMatrix(obj, node);
+		if (node.mesh != -1) {
+			auto &mesh = model.meshes[node.mesh];
+			std::vector<cookie::Vertex> outVertices;
+			std::vector<uint32_t> outIndices;
+			std::vector<glm::vec2> outTexCoords;
+			std::vector<glm::vec3> outNormals;
+			std::shared_ptr<cookie::Material> material;
+			std::unique_ptr<cookie::MeshData> loadedMesh;
+
+			glm::vec3 min(std::numeric_limits<float>::max());
+			glm::vec3 max(std::numeric_limits<float>::min());
+
+			// For each primitive
+			for (const auto &meshPrimitive: mesh.primitives) {
+
+				fetchIndices(model, meshPrimitive, outIndices);
+				LOG_I("Primitive mode: %s", std::to_string(meshPrimitive.mode).c_str());
+				switch (meshPrimitive.mode) {
+					case TINYGLTF_MODE_TRIANGLES: { // this is the simplest case to handle
+						fetchPrimitiveTriangles(
+								model,
+								meshPrimitive,
+								outIndices,
+								outVertices,
+								outTexCoords,
+								outNormals
+						);
+						size_t i = 0;
+						bool hasTexCoords = outTexCoords.size() == outVertices.size();
+						bool hasNormals = outNormals.size() == outVertices.size();
+						for (auto &vertex: outVertices) {
+							if (min.x > vertex.position.x) min.x = vertex.position.x;
+							if (min.z > vertex.position.z) min.z = vertex.position.z;
+							if (min.y > vertex.position.y) min.y = vertex.position.y;
+							if (max.x < vertex.position.x) max.x = vertex.position.x;
+							if (max.z < vertex.position.z) max.z = vertex.position.z;
+							if (max.y < vertex.position.y) max.y = vertex.position.y;
+							if (hasTexCoords) {
+								vertex.texCoords = outTexCoords[i];
+							}
+							if (hasNormals) {
+								vertex.normal = outNormals[i];
+							}
+							i++;
+						}
+						break;
+					}
+					default:
+						continue;
+				}
+			}
+
+			material = materials[0];
+			// Create a mesh object
+			loadedMesh = std::make_unique<cookie::MeshData>(
+					mesh.name,
+					outVertices,
+					outIndices,
+					material
+			);
+			obj.addComponent(std::make_shared<cookie::MeshComponent>(
+									 std::move(loadedMesh),
+									 Bounds(glm::vec4(min, 1), glm::vec4(max, 1))
+							 )
+			);
+
+			// TODO handle textures
 		}
-#endif
-		std::unique_ptr<tinygltf::Model> scene(readModelFromFile(path));
-		LOG_I("Importing model at: %s", path.c_str());
-		parseScene(root, *scene);
-		root.invalidate();
+		for (size_t child: node.children) {
+			auto childObj = std::make_shared<cookie::SceneObject>();
+			parseSceneRecursively(*childObj, materials, model, child);
+			obj.addChild(childObj);
+		}
 	}
 
-	tinygltf::Model *AssetImporter::readModelFromFile(const std::string &path) {
+	inline void parseScene(cookie::SceneObject &root, const tinygltf::Model &model) {
+
+		std::vector<std::shared_ptr<cookie::Material>> materials;
+		fetchMaterials(model, materials);
+
+		auto &scene = model.scenes[model.defaultScene];
+		LOG_I("Importing scene %s", scene.name.c_str());
+		parseSceneRecursively(root, materials, model, 0);
+
+// TODO Iterate through all texture declaration in glTF file
+//		for (const auto &gltfTexture: model.textures) {
+//			std::cout << "Found texture!";
+//			Texture loadedTexture;
+//			const auto &image = model.images[gltfTexture.source];
+//			loadedTexture.components = image.component;
+//			loadedTexture.width = image.width;
+//			loadedTexture.height = image.height;
+//			const auto size = image.component * image.width * image.height * sizeof(unsigned char);
+//			loadedTexture.image = new unsigned char[size];
+//			memcpy(loadedTexture.image, image.image.data(), size);
+//			textures->emplace_back(loadedTexture);
+//		}
+	}
+
+	inline tinygltf::Model *readModelFromFile(const std::string &path) {
 		auto *model = new tinygltf::Model();
 		tinygltf::TinyGLTF loader;
 		std::string err;
@@ -417,5 +407,17 @@ namespace cookie {
 			throw std::runtime_error(err.c_str());
 		}
 		return model;
+	}
+
+	void AssetImporter::importMesh(SceneObject &root, const std::string &path) {
+#ifdef __ANDROID__
+		if (!tinygltf::asset_manager) {
+			tinygltf::asset_manager = dynamic_cast<const cookie::AndroidFileManager &>(CookieFactory::getManager())
+					.getManager();
+		}
+#endif
+		std::unique_ptr<tinygltf::Model> scene(readModelFromFile(path));
+		LOG_I("Importing model at: %s", path.c_str());
+		parseScene(root, *scene);
 	}
 }

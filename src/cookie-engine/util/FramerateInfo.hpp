@@ -10,9 +10,10 @@
 
 #include <memory>
 #include <chrono>
-#include "platform_abstracts/Time.hpp"
 
 namespace cookie {
+
+	class Time;
 
 	class FramerateInfo {
 	private:
@@ -25,6 +26,7 @@ namespace cookie {
 		std::chrono::steady_clock::time_point lastTimestamp;
 
 		FramerateInfo();
+		~FramerateInfo();
 		void invalidateFrameRate();
 	};
 }

@@ -18,7 +18,7 @@ namespace cookie {
 	class EGLShader : public cookie::Shader {
 	public:
 		EGLShader(const std::string &vertexPath, const std::string &fragmentPath);
-		EGLShader(const std::string &computePath);
+		explicit EGLShader(const std::string &computePath);
 		~EGLShader() override = default;
 		static GLuint loadShaderFrom(const std::string &path, GLenum shaderType);
 		void use() override;

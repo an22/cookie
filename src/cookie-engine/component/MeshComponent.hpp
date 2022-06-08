@@ -1,5 +1,5 @@
 //
-//  Mesh.hpp
+//  MeshComponent.hpp
 //  cookie-engine
 //
 //  Created by Antiufieiev Michael on 28.07.2021.
@@ -10,22 +10,32 @@
 
 #include <vector>
 #include <memory>
-#include "TextureProcessor.hpp"
+#include <glm/mat4x4.hpp>
+#include "Bounds.hpp"
+#include "Component.hpp"
 
 namespace cookie {
 
-	class Mesh : public Component {
+	struct MeshData;
+	struct Vertex;
+	class TextureProcessor;
+	class Material;
+
+	class MeshComponent : public Component {
 	private:
 		std::unique_ptr<TextureProcessor> textureProcessor;
 		// mesh data
 		std::unique_ptr<MeshData> meshData;
+		Bounds staticBounds;
+		Bounds transformedBounds;
 	public:
+		[[nodiscard]] const Bounds &getBounds() const;
 		[[nodiscard]] std::vector<Vertex> &getVertices() const;
 		[[nodiscard]] const std::vector<unsigned int> &getIndices() const;
 		[[nodiscard]] std::shared_ptr<Material> getMaterial() const;
-		explicit Mesh(std::unique_ptr<MeshData> meshData);
-		Mesh();
-		~Mesh() override = default;
+		void updateMatrix(const glm::mat4& transformation);
+		MeshComponent(std::unique_ptr<MeshData> meshData, const Bounds& _bounds);
+		~MeshComponent() override = default;
 	};
 }
 
