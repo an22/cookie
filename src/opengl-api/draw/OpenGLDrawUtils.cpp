@@ -75,7 +75,7 @@ namespace cookie {
 				GL_UNSIGNED_INT,
 				pointers.data(),
 				static_cast<GLsizei>(meshCount),
-				reinterpret_cast<const GLint *>(vertexOffset)
+				reinterpret_cast<GLint *>(vertexOffset)
 		);
 		GLErrorHandler::checkOpenGLError();
 	}
