@@ -62,7 +62,7 @@ namespace cookie {
 	void OpenGLDrawUtils::drawMultiElementsWithIndexOffset(
 			uint32_t meshCount,
 			int32_t *startOffset,
-			const int32_t *indicesCount,
+			int32_t *indicesCount,
 			int32_t *vertexOffset
 	) const {
 		std::vector<void *> pointers(meshCount);
@@ -71,7 +71,7 @@ namespace cookie {
 		}
 		glMultiDrawElementsBaseVertex(
 				GL_TRIANGLES,
-				reinterpret_cast<const GLsizei *>(indicesCount),
+				reinterpret_cast<GLsizei *>(indicesCount),
 				GL_UNSIGNED_INT,
 				pointers.data(),
 				static_cast<GLsizei>(meshCount),

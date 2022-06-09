@@ -21,7 +21,7 @@ namespace cookie {
 		void drawMultiElementsWithIndexOffset(
 				uint32_t meshCount,
 				int32_t *startOffset,
-				const int32_t *indicesCount,
+				int32_t *indicesCount,
 				int32_t *vertexOffset
 		) const override;
 		void drawArrays(int32_t from, int32_t to) const override;

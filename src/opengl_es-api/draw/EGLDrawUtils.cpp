@@ -55,7 +55,7 @@ namespace cookie {
 	void EGLDrawUtils::drawMultiElementsWithIndexOffset(
 			uint32_t meshCount,
 			int32_t *startOffset,
-			const int32_t *indicesCount,
+			int32_t *indicesCount,
 			int32_t *vertexOffset
 	) const {
 		for (int i = 0; i < meshCount; i++) {
