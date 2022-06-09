@@ -60,10 +60,10 @@ namespace cookie {
 	}
 
 	void OpenGLDrawUtils::drawMultiElementsWithIndexOffset(
-			unsigned int meshCount,
-			const int32_t *startOffset,
+			uint32_t meshCount,
+			int32_t *startOffset,
 			const int32_t *indicesCount,
-			const int32_t *vertexOffset
+			int32_t *vertexOffset
 	) const {
 		std::vector<void *> pointers(meshCount);
 		for (int i = 0; i < meshCount; i++) {

@@ -16,9 +16,10 @@ namespace cookie {
 		virtual void enableDepthTest() const = 0;
 		virtual void drawInstanced(int32_t first, int32_t size, int32_t times) const = 0;
 		virtual void drawMultiElementsWithIndexOffset(
-				unsigned int meshCount, const int32_t *startOffset,
+				uint32_t meshCount,
+				int32_t *startOffset, //should be marked const but on linux with opengl it won't compile because api require non-const argument
 				const int32_t *size,
-				const int32_t *indicesOffset
+				int32_t *indicesOffset //should be marked const but on linux with opengl it won't compile because api require non-const argument
 		) const = 0;
 		virtual void drawArrays(int32_t from, int32_t to) const = 0;
 		virtual void drawElements(int32_t size) const = 0;
