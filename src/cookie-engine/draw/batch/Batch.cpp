@@ -3,6 +3,7 @@
 //
 
 #include <iterator>
+#include <algorithm>
 #include "CookieFactory.hpp"
 #include "Batch.hpp"
 #include "SceneObject.hpp"

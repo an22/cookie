@@ -1,6 +1,7 @@
 //
 // Created by Antiufieiev Michael on 07.08.2021.
 //
+#include <algorithm>
 #include "CookieFactory.hpp"
 #include "Cube.hpp"
 #include "Scene.hpp"
