@@ -4,6 +4,7 @@
 
 #include "Transformation.hpp"
 #include <glm/gtx/transform.hpp>
+#include <algorithm>
 
 namespace cookie {
 	Transformation::Transformation(

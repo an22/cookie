@@ -18,10 +18,10 @@ namespace cookie {
 		void enableDepthTest() const override;
 		void drawInstanced(int32_t first, int32_t size, int32_t times) const override;
 		void drawMultiElementsWithIndexOffset(
-				unsigned int meshCount,
-				const int32_t *startOffset,
-				const int32_t *indicesCount,
-				const int32_t *vertexOffset
+				uint32_t meshCount,
+				int32_t *startOffset,
+				int32_t *indicesCount,
+				int32_t *vertexOffset
 		) const override;
 		void drawArrays(int32_t from, int32_t to) const override;
 		void drawElements(int32_t size) const override;

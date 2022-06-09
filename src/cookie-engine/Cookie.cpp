@@ -44,10 +44,7 @@ namespace cookie {
 
 	void Cookie::startRendering() {
 		renderingLoop = std::make_unique<std::thread>(&Cookie::loopInternal, this);
-#if defined (__unix__) || (defined (__APPLE__) && defined (__MACH__))
-		pthread_setname_np(renderingLoop->native_handle(), "CookieRenderer");
-#endif
-#ifdef WIN32
+#ifndef __ANDROID__
 		renderingLoop->join();
 #endif
 	}

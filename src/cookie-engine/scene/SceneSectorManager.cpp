@@ -2,6 +2,7 @@
 // Created by Michael on 4/25/2022.
 //
 
+#include <algorithm>
 #include "SceneSectorManager.hpp"
 #include "MeshComponent.hpp"
 #include "SectorComponent.hpp"
