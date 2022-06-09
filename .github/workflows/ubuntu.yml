@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - fix/ci
       - release/**
   pull_request:
     branches:
@@ -38,11 +39,10 @@ jobs:
         run: |
           sudo apt update
           sudo apt-get -y install g++-7
-          sudo apt-get -y install freeglut3-dev
-          sudo apt-get -y install libglew-dev
-          sudo apt-get -y install libglm-dev
-          sudo apt-get -y install libglfw3-dev
-          sudo apt-get -y install assimp
+          vcpkg install freeglut:x64-linux
+          vcpkg install glew:x64-linux
+          vcpkg install glfw3:x64-linux
+          vcpkg install ktx:x64-linux
       - name: Setup GCC
         run: |
           sudo rm /usr/bin/gcc
@@ -55,7 +55,7 @@ jobs:
       - name: Configure CMake
         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
         # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_TOOLCHAIN_FILE=/usr/local/share/vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
         # Build your program with the given configuration

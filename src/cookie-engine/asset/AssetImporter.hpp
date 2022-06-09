@@ -7,7 +7,7 @@
 
 #include <string>
 #include <vector>
-#include <tiny_gltf.h>
+#include "tinygltf/tiny_gltf.h"
 #include <stdexcept>
 
 namespace cookie {
