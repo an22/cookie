@@ -8,6 +8,9 @@
 #include "Cookie.hpp"
 #include "CookieFactory.hpp"
 #include "Macro.h"
+#if defined (__unix__) || (defined (__APPLE__) && defined (__MACH__))
+#include <pthread.h>
+#endif
 
 namespace cookie {
 
@@ -47,7 +50,7 @@ namespace cookie {
 #if defined (__unix__) || (defined (__APPLE__) && defined (__MACH__))
 		pthread_setname_np(renderingLoop->native_handle(), "CookieRenderer");
 #endif
-#ifdef WIN32
+#ifndef __ANDROID__
 		renderingLoop->join();
 #endif
 	}

@@ -5,6 +5,7 @@
 //  Created by Antiufieiev Michael on 05.08.2021.
 //
 
+#include <algorithm>
 #include "SceneObject.hpp"
 #include "AssetImporter.hpp"
 #include "SectorComponent.hpp"
