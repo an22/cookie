@@ -9,6 +9,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/hash.hpp>
 #include <vector>
+#include <memory>
 #include "Bounds.hpp"
 
 namespace cookie {
