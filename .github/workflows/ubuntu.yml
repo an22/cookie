@@ -42,6 +42,7 @@ jobs:
           sudo apt-get -y install freeglut3-dev
           sudo apt-get -y install libglew-dev
           sudo apt-get -y install libglfw3-dev
+          sudo apt-get -y install libzstd-dev
           vcpkg install ktx:x64-linux
       - name: Setup GCC
         run: |

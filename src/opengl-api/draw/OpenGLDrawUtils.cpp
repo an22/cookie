@@ -22,7 +22,7 @@ namespace cookie {
 
 	void OpenGLDrawUtils::clearBuffers() const {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(0.0f,0.0f,0.0f,1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	}
 
 	void OpenGLDrawUtils::swapBuffers() const {
@@ -71,11 +71,11 @@ namespace cookie {
 		}
 		glMultiDrawElementsBaseVertex(
 				GL_TRIANGLES,
-				indicesCount,
+				reinterpret_cast<const GLsizei *>(indicesCount),
 				GL_UNSIGNED_INT,
 				pointers.data(),
-				static_cast<int>(meshCount),
-				vertexOffset
+				static_cast<GLsizei>(meshCount),
+				reinterpret_cast<const GLint *>(vertexOffset)
 		);
 		GLErrorHandler::checkOpenGLError();
 	}
