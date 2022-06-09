@@ -5,7 +5,7 @@
 #ifndef COOKIE_ENGINE_TEXTUREPROCESSOR_HPP
 #define COOKIE_ENGINE_TEXTUREPROCESSOR_HPP
 
-#include <ktx.h>
+#include "ktx/ktx.h"
 #include <vector>
 #include <memory>
 #include "TextureType.hpp"

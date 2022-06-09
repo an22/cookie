@@ -23,7 +23,7 @@
 #include <zstd.h>
 
 #include "GL/glcorearb.h"
-#include "ktx.h"
+#include "ktx/ktx.h"
 #include "../../lib/vkformat_enum.h"
 #include "argparser.h"
 #include "scapp.h"

@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - fix/ci
       - release/**
   pull_request:
     branches:
@@ -36,21 +37,10 @@ jobs:
           submodules: recursive
       - name: Install dependencies
         run: |
-          sudo apt update
-          sudo apt-get -y install g++-7
-          sudo apt-get -y install freeglut3-dev
-          sudo apt-get -y install libglew-dev
-          sudo apt-get -y install libglm-dev
-          sudo apt-get -y install libglfw3-dev
-      - name: Setup GCC
-        run: |
-          sudo rm /usr/bin/gcc
-          sudo rm /usr/bin/g++
-          sudo ln -s /usr/bin/gcc-7 /usr/local/bin/gcc
-          sudo ln -s /usr/bin/g++-7 /usr/local/bin/g++
-          export CC=/usr/bin/gcc-7
-          export CXX=/usr/bin/g++-7
-          gcc -v && g++ -v && cmake --version
+          vcpkg install freeglut:x64-windows
+          vcpkg install glew:x64-windows
+          vcpkg install glfw3:x64-windows
+          vcpkg install ktx:x64-windows
       - name: Configure CMake
         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
         # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type

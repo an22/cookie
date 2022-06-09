@@ -8,7 +8,7 @@
 #include "core.hpp"
 #include "CookieFactory.hpp"
 #include "platform/android/AndroidFileManager.hpp"
-#include "tiny_gltf.h"
+#include "tinygltf/tiny_gltf.h"
 
 extern "C" {
 JNIEXPORT void JNICALL Java_com_antufeevmichael_cookie_Cookie_nativeOnCreate(

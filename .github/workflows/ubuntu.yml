@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - fix/ci
       - release/**
   pull_request:
     branches:
@@ -38,11 +39,10 @@ jobs:
         run: |
           sudo apt update
           sudo apt-get -y install g++-7
-          sudo apt-get -y install freeglut3-dev
-          sudo apt-get -y install libglew-dev
-          sudo apt-get -y install libglm-dev
-          sudo apt-get -y install libglfw3-dev
-          sudo apt-get -y install assimp
+          vcpkg install freeglut:x64-windows
+          vcpkg install glew:x64-linux
+          vcpkg install glfw3:x64-linux
+          vcpkg install ktx:x64-linux
       - name: Setup GCC
         run: |
           sudo rm /usr/bin/gcc

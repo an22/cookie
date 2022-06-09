@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - fix/ci
       - release/**
   pull_request:
     branches:
@@ -36,10 +37,11 @@ jobs:
           submodules: recursive
       - name: Install dependencies
         run: |
-          brew install freeglut
-          brew install glew
-          brew install glfw
-          brew install glm
+          brew install vcpkg
+          vcpkg install freeglut:x64-osx
+          vcpkg install glew:x64-osx
+          vcpkg install glfw3:x64-osx
+          vcpkg install ktx:x64-osx
       - name: Configure CMake
         run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
