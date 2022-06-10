@@ -134,7 +134,6 @@ namespace cookie {
 			const int byteStride,
 			std::vector<glm::vec2> &texCoords
 	) {
-
 		LOG_I("Texture coordinates type: %d", attribAccessor.type);
 
 		switch (attribAccessor.type) {
@@ -252,7 +251,6 @@ namespace cookie {
 			std::vector<glm::vec2> &outTexCoords,
 			std::vector<glm::vec3> &outNormals
 	) {
-
 		for (const auto &attribute: meshPrimitive.attributes) {
 			const auto &attribAccessor = model.accessors[attribute.second];
 			const auto &bufferView = model.bufferViews[attribAccessor.bufferView];
@@ -305,7 +303,6 @@ namespace cookie {
 
 			// For each primitive
 			for (const auto &meshPrimitive: mesh.primitives) {
-
 				fetchIndices(model, meshPrimitive, outIndices);
 				LOG_I("Primitive mode: %s", std::to_string(meshPrimitive.mode).c_str());
 				switch (meshPrimitive.mode) {
@@ -356,7 +353,6 @@ namespace cookie {
 									 Bounds(glm::vec4(min, 1), glm::vec4(max, 1))
 							 )
 			);
-
 			// TODO handle textures
 		}
 		for (size_t child: node.children) {
@@ -367,7 +363,6 @@ namespace cookie {
 	}
 
 	inline void parseScene(cookie::SceneObject &root, const tinygltf::Model &model) {
-
 		std::vector<std::shared_ptr<cookie::Material>> materials;
 		fetchMaterials(model, materials);
 
