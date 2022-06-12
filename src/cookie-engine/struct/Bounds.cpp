@@ -8,14 +8,15 @@ namespace cookie {
 	Bounds Bounds::transform(const glm::mat4 &transformation) {
 		min = {std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), 1};
 		max = {std::numeric_limits<float>::min(), std::numeric_limits<float>::min(), std::numeric_limits<float>::min(), 1};
+		glm::vec4 transformedPoint;
 		for (auto &point: points) {
-			point = transformation * point;
-			if (min.x > point.x) min.x = point.x;
-			if (min.z > point.z) min.z = point.z;
-			if (min.y > point.y) min.y = point.y;
-			if (max.x < point.x) max.x = point.x;
-			if (max.z < point.z) max.z = point.z;
-			if (max.y < point.y) max.y = point.y;
+			transformedPoint = transformation * point;
+			if (min.x > transformedPoint.x) min.x = transformedPoint.x;
+			if (min.z > transformedPoint.z) min.z = transformedPoint.z;
+			if (min.y > transformedPoint.y) min.y = transformedPoint.y;
+			if (max.x < transformedPoint.x) max.x = transformedPoint.x;
+			if (max.z < transformedPoint.z) max.z = transformedPoint.z;
+			if (max.y < transformedPoint.y) max.y = transformedPoint.y;
 		}
 		return { min, max };
 	}

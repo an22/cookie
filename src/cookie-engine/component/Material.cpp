@@ -62,6 +62,4 @@ namespace cookie {
 			  doubleSided(doubleSided) {}
 
 	GPUMaterial::~GPUMaterial() = default;
-
-	GPUMaterial::GPUMaterial() = default;
 }

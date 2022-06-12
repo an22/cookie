@@ -18,6 +18,7 @@ namespace cookie {
 	private:
 		std::unordered_set<std::shared_ptr<Sector>> sectors;
 	public:
+		explicit SectorComponent(const std::shared_ptr<SceneObject>& objPtr);
 		void onNewSector(std::shared_ptr<Sector> sector);
 		void clear();
 	};

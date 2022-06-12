@@ -7,6 +7,8 @@
 
 #include <utility>
 #include "CookieFactory.hpp"
+#include "SceneObject.hpp"
+#include "Transformation.hpp"
 #include "MeshComponent.hpp"
 #include "MeshStruct.h"
 #include "TextureProcessor.hpp"
@@ -15,9 +17,11 @@
 namespace cookie {
 
 	MeshComponent::MeshComponent(
+			const std::shared_ptr<SceneObject> &objPtr,
 			std::unique_ptr<MeshData> meshData,
 			const Bounds &_bounds
-	) : meshData(std::move(meshData)),
+	) : Component(objPtr),
+		meshData(std::move(meshData)),
 		textureProcessor(CookieFactory::provideTextureProcessor()),
 		staticBounds(_bounds),
 		transformedBounds(_bounds) {
@@ -41,6 +45,14 @@ namespace cookie {
 
 	void MeshComponent::updateMatrix(const glm::mat4 &transformation) {
 		transformedBounds = staticBounds.transform(transformation);
+	}
+
+	const Bounds &MeshComponent::getTransformedBounds() {
+		auto& transformation = owner.lock()->getTransformation();
+		if(transformation->isChanged()) {
+			updateMatrix(transformation->getGlobalTransformationMatrix());
+		}
+		return transformedBounds;
 	}
 
 }

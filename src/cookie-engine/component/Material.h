@@ -22,7 +22,6 @@ namespace cookie {
 		float opacity = 1;
 		bool doubleSided = false;
 
-		GPUMaterial();
 		GPUMaterial(
 				const glm::vec4 &baseColor,
 				const glm::vec4 &emissiveColor,
@@ -42,7 +41,6 @@ namespace cookie {
 		std::string name;
 		std::vector<Texture> textures;
 
-		Material() = default;
 		Material(
 				std::string name,
 				const glm::vec4 &baseColor,

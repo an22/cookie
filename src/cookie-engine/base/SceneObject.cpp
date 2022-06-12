@@ -7,8 +7,6 @@
 
 #include <algorithm>
 #include "SceneObject.hpp"
-#include "AssetImporter.hpp"
-#include "SectorComponent.hpp"
 #include "Sector.hpp"
 #include "MeshComponent.hpp"
 #include "MeshStruct.h"
@@ -17,6 +15,8 @@
 #include "DrawUtils.h"
 #include "Transformation.hpp"
 #include "Shader.hpp"
+#include "AssetImporter.hpp"
+#include "SectorComponent.hpp"
 
 namespace cookie {
 
@@ -29,11 +29,12 @@ namespace cookie {
 							glm::identity<glm::quat>(),
 							glm::vec3(1.0f)
 					))), children(), id(current_id++), is_static(true) {
-		addComponent(std::make_shared<SectorComponent>());
 	}
 
-	SceneObject::SceneObject(const std::string &path) : SceneObject() {
-		AssetImporter::importMesh(*this, path);
+	std::shared_ptr<SceneObject> SceneObject::fromPath(const std::string &path) {
+		auto obj = std::make_shared<SceneObject>();
+		AssetImporter::importMesh(obj, path);
+		return obj;
 	}
 
 	SceneObject::~SceneObject() = default;
@@ -68,6 +69,7 @@ namespace cookie {
 
 	void SceneObject::addChild(const std::shared_ptr<SceneObject> &child) {
 		child->transformation->setParent(transformation);
+		child->addComponent(std::make_shared<SectorComponent>(child));
 		transformation->addChild(child->transformation);
 		children.push_back(std::shared_ptr(child));
 	}
@@ -103,5 +105,17 @@ namespace cookie {
 
 	void SceneObject::setName(const std::string &newName) {
 		name = newName;
+	}
+
+	void SceneObject::onCreate() {
+
+	}
+
+	void SceneObject::onUpdate() {
+
+	}
+
+	void SceneObject::onPostUpdate() {
+
 	}
 }

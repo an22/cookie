@@ -34,13 +34,13 @@ namespace cookie {
 
 	inline void fetchMaterials(
 			const tinygltf::Model &model,
-			std::vector<std::shared_ptr<cookie::Material>> &outMaterials
+			std::vector<std::shared_ptr<Material>> &outMaterials
 	) {
 		for (auto &material: model.materials) {
-			std::vector<cookie::Texture> textures;
+			std::vector<Texture> textures;
 
 			outMaterials.emplace_back(
-					std::make_shared<cookie::Material>(
+					std::make_shared<Material>(
 							material.name,
 							glm::make_vec4(material.pbrMetallicRoughness.baseColorFactor.data()),
 							glm::vec4(0),
@@ -56,11 +56,11 @@ namespace cookie {
 		LOG_I("Imported materials count: %zu", outMaterials.size());
 	}
 
-	inline void fetchMatrix(cookie::SceneObject &obj, const tinygltf::Node &node) {
+	inline void fetchMatrix(const std::shared_ptr<SceneObject> &obj, const tinygltf::Node &node) {
 		if (!node.matrix.empty()) {
 			LOG_I("Importing matrix");
 			auto mat = glm::make_mat4(node.matrix.data());
-			obj.getTransformation()->setModelMatrix(mat);
+			obj->getTransformation()->setModelMatrix(mat);
 		} else {
 			glm::vec3 translation(0.0f);
 			auto rotation = glm::identity<glm::quat>();
@@ -79,7 +79,7 @@ namespace cookie {
 			if (node.scale.size() == 3) {
 				scale = glm::make_vec3(node.scale.data());
 			}
-			obj.getTransformation()->transform(translation, rotation, scale);
+			obj->getTransformation()->transform(translation, rotation, scale);
 		}
 	}
 
@@ -280,23 +280,23 @@ namespace cookie {
 	}
 
 	inline void parseSceneRecursively(
-			cookie::SceneObject &obj,
-			const std::vector<std::shared_ptr<cookie::Material>> &materials,
+			const std::shared_ptr<SceneObject> &obj,
+			const std::vector<std::shared_ptr<Material>> &materials,
 			const tinygltf::Model &model,
 			size_t nodeIndex
 	) {
 		const auto &node = model.nodes[nodeIndex];
-		obj.setName(node.name);
-		LOG_I("Importing node %s", obj.getName().c_str());
+		obj->setName(node.name);
+		LOG_I("Importing node %s", obj->getName().c_str());
 		fetchMatrix(obj, node);
 		if (node.mesh != -1) {
 			auto &mesh = model.meshes[node.mesh];
-			std::vector<cookie::Vertex> outVertices;
+			std::vector<Vertex> outVertices;
 			std::vector<uint32_t> outIndices;
 			std::vector<glm::vec2> outTexCoords;
 			std::vector<glm::vec3> outNormals;
-			std::shared_ptr<cookie::Material> material;
-			std::unique_ptr<cookie::MeshData> loadedMesh;
+			std::shared_ptr<Material> material;
+			std::unique_ptr<MeshData> loadedMesh;
 
 			glm::vec3 min(std::numeric_limits<float>::max());
 			glm::vec3 max(std::numeric_limits<float>::min());
@@ -342,28 +342,30 @@ namespace cookie {
 
 			material = materials[0];
 			// Create a mesh object
-			loadedMesh = std::make_unique<cookie::MeshData>(
+			loadedMesh = std::make_unique<MeshData>(
 					mesh.name,
 					outVertices,
 					outIndices,
 					material
 			);
-			obj.addComponent(std::make_shared<cookie::MeshComponent>(
-									 std::move(loadedMesh),
-									 Bounds(glm::vec4(min, 1), glm::vec4(max, 1))
-							 )
+			obj->addComponent(
+					std::make_shared<MeshComponent>(
+							obj,
+							std::move(loadedMesh),
+							Bounds(glm::vec4(min, 1), glm::vec4(max, 1))
+					)
 			);
 			// TODO handle textures
 		}
 		for (size_t child: node.children) {
-			auto childObj = std::make_shared<cookie::SceneObject>();
-			parseSceneRecursively(*childObj, materials, model, child);
-			obj.addChild(childObj);
+			auto childObj = std::make_shared<SceneObject>();
+			parseSceneRecursively(childObj, materials, model, child);
+			obj->addChild(childObj);
 		}
 	}
 
-	inline void parseScene(cookie::SceneObject &root, const tinygltf::Model &model) {
-		std::vector<std::shared_ptr<cookie::Material>> materials;
+	inline void parseScene(const std::shared_ptr<SceneObject> &root, const tinygltf::Model &model) {
+		std::vector<std::shared_ptr<Material>> materials;
 		fetchMaterials(model, materials);
 
 		auto &scene = model.scenes[model.defaultScene];
@@ -404,10 +406,10 @@ namespace cookie {
 		return model;
 	}
 
-	void AssetImporter::importMesh(SceneObject &root, const std::string &path) {
+	void AssetImporter::importMesh(const std::shared_ptr<SceneObject> &root, const std::string &path) {
 #ifdef __ANDROID__
 		if (!tinygltf::asset_manager) {
-			tinygltf::asset_manager = dynamic_cast<const cookie::AndroidFileManager &>(CookieFactory::getManager())
+			tinygltf::asset_manager = dynamic_cast<const AndroidFileManager &>(CookieFactory::getManager())
 					.getManager();
 		}
 #endif

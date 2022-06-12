@@ -39,9 +39,9 @@ namespace cookie {
 		std::shared_ptr<Transformation> transformation;
 	public:
 
-		explicit SceneObject(const std::string &path);
 		SceneObject();
 		virtual ~SceneObject();
+		static std::shared_ptr<SceneObject> fromPath(const std::string& path);
 
 		[[nodiscard]] const std::shared_ptr<Transformation> &getTransformation() const;
 		[[nodiscard]] const std::string &getName() const;
@@ -49,17 +49,23 @@ namespace cookie {
 		[[nodiscard]] const glm::mat4 &getModelMat() const;
 		[[nodiscard]] bool isStatic() const;
 
-		virtual void setStatic(bool isStatic);
+		void setStatic(bool isStatic);
 		void setName(const std::string &name);
 
 		virtual void draw(const DrawUtils &utils);
 
-		virtual void addChild(const std::shared_ptr<SceneObject> &child);
-		virtual std::shared_ptr<SceneObject> getChildAt(unsigned int position);
-		virtual void removeChild(const std::shared_ptr<SceneObject> &child);
+		void addChild(const std::shared_ptr<SceneObject> &child);
+		std::shared_ptr<SceneObject> getChildAt(unsigned int position);
+		void removeChild(const std::shared_ptr<SceneObject> &child);
 
 		PtrSceneObjVector::iterator childrenBegin() noexcept;
 		PtrSceneObjVector::iterator childrenEnd() noexcept;
+
+		//Lifecycle
+		virtual void onCreate();
+		virtual void onUpdate();//TODO timestamp
+		virtual void onPostUpdate();
+
 
 		//Templates
 		template<class ComponentType>
@@ -68,7 +74,7 @@ namespace cookie {
 					std::is_base_of<Component, ComponentType>::value,
 					"type parameter of this class must derive from Component class"
 			);
-			components[typeid(ComponentType)] = std::shared_ptr(component);
+			components[typeid(ComponentType)] = std::move(component);
 		}
 
 		template<class ComponentType>
