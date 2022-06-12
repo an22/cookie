@@ -107,15 +107,9 @@ namespace cookie {
 		name = newName;
 	}
 
-	void SceneObject::onCreate() {
+	void SceneObject::onCreate() {}
 
-	}
+	void SceneObject::onUpdate() {}
 
-	void SceneObject::onUpdate() {
-
-	}
-
-	void SceneObject::onPostUpdate() {
-
-	}
+	void SceneObject::onPostUpdate() {}
 }
