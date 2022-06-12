@@ -192,7 +192,7 @@ namespace cookie {
 
 	class AssetImporter {
 	public:
-		static void importMesh(SceneObject &root, const std::string &path);
+		static void importMesh(const std::shared_ptr<SceneObject> &root, const std::string &path);
 	};
 }
 

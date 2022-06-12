@@ -17,17 +17,15 @@ namespace cookie {
 	Scene::Scene() : drawUtils(CookieFactory::provideDrawUtils()),
 					 batchManager(std::make_unique<BatchManager>()),
 					 globalBufferStorage(CookieFactory::provideGlobalBufferStorage()),
-					 sceneSectorManager(CookieFactory::provideSceneSectorManager(1, Bounds(glm::vec4(-100,-100,-100,1),glm::vec4(100,100,100,1)))) {
-		auto width = Cookie::getInstance().getPlatformData().width();
-		auto height = Cookie::getInstance().getPlatformData().height();
-		sceneSettings = std::make_unique<SceneSettings>(
-				width, height, 0.0f, 0.0f, -10.5f, 45.0f, 0.1f, 1000.0f
-		);
-		vMat = glm::lookAt(
-				sceneSettings->cameraPos,
-				glm::vec3(0.0f,0.0f,0.0f),
-				glm::vec3(0.0f, 1.0f, 0.0f)
-		);
+					 sceneSectorManager(CookieFactory::provideSceneSectorManager(1, Bounds(glm::vec4(-100, -100, -100, 1), glm::vec4(100, 100, 100, 1)))),
+					 sceneSettings(
+							 std::make_unique<SceneSettings>(
+									 Cookie::getInstance().getPlatformData().width(),
+									 Cookie::getInstance().getPlatformData().height(),
+									 0.0f, 0.0f, -10.5f, 45.0f, 0.1f, 1000.0f
+							 )
+					 ),
+					 vMat(glm::lookAt(sceneSettings->cameraPos, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f))) {
 	}
 
 	Scene::~Scene() = default;
@@ -79,7 +77,8 @@ namespace cookie {
 	}
 
 	void Scene::fillScene() {
-		addObject(std::make_shared<cookie::Cube>());
+		auto model = SceneObject::fromPath(R"(D:\Hope\Projects\CookieEngine\assets\adamHead\adamHead.gltf)");
+		addObject(model);
 	}
 
 	void Scene::resize(int32_t width, int32_t height) {

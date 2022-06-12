@@ -8,9 +8,16 @@
 #ifndef Component_hpp
 #define Component_hpp
 
+#include <memory>
+
 namespace cookie {
+	class SceneObject;
+
 	class Component {
+	protected:
+		std::weak_ptr<SceneObject> owner;
 	public:
+		explicit Component(const std::shared_ptr<SceneObject>& objPtr);
 		virtual ~Component() = default;
 	};
 }

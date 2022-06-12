@@ -16,10 +16,9 @@
 #include "FileManager.hpp"
 
 namespace cookie {
-	OpenGLShader::OpenGLShader(const std::string &vertexPath, const std::string &fragmentPath) : cookie::Shader() {
+	OpenGLShader::OpenGLShader(const std::string &vertexPath, const std::string &fragmentPath) : Shader(static_cast<uint32_t>(glCreateProgram())) {
 		auto vertex = loadShaderFrom(vertexPath, GL_VERTEX_SHADER);
 		auto fragment = loadShaderFrom(fragmentPath, GL_FRAGMENT_SHADER);
-		id = static_cast<int32_t>(glCreateProgram());
 		glAttachShader(id, vertex);
 		glAttachShader(id, fragment);
 		glLinkProgram(id);
@@ -30,9 +29,8 @@ namespace cookie {
 		}
 	}
 
-	OpenGLShader::OpenGLShader(const std::string &computePath) {
+	OpenGLShader::OpenGLShader(const std::string &computePath): Shader(static_cast<uint32_t>(glCreateProgram())) {
 		auto compute = loadShaderFrom(computePath, GL_COMPUTE_SHADER);
-		id = static_cast<int32_t>(glCreateProgram());
 		glAttachShader(id, compute);
 		glLinkProgram(id);
 		GLint linked;
@@ -44,7 +42,6 @@ namespace cookie {
 
 	GLuint OpenGLShader::loadShaderFrom(const std::string &path, GLenum shaderType) {
 		GLuint shader = glCreateShader(shaderType);
-
 		std::string str = cookie::CookieFactory::getManager().readStringFromFile(path, true);
 		const char *shaderCode = str.c_str();
 		glShaderSource(shader, 1, &shaderCode, nullptr);

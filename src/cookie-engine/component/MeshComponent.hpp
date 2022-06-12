@@ -18,24 +18,26 @@ namespace cookie {
 
 	struct MeshData;
 	struct Vertex;
+	class SceneObject;
 	class TextureProcessor;
 	class Material;
 
 	class MeshComponent : public Component {
 	private:
 		std::unique_ptr<TextureProcessor> textureProcessor;
-		// mesh data
 		std::unique_ptr<MeshData> meshData;
+
 		Bounds staticBounds;
 		Bounds transformedBounds;
 	public:
+		MeshComponent(const std::shared_ptr<SceneObject>& objPtr, std::unique_ptr<MeshData> meshData, const Bounds& _bounds);
+		~MeshComponent() override = default;
 		[[nodiscard]] const Bounds &getBounds() const;
+		[[nodiscard]] const Bounds &getTransformedBounds();
 		[[nodiscard]] std::vector<Vertex> &getVertices() const;
 		[[nodiscard]] const std::vector<unsigned int> &getIndices() const;
 		[[nodiscard]] std::shared_ptr<Material> getMaterial() const;
 		void updateMatrix(const glm::mat4& transformation);
-		MeshComponent(std::unique_ptr<MeshData> meshData, const Bounds& _bounds);
-		~MeshComponent() override = default;
 	};
 }
 

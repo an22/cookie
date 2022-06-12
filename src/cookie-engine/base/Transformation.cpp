@@ -54,6 +54,7 @@ namespace cookie {
 		auto rotate = glm::mat4_cast(rotation);
 		auto translate = glm::translate(translation);
 		modelMat = translate * rotate * scale;
+		_isChanged = true;
 		invalidateTransformation();
 	}
 

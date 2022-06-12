@@ -24,10 +24,9 @@ void cookie::SceneSectorManager::update() {
 	for (auto &obj: objects) {
 		mesh = obj->getComponent<MeshComponent>();
 		sectors = obj->getComponent<SectorComponent>();
-		if (obj->getTransformation()->isChanged() && mesh != nullptr) {
-			obj->getTransformation()->setIsChanged(false);
+		if (obj->getTransformation()->isChanged() && mesh != nullptr && sectors != nullptr) {
 			sectors->clear();
-			const Bounds& objBounds = mesh->getBounds();
+			const Bounds& objBounds = mesh->getTransformedBounds();
 			for (auto x = static_cast<int32_t>(floor(objBounds.min.x)); x <= static_cast<int32_t>(floor(objBounds.max.x)); x++) {
 				for (auto y = static_cast<int32_t>(floor(objBounds.min.y)); y <= static_cast<int32_t>(floor(objBounds.max.y)); y++) {
 					for (auto z = static_cast<int32_t>(floor(objBounds.min.z)); z <= static_cast<int32_t>(floor(objBounds.max.z)); z++) {

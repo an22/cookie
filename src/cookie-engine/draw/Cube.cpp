@@ -6,6 +6,6 @@
 
 namespace cookie {
 
-	Cube::Cube() : SceneObject(R"(D:\Hope\Projects\CookieEngine\assets\adamHead\adamHead.gltf)") {
+	Cube::Cube() : SceneObject() {
 	}
 }
