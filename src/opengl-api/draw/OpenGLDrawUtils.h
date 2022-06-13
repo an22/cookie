@@ -24,6 +24,7 @@ namespace cookie {
 				int32_t *indicesCount,
 				int32_t *vertexOffset
 		) const override;
+		void drawBounds(const cookie::Bounds &bounds) const override;
 		void drawArrays(int32_t from, int32_t to) const override;
 		void drawElements(int32_t size) const override;
 		void setViewport(int32_t width, int32_t height) const override;

@@ -10,6 +10,7 @@
 #include "Cookie.hpp"
 #include "OpenGLPlatformSpecificData.h"
 #include "GLErrorHandler.hpp"
+#include "Bounds.hpp"
 
 namespace cookie {
 	bool OpenGLDrawUtils::shouldCloseWindow() const {
@@ -77,6 +78,28 @@ namespace cookie {
 				static_cast<GLsizei>(meshCount),
 				reinterpret_cast<GLint *>(vertexOffset)
 		);
+		GLErrorHandler::checkOpenGLError();
+	}
+
+	void OpenGLDrawUtils::drawBounds(const Bounds &bounds) const {
+		GLErrorHandler::checkOpenGLError();
+		glUseProgram(0);
+		glMatrixMode(GL_PROJECTION);
+		GLErrorHandler::checkOpenGLError();
+		glLoadIdentity();
+		GLErrorHandler::checkOpenGLError();
+		glOrtho (-100.0f, 100.0f, -100.0f, 100.0f, -100.0f, 100.0f);
+		GLErrorHandler::checkOpenGLError();
+		glBegin(GL_POINTS);
+		GLErrorHandler::checkOpenGLError();
+		for (auto &point: bounds.points) {
+			auto a = glm::normalize(point);
+			glColor3f(1.0, 0.0, 0.0);
+			glVertex3f(a.x, a.y, a.z);
+		}
+		GLErrorHandler::checkOpenGLError();
+		glEnd();
+		glFlush();
 		GLErrorHandler::checkOpenGLError();
 	}
 

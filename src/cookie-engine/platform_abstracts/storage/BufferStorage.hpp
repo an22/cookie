@@ -10,9 +10,12 @@
 
 #include <memory>
 #include <vector>
-#include "asset/MeshStruct.h"
+#include <glm/fwd.hpp>
 
 namespace cookie {
+
+	struct MeshData;
+
 	class BufferStorage {
 
 	public:

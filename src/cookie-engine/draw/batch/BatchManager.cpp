@@ -29,7 +29,7 @@ void cookie::BatchManager::onNewObject(const std::shared_ptr<SceneObject> &scene
 
 void cookie::BatchManager::syncWithVideoBuffer() {
 	for (auto &entry: batchMap) {
-		entry.second->syncWithVideoBuffer();
+		entry.second->saveToGPU();
 	}
 }
 
@@ -38,6 +38,6 @@ cookie::BatchManager::BatchManager() : batchMap{} {
 
 void cookie::BatchManager::draw(const cookie::DrawUtils &drawUtils) const {
 	for (auto &entry: batchMap) {
-		entry.second->draw(drawUtils);
+		entry.second->render(drawUtils);
 	}
 }

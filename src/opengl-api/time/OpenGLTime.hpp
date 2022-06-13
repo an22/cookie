@@ -10,7 +10,7 @@
 
 #if COOKIE_OPENGL
 
-#include "platform_abstracts/Time.hpp"
+#include "Time.hpp"
 
 namespace cookie {
 	class OpenGLTime : public cookie::Time {

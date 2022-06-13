@@ -11,11 +11,11 @@
 #if COOKIE_OPENGL
 
 #include <string>
-#include "platform_abstracts/Shader.hpp"
+#include "Shader.hpp"
 #include "GLErrorHandler.hpp"
 
 namespace cookie {
-	class OpenGLShader : public cookie::Shader {
+	class OpenGLShader : public Shader {
 	public:
 		OpenGLShader(const std::string &vertexPath, const std::string &fragmentPath);
 		explicit OpenGLShader(const std::string &computePath);

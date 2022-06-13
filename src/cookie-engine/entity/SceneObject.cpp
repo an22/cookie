@@ -56,10 +56,7 @@ namespace cookie {
 			child->draw(utils);
 		}
 		auto mesh = getComponent<MeshComponent>();
-		auto shader = getComponent<Shader>();
 		if (!mesh) return;
-		if (!shader) return;
-		shader->use();
 		if (!mesh->getIndices().empty()) {
 			utils.drawElements(mesh->getIndices().size());
 		} else {

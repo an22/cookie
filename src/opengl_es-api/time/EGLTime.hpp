@@ -10,10 +10,10 @@
 
 #if COOKIE_EGL
 
-#include "platform_abstracts/Time.hpp"
+#include "Time.hpp"
 
 namespace cookie {
-	class EGLTime : public cookie::Time {
+	class EGLTime : public Time {
 
 	public:
 		double getFrameTime() override;

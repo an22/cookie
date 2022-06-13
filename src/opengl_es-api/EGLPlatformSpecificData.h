@@ -8,11 +8,11 @@
 #ifndef EGLPlatformSpecificData_hpp
 #define EGLPlatformSpecificData_hpp
 #if COOKIE_EGL
-#include "platform_abstracts/PlatformSpecificData.hpp"
+#include "PlatformSpecificData.hpp"
 #include "EGL/egl.h"
 
 namespace cookie {
-	class EGLPlatformSpecificData : public cookie::PlatformSpecificData {
+	class EGLPlatformSpecificData : public PlatformSpecificData {
 
 	private:
 		EGLNativeWindowType window = nullptr;

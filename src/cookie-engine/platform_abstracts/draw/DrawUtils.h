@@ -8,6 +8,9 @@
 #include <cstdint>
 
 namespace cookie {
+
+	class Bounds;
+
 	class DrawUtils {
 	public:
 		virtual bool shouldCloseWindow() const = 0;
@@ -22,6 +25,7 @@ namespace cookie {
 				int32_t *indicesOffset //should be marked const but on linux with opengl it won't compile because api require non-const argument
 		) const = 0;
 		virtual void drawArrays(int32_t from, int32_t to) const = 0;
+		virtual void drawBounds(const Bounds& bounds) const = 0;
 		virtual void drawElements(int32_t size) const = 0;
 		virtual void cullFace() const = 0;
 		virtual void setViewport(int32_t width, int32_t height) const = 0;

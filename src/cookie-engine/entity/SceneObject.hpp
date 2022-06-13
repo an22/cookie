@@ -79,6 +79,10 @@ namespace cookie {
 
 		template<class ComponentType>
 		ComponentType &removeComponent() {
+			static_assert(
+					std::is_base_of<Component, ComponentType>::value,
+					"type parameter of this class must derive from Component class"
+			);
 			auto component = std::move(components[typeid(ComponentType)]);
 			components.erase(typeid(ComponentType));
 			return dynamic_cast<ComponentType>(component);
@@ -86,6 +90,10 @@ namespace cookie {
 
 		template<class ComponentType>
 		std::shared_ptr<ComponentType> getComponent() {
+			static_assert(
+					std::is_base_of<Component, ComponentType>::value,
+					"type parameter of this class must derive from Component class"
+			);
 			auto item = components.find(typeid(ComponentType));
 			if (item != components.end()) {
 				return std::dynamic_pointer_cast<ComponentType>(item->second);

@@ -11,7 +11,7 @@
 #if COOKIE_OPENGL
 
 #include <GLFW/glfw3.h>
-#include "platform_abstracts/PlatformSpecificData.hpp"
+#include "PlatformSpecificData.hpp"
 
 namespace cookie {
 	class OpenGLPlatformSpecificData : public cookie::PlatformSpecificData {

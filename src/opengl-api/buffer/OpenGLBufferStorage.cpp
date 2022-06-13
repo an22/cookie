@@ -12,6 +12,7 @@
 #include "Material.h"
 #include "OpenGLBufferStorage.hpp"
 #include "GLErrorHandler.hpp"
+#include "MeshStruct.h"
 
 namespace cookie {
 	OpenGLBufferStorage::OpenGLBufferStorage() : cookie::BufferStorage() {
@@ -67,7 +68,7 @@ namespace cookie {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIndex);
 		glBufferData(
 				GL_ELEMENT_ARRAY_BUFFER,
-				meshData.indices.size() * sizeof(unsigned int),
+				meshData.indices.size() * sizeof(uint32_t),
 				meshData.indices.data(),
 				GL_STATIC_DRAW
 		);
@@ -121,9 +122,9 @@ namespace cookie {
 	}
 
 	void OpenGLBufferStorage::unbind() const {
-		glBindVertexArray(0);
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 		glBindBuffer(GL_UNIFORM_BUFFER, 0);
+		glBindVertexArray(0);
 		GLErrorHandler::checkOpenGLError();
 	}
 }

@@ -11,11 +11,11 @@
 #if COOKIE_EGL
 
 #include <string>
-#include "platform_abstracts/Shader.hpp"
+#include "Shader.hpp"
 #include "EGLErrorHandler.hpp"
 
 namespace cookie {
-	class EGLShader : public cookie::Shader {
+	class EGLShader : public Shader {
 	public:
 		EGLShader(const std::string &vertexPath, const std::string &fragmentPath);
 		explicit EGLShader(const std::string &computePath);
