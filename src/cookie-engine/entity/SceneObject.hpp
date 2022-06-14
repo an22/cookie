@@ -52,8 +52,6 @@ namespace cookie {
 		void setStatic(bool isStatic);
 		void setName(const std::string &name);
 
-		virtual void draw(const DrawUtils &utils);
-
 		void addChild(const std::shared_ptr<SceneObject> &child);
 		std::shared_ptr<SceneObject> getChildAt(unsigned int position);
 		void removeChild(const std::shared_ptr<SceneObject> &child);

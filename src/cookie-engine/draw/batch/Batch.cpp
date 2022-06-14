@@ -17,7 +17,7 @@
 
 namespace cookie {
 
-	Batch::Batch(const std::shared_ptr<Material> &material) : Renderable(),
+	Batch::Batch(const std::shared_ptr<Material> &material) : Renderable(material),
 															  material(std::shared_ptr(material)),
 															  sceneObjects{} {
 	}

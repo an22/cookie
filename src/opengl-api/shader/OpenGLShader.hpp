@@ -22,6 +22,7 @@ namespace cookie {
 		~OpenGLShader() override = default;
 		static GLuint loadShaderFrom(const std::string &path, GLenum shaderType);
 		void use() override;
+		void disable() override;
 		void setBool(const std::string &name, bool value) const override;
 		void setInt(const std::string &name, int32_t value) const override;
 		void setFloat(const std::string &name, float value) const override;

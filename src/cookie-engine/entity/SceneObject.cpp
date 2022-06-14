@@ -51,19 +51,6 @@ namespace cookie {
 		this->is_static = isStatic;
 	}
 
-	void SceneObject::draw(const cookie::DrawUtils &utils) {
-		for (auto &child: children) {
-			child->draw(utils);
-		}
-		auto mesh = getComponent<MeshComponent>();
-		if (!mesh) return;
-		if (!mesh->getIndices().empty()) {
-			utils.drawElements(mesh->getIndices().size());
-		} else {
-			utils.drawArrays(0, mesh->getVertices().size());
-		}
-	}
-
 	void SceneObject::addChild(const std::shared_ptr<SceneObject> &child) {
 		child->transformation->setParent(transformation);
 		child->addComponent(std::make_shared<SectorComponent>(child));

@@ -60,6 +60,10 @@ namespace cookie {
 		glUseProgram(id);
 	}
 
+	void OpenGLShader::disable() {
+		glUseProgram(0);
+	}
+
 	void OpenGLShader::setBool(const std::string &name, bool value) const {
 		GLint location = glGetUniformLocation(id, name.c_str());
 		glUniform1i(location, value);

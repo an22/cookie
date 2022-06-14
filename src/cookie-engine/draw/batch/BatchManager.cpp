@@ -27,7 +27,7 @@ void cookie::BatchManager::onNewObject(const std::shared_ptr<SceneObject> &scene
 	}
 }
 
-void cookie::BatchManager::syncWithVideoBuffer() {
+void cookie::BatchManager::onStart() {
 	for (auto &entry: batchMap) {
 		entry.second->saveToGPU();
 	}

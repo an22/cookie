@@ -22,6 +22,7 @@ namespace cookie {
 		virtual ~Shader() = default;
 		// use/activate the shader
 		virtual void use() = 0;
+		virtual void disable() = 0;
 		// utility uniform functions
 		virtual void setBool(const std::string &name, bool value) const = 0;
 		virtual void setInt(const std::string &name, int32_t value) const = 0;

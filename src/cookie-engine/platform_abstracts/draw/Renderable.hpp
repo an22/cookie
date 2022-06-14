@@ -7,7 +7,7 @@
 
 #include <memory>
 #include <vector>
-#include "glm/fwd.hpp"
+#include <glm/fwd.hpp>
 
 
 namespace cookie {
@@ -15,17 +15,21 @@ namespace cookie {
 
 	class DrawUtils;
 
+	class Material;
+
 	struct MeshData;
 
 	class Renderable {
 	protected:
 		std::unique_ptr<BufferStorage> bufferStorage;
+		std::shared_ptr<Material> material;
+
 		virtual void draw(const DrawUtils &drawUtils) = 0;
 		virtual void saveToGPUInternal(const MeshData &meshData, const std::vector<glm::mat4> &matrices);
 	public:
-		explicit Renderable();
+		explicit Renderable(std::shared_ptr<Material> material);
 		virtual ~Renderable();
-		virtual	void saveToGPU() = 0;
+		virtual void saveToGPU() = 0;
 		virtual void render(const DrawUtils &drawUtils);
 	};
 }

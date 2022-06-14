@@ -9,8 +9,6 @@
 #include "Cookie.hpp"
 
 namespace cookie {
-	void Material::onPreDraw() {
-	}
 
 	Material::Material(
 			std::string  name,
@@ -62,4 +60,21 @@ namespace cookie {
 			  doubleSided(doubleSided) {}
 
 	GPUMaterial::~GPUMaterial() = default;
+
+	//Lifecycle methods
+	void Material::onPreDraw() {
+		enableShader();
+	}
+
+	void Material::onPostDraw() {
+		disableShader();
+	}
+
+	void Material::enableShader() const {
+		shader->use();
+	}
+
+	void Material::disableShader() const {
+		shader->disable();
+	}
 }

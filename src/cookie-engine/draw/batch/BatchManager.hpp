@@ -23,7 +23,7 @@ namespace cookie {
 
 		void onNewObject(const std::shared_ptr<SceneObject>& sceneObject);
 		void draw(const DrawUtils& drawUtils) const;
-		void syncWithVideoBuffer();
+		void onStart();
 	};
 }
 

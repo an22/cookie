@@ -16,7 +16,6 @@ namespace cookie {
 
 	Scene::Scene() : drawUtils(CookieFactory::provideDrawUtils()),
 					 batchManager(std::make_unique<BatchManager>()),
-					 globalBufferStorage(CookieFactory::provideGlobalBufferStorage()),
 					 sceneSectorManager(CookieFactory::provideSceneSectorManager(1, Bounds(glm::vec4(-100, -100, -100, 1), glm::vec4(100, 100, 100, 1)))),
 					 sceneSettings(
 							 std::make_unique<SceneSettings>(
@@ -44,19 +43,17 @@ namespace cookie {
 		drawUtils->enableDepthTest();
 		drawUtils->cullFace();
 		framerate.invalidateFrameRate();
-		currentShader = CookieFactory::provideShader(
-				R"(D:\Hope\Projects\CookieEngine\assets\shader\vertex\vertex.glsl)",
-				R"(D:\Hope\Projects\CookieEngine\assets\shader\fragment\fragment.glsl)"
-		);
-		currentShader->use();
-		globalBufferStorage->updateMatrices(sceneSettings->perspectiveMx, vMat);
-		globalBufferStorage->bind();
-		batchManager->syncWithVideoBuffer();
+//		currentShader = CookieFactory::provideShader(
+//				R"(D:\Hope\Projects\CookieEngine\assets\shader\vertex\vertex.glsl)",
+//				R"(D:\Hope\Projects\CookieEngine\assets\shader\fragment\fragment.glsl)"
+//		);
+//		currentShader->use();
+//		globalBufferStorage->updateMatrices(sceneSettings->perspectiveMx, vMat);
+		batchManager->onStart();
 	}
 
 	void Scene::renderFrame() {
 		framerate.invalidateFrameRate();
-		currentShader->use();
 		sceneSectorManager->update();
 		display(framerate.frameTime, framerate.frameTime);
 	}

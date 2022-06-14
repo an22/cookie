@@ -25,10 +25,8 @@ namespace cookie {
 	private:
 		std::unique_ptr<SceneSectorManager> sceneSectorManager;
 		std::unique_ptr<SceneSettings> sceneSettings;
-		std::unique_ptr<GlobalBufferStorage> globalBufferStorage;
 		std::unique_ptr<DrawUtils> drawUtils;
 		std::unique_ptr<BatchManager> batchManager;
-		std::unique_ptr<Shader> currentShader;
 		std::vector<std::shared_ptr<SceneObject>> sceneObjects;
 		FramerateInfo framerate;
 		glm::mat4 vMat;
@@ -47,16 +45,7 @@ namespace cookie {
 		virtual void prepareRendering();
 		virtual void renderFrame();
 		virtual bool isTerminateRequested();
-		SceneSettings &getSettings();
-
-		template<class T = Shader>
-		T &getCurrentShader() const {
-			static_assert(
-					std::is_base_of<Shader, T>::value,
-					"type parameter of this function must derive from cookie::Shader"
-			);
-			return dynamic_cast<T &>(*currentShader);
-		}
+		const SceneSettings &getSettings();
 	};
 }
 

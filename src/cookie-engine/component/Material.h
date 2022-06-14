@@ -8,10 +8,12 @@
 #include <vector>
 #include <string>
 #include <glm/vec4.hpp>
+#include <memory>
 
 namespace cookie {
 
 	class Texture;
+	class Shader;
 
 	struct GPUMaterial {
 		glm::vec4 baseColor;
@@ -39,6 +41,7 @@ namespace cookie {
 	public:
 
 		std::string name;
+		std::shared_ptr<Shader> shader;
 		std::vector<Texture> textures;
 
 		Material(
@@ -54,7 +57,10 @@ namespace cookie {
 		) noexcept;
 		Material(Material &&) noexcept;
 		~Material() override;
-		void onPreDraw();
+		virtual void onPreDraw();
+		virtual void onPostDraw();
+		void enableShader() const;
+		void disableShader() const;
 	};
 }
 

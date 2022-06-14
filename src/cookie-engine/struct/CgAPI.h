@@ -8,8 +8,7 @@
 enum class CgAPI {
 	OpenGLES3,
 	OpenGL,
-	Vulkan,
-	DirectX
+	Vulkan
 };
 
 #endif //COOKIE_ENGINE_CGAPI_H

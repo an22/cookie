@@ -9,8 +9,8 @@
 
 namespace cookie {
 	SceneSettings::SceneSettings(
-			unsigned int width,
-			unsigned int height,
+			uint32_t width,
+			uint32_t height,
 			float x,
 			float y,
 			float z,
@@ -22,14 +22,15 @@ namespace cookie {
 		cameraPos(glm::vec3(x, y, z)),
 		FOV(fov),
 		nearZ(nearZ),
-		farZ(farZ) {
-		onWindowResized(width, height);
+		farZ(farZ),
+		aspectRatio(static_cast<float>(width) / static_cast<float>(height)),
+		perspectiveMx(glm::perspective(fov, aspectRatio, nearZ, farZ)) {
 	}
 
-	void SceneSettings::onWindowResized(unsigned int newWidth, unsigned int newHeight) {
+	void SceneSettings::onWindowResized(uint32_t newWidth, uint32_t newHeight) {
 		width = newWidth;
 		height = newHeight;
-		aspectRatio = (float) newWidth / (float) newHeight;
+		aspectRatio = static_cast<float>(newWidth) / static_cast<float>(newHeight);
 		perspectiveMx = glm::perspective(FOV, aspectRatio, nearZ, farZ);
 	}
 }
