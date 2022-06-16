@@ -53,7 +53,8 @@ namespace cookie {
 				float specular,
 				float opacity,
 				bool doubleSided,
-				std::vector<Texture> &textures
+				std::vector<Texture> &textures,
+                std::shared_ptr<Shader> shader
 		) noexcept;
 		Material(Material &&) noexcept;
 		~Material() override;

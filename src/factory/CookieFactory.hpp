@@ -26,6 +26,9 @@ namespace cookie {
 	class TextureProcessor;
 	class GlobalBufferStorage;
 	class SceneSectorManager;
+	class BoundsRenderer;
+	class Material;
+	class DebugRenderer;
 	struct Bounds;
 
 	class CookieFactory {
@@ -36,6 +39,7 @@ namespace cookie {
 		static std::unique_ptr<CookieFactory> instance;
 		static std::mutex mutex;
 		static std::unique_ptr<FileManager> fileManager;
+        static std::shared_ptr<Shader> uberShader;
 
 	protected:
 		[[nodiscard]] virtual std::unique_ptr<cookie::Time> provideTimeManagerImpl() const = 0;
@@ -55,6 +59,7 @@ namespace cookie {
 		static void init(CgAPI api, std::unique_ptr<FileManager> manager);
 		static CookieFactory &getFactory();
 		static const FileManager &getManager();
+		static std::shared_ptr<Shader> getUberShader();
 		explicit CookieFactory(CgAPI api);
 		virtual ~CookieFactory() = default;
 		CookieFactory(CookieFactory &&) = delete;
@@ -62,6 +67,8 @@ namespace cookie {
 		CookieFactory &operator=(const CookieFactory &) = delete;
 
 		static std::unique_ptr<cookie::Time> provideTimeManager();
+		static std::unique_ptr<cookie::BoundsRenderer> provideBoundsRenderer();
+		static std::unique_ptr<cookie::DebugRenderer> provideDebugRenderer();
 		static std::unique_ptr<cookie::Shader> provideShader(
 				const std::string &vertexPath,
 				const std::string &fragmentPath

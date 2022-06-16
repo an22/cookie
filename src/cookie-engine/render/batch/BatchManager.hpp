@@ -22,7 +22,7 @@ namespace cookie {
 		BatchManager();
 
 		void onNewObject(const std::shared_ptr<SceneObject>& sceneObject);
-		void draw(const DrawUtils& drawUtils) const;
+		void render(const DrawUtils& drawUtils) const;
 		void onStart();
 	};
 }

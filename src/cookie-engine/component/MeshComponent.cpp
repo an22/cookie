@@ -35,7 +35,7 @@ namespace cookie {
 		return meshData->indices;
 	}
 
-	std::shared_ptr<Material> MeshComponent::getMaterial() const {
+	const std::shared_ptr<Material>& MeshComponent::getMaterial() const {
 		return meshData->material;
 	}
 

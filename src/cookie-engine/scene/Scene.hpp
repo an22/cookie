@@ -19,7 +19,7 @@ namespace cookie {
 	class GlobalBufferStorage;
 	class DrawUtils;
 	class SceneObject;
-	class Shader;
+	class DebugRenderer;
 
 	class Scene {
 	private:
@@ -27,6 +27,8 @@ namespace cookie {
 		std::unique_ptr<SceneSettings> sceneSettings;
 		std::unique_ptr<DrawUtils> drawUtils;
 		std::unique_ptr<BatchManager> batchManager;
+		std::unique_ptr<DebugRenderer> debugRenderer;
+        std::unique_ptr<GlobalBufferStorage> globalBufferStorage;
 		std::vector<std::shared_ptr<SceneObject>> sceneObjects;
 		FramerateInfo framerate;
 		glm::mat4 vMat;

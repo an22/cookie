@@ -36,7 +36,7 @@ namespace cookie {
 		[[nodiscard]] const Bounds &getTransformedBounds();
 		[[nodiscard]] std::vector<Vertex> &getVertices() const;
 		[[nodiscard]] const std::vector<unsigned int> &getIndices() const;
-		[[nodiscard]] std::shared_ptr<Material> getMaterial() const;
+		[[nodiscard]] const std::shared_ptr<Material>& getMaterial() const;
 		void updateMatrix(const glm::mat4& transformation);
 	};
 }

@@ -1,5 +1,7 @@
 //
 // Created by Antiufieiev Michael on 18.08.2021.
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "OCUnusedMacroInspection"
 //
 #define TINYGLTF_IMPLEMENTATION
 #define STB_IMAGE_IMPLEMENTATION
@@ -49,7 +51,8 @@ namespace cookie {
 							0.5f,
 							1.0f,
 							material.doubleSided,
-							textures
+							textures,
+							CookieFactory::getUberShader()
 					)
 			);
 		}
@@ -305,6 +308,7 @@ namespace cookie {
 			for (const auto &meshPrimitive: mesh.primitives) {
 				fetchIndices(model, meshPrimitive, outIndices);
 				LOG_I("Primitive mode: %s", std::to_string(meshPrimitive.mode).c_str());
+				material = materials[meshPrimitive.material];
 				switch (meshPrimitive.mode) {
 					case TINYGLTF_MODE_TRIANGLES: { // this is the simplest case to handle
 						fetchPrimitiveTriangles(
@@ -340,7 +344,6 @@ namespace cookie {
 				}
 			}
 
-			material = materials[0];
 			// Create a mesh object
 			loadedMesh = std::make_unique<MeshData>(
 					mesh.name,
@@ -418,3 +421,5 @@ namespace cookie {
 		parseScene(root, *scene);
 	}
 }
+
+#pragma clang diagnostic pop

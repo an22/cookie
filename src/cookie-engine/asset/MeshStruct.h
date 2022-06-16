@@ -31,7 +31,7 @@ namespace cookie {
 	struct MeshData {
 		std::string name;
 		std::vector<Vertex> vertices;
-		std::vector<unsigned int> indices;
+		std::vector<uint32_t> indices;
 		std::shared_ptr<Material> material;
 
 		MeshData();
@@ -39,8 +39,8 @@ namespace cookie {
 		MeshData(
 				std::string name,
 				std::vector<Vertex> &vertices,
-				std::vector<unsigned int> &indices,
-				std::shared_ptr<Material> &material
+				std::vector<uint32_t> &indices,
+				std::shared_ptr<Material> material
 		);
 		MeshData(const MeshData &) = delete;
 		MeshData &operator=(const MeshData &) = delete;

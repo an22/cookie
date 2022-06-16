@@ -11,7 +11,7 @@
 namespace cookie {
 
 	Material::Material(
-			std::string  name,
+			std::string name,
 			const glm::vec4 &baseColor,
 			const glm::vec4 &emissiveColor,
 			float roughness,
@@ -19,7 +19,8 @@ namespace cookie {
 			float specular,
 			float opacity,
 			bool doubleSided,
-			std::vector<Texture> &textures
+			std::vector<Texture> &textures,
+			std::shared_ptr<Shader> shader
 	) noexcept: GPUMaterial(
 			baseColor,
 			emissiveColor,
@@ -28,7 +29,7 @@ namespace cookie {
 			specular,
 			opacity,
 			doubleSided
-	), name(std::move(name)), textures(std::move(textures)) {
+	), name(std::move(name)), textures(std::move(textures)), shader(std::move(shader)) {
 	}
 
 	Material::Material(Material &&mat) noexcept:
@@ -48,16 +49,17 @@ namespace cookie {
 
 	Material::~Material() = default;
 
-	GPUMaterial::GPUMaterial(const glm::vec4 &baseColor,
-							 const glm::vec4 &emissiveColor,
-							 float roughness,
-							 float metallic,
-							 float specular,
-							 float opacity,
-							 bool doubleSided)
-			: baseColor(baseColor), emissiveColor(emissiveColor), roughness(roughness),
-			  metallic(metallic), specular(specular), opacity(opacity),
-			  doubleSided(doubleSided) {}
+	GPUMaterial::GPUMaterial(
+			const glm::vec4 &baseColor,
+			const glm::vec4 &emissiveColor,
+			float roughness,
+			float metallic,
+			float specular,
+			float opacity,
+			bool doubleSided
+	) : baseColor(baseColor), emissiveColor(emissiveColor), roughness(roughness),
+		metallic(metallic), specular(specular), opacity(opacity),
+		doubleSided(doubleSided) {}
 
 	GPUMaterial::~GPUMaterial() = default;
 

@@ -19,15 +19,12 @@ layout (binding = 1, std140) buffer ModelMatrices
     mat4[] data;
 } modelMatrices;
 
-uniform samplerBuffer matrixBuffer;
 out vec2 lerpTexCoord;
 out vec4 color;
-
-mat4 findMatrix(int offset);
 
 void main(void) {
     mat4 mv_matrix = matrixData.view * modelMatrices.data[matrixOffset];
     color = vec4(normal, 1.0f);
-    gl_Position = matrixData.projection * mv_matrix * vec4(position, 1.0);
     lerpTexCoord = texCoord;
+    gl_Position = matrixData.projection * mv_matrix * vec4(position, 1.0);
 }

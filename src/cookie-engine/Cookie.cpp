@@ -68,6 +68,7 @@ namespace cookie {
 
 	void Cookie::terminateInternal() {
 		terminate = false;
+		currentScene.reset();
 		initializer->destroyGraphicsAPIResources(*platformData);
 	}
 

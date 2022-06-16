@@ -10,9 +10,41 @@
 #include "Cookie.hpp"
 #include "OpenGLPlatformSpecificData.h"
 #include "GLErrorHandler.hpp"
-#include "Bounds.hpp"
 
 namespace cookie {
+
+	GLenum convertDrawMode(DrawMode drawMode) {
+		GLenum mode;
+		switch (drawMode) {
+			case POINTS:
+				mode = GL_POINTS;
+				break;
+			case TRIANGLES:
+				mode = GL_TRIANGLES;
+				break;
+			case TRIANGLE_STRIP:
+				mode = GL_TRIANGLE_STRIP;
+				break;
+		}
+		return mode;
+	}
+
+	GLenum convertPolyMode(PolyMode polyMode) {
+		GLenum mode;
+		switch (polyMode) {
+			case FILL:
+				mode = GL_FILL;
+				break;
+			case LINE:
+				mode = GL_LINE;
+				break;
+			case POINT:
+				mode = GL_POINT;
+				break;
+		}
+		return mode;
+	}
+
 	bool OpenGLDrawUtils::shouldCloseWindow() const {
 		return glfwWindowShouldClose(
 				cookie::Cookie::getInstance()
@@ -61,6 +93,7 @@ namespace cookie {
 	}
 
 	void OpenGLDrawUtils::drawMultiElementsWithIndexOffset(
+			DrawMode drawMode,
 			uint32_t meshCount,
 			int32_t *startOffset,
 			int32_t *indicesCount,
@@ -71,7 +104,7 @@ namespace cookie {
 			pointers[i] = reinterpret_cast<void *>(startOffset[i]);
 		}
 		glMultiDrawElementsBaseVertex(
-				GL_TRIANGLES,
+				convertDrawMode(drawMode),
 				reinterpret_cast<GLsizei *>(indicesCount),
 				GL_UNSIGNED_INT,
 				pointers.data(),
@@ -81,26 +114,8 @@ namespace cookie {
 		GLErrorHandler::checkOpenGLError();
 	}
 
-	void OpenGLDrawUtils::drawBounds(const Bounds &bounds) const {
-		GLErrorHandler::checkOpenGLError();
-		glUseProgram(0);
-		glMatrixMode(GL_PROJECTION);
-		GLErrorHandler::checkOpenGLError();
-		glLoadIdentity();
-		GLErrorHandler::checkOpenGLError();
-		glOrtho (-100.0f, 100.0f, -100.0f, 100.0f, -100.0f, 100.0f);
-		GLErrorHandler::checkOpenGLError();
-		glBegin(GL_POINTS);
-		GLErrorHandler::checkOpenGLError();
-		for (auto &point: bounds.points) {
-			auto a = glm::normalize(point);
-			glColor3f(1.0, 0.0, 0.0);
-			glVertex3f(a.x, a.y, a.z);
-		}
-		GLErrorHandler::checkOpenGLError();
-		glEnd();
-		glFlush();
-		GLErrorHandler::checkOpenGLError();
+	void OpenGLDrawUtils::setPolygonMode(cookie::PolyMode mode) const {
+		glPolygonMode(GL_FRONT_AND_BACK, convertPolyMode(mode));
 	}
 
 	OpenGLDrawUtils::OpenGLDrawUtils() = default;

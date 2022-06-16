@@ -35,10 +35,6 @@ namespace cookie {
 	}
 
 	void EGLGlobalBufferStorage::bind() {
-		GLint id;
-		glGetIntegerv(GL_CURRENT_PROGRAM, &id);
-		unsigned int matrices_index = glGetUniformBlockIndex(id, "Matrices");
-		glUniformBlockBinding(id, matrices_index, 0);
 		glBindBufferBase(GL_UNIFORM_BUFFER, 0, uboMatrices);
 		EGLErrorHandler::checkOpenGLError();
 	}

@@ -15,6 +15,7 @@
 namespace cookie {
 
 	struct MeshData;
+	struct PointsData;
 
 	class BufferStorage {
 
@@ -26,6 +27,11 @@ namespace cookie {
         virtual void unbind() const =  0;
 		virtual void saveToBuffer(
 				const MeshData &meshData,
+				const std::vector<glm::mat4> &matrices
+		) const = 0;
+
+		virtual void saveToBuffer(
+				const PointsData &meshData,
 				const std::vector<glm::mat4> &matrices
 		) const = 0;
 	};

@@ -52,7 +52,6 @@ namespace cookie {
 	}
 
 	OpenGLCookieFactory::OpenGLCookieFactory(CgAPI api) : CookieFactory(api) {
-
 	}
 }
 

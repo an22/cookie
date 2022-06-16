@@ -13,6 +13,7 @@
 #include "OpenGLBufferStorage.hpp"
 #include "GLErrorHandler.hpp"
 #include "MeshStruct.h"
+#include "PointsData.h"
 
 namespace cookie {
 	OpenGLBufferStorage::OpenGLBufferStorage() : cookie::BufferStorage() {
@@ -40,16 +41,30 @@ namespace cookie {
 		setupMatricesBuffer(matrices);
 	}
 
+	void OpenGLBufferStorage::saveToBuffer(const PointsData &pointsData, const std::vector<glm::mat4> &matrices) const {
+		setupPointElementBuffer(pointsData);
+		setupMatricesBuffer(matrices);
+	}
+
 	inline void OpenGLBufferStorage::setupVertexElementBuffer(const cookie::MeshData &meshData) const {
 		glBindVertexArray(vao);
-		fillVertexBuffer(meshData);
-		fillElementsBuffer(meshData);
-		setAttributePointers();
+		fillVertexBuffer(meshData.vertices);
+		fillElementsBuffer(meshData.indices);
+		setVertexAttributePointers();
 		GLErrorHandler::checkOpenGLError();
 		glBindVertexArray(0);
 	}
 
-	inline void OpenGLBufferStorage::setAttributePointers() {
+	void OpenGLBufferStorage::setupPointElementBuffer(const PointsData &pointsData) const {
+		glBindVertexArray(vao);
+		fillPointsBuffer(pointsData.points);
+		fillElementsBuffer(pointsData.indices);
+		setPointAttributePointers();
+		GLErrorHandler::checkOpenGLError();
+		glBindVertexArray(0);
+	}
+
+	inline void OpenGLBufferStorage::setVertexAttributePointers() {
 		// vertex coords
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) nullptr);
@@ -64,22 +79,38 @@ namespace cookie {
 		glVertexAttribIPointer(3, 1, GL_INT, sizeof(Vertex), (void *) offsetof(Vertex, matrixOffset));
 	}
 
-	inline void OpenGLBufferStorage::fillElementsBuffer(const MeshData &meshData) const {
+	void OpenGLBufferStorage::setPointAttributePointers() {
+		// points coords
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void *) nullptr);
+	}
+
+	inline void OpenGLBufferStorage::fillElementsBuffer(const std::vector<uint32_t> &indices) const {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIndex);
 		glBufferData(
 				GL_ELEMENT_ARRAY_BUFFER,
-				meshData.indices.size() * sizeof(uint32_t),
-				meshData.indices.data(),
+				indices.size() * sizeof(uint32_t),
+				indices.data(),
 				GL_STATIC_DRAW
 		);
 	}
 
-	inline void OpenGLBufferStorage::fillVertexBuffer(const MeshData &meshData) const {
+	inline void OpenGLBufferStorage::fillVertexBuffer(const std::vector<Vertex> &vertices) const {
 		glBindBuffer(GL_ARRAY_BUFFER, vboVertex);
 		glBufferData(
 				GL_ARRAY_BUFFER,
-				sizeof(Vertex) * meshData.vertices.size(),
-				meshData.vertices.data(),
+				sizeof(Vertex) * vertices.size(),
+				vertices.data(),
+				GL_STATIC_DRAW
+		);
+	}
+
+	inline void OpenGLBufferStorage::fillPointsBuffer(const std::vector<glm::vec4> &vertices) const {
+		glBindBuffer(GL_ARRAY_BUFFER, vboVertex);
+		glBufferData(
+				GL_ARRAY_BUFFER,
+				sizeof(glm::vec4) * vertices.size(),
+				vertices.data(),
 				GL_STATIC_DRAW
 		);
 	}
@@ -113,10 +144,10 @@ namespace cookie {
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, sboMatrices);
 		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, sboMatrices);
 		glBindBuffer(GL_UNIFORM_BUFFER, uboMaterial);
-		GLint id;
-		glGetIntegerv(GL_CURRENT_PROGRAM, &id);
-		unsigned int matrices_index = glGetUniformBlockIndex(id, MATERIAL_UNIFORM_BLOCK.c_str());
-		glUniformBlockBinding(id, matrices_index, 2);
+//		GLint id;
+//		glGetIntegerv(GL_CURRENT_PROGRAM, &id);
+//		unsigned int matrices_index = glGetUniformBlockIndex(id, MATERIAL_UNIFORM_BLOCK.c_str());
+//		glUniformBlockBinding(id, matrices_index, 2);
 		glBindBufferBase(GL_UNIFORM_BUFFER, 2, uboMaterial);
 		GLErrorHandler::checkOpenGLError();
 	}

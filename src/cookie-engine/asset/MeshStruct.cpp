@@ -11,7 +11,7 @@ namespace cookie {
 			std::string name,
 			std::vector<Vertex> &vertices,
 			std::vector<unsigned int> &indices,
-			std::shared_ptr<Material> &material
+			std::shared_ptr<Material> material
 	) : name(std::move(name)),
 		vertices(std::move(vertices)),
 		indices(std::move(indices)),

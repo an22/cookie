@@ -21,15 +21,22 @@ namespace cookie {
 		return { min, max };
 	}
 
+//1 - - - 0
+//| \     | \
+//|   5 - - - 4
+//|   |   |   |
+//3 - | - 2   |
+//  \ |     \ |
+//    6 - - - 7
 	void Bounds::calculatePoints() {
-		points[0] = min;
-		points[1] = {max.x, min.y, min.z, 1};
-		points[2] = {max.x, min.y, max.z, 1};
-		points[3] = {min.x, min.y, max.z, 1};
-		points[4] = {min.x, max.y, min.z, 1};
-		points[5] = {max.x, max.y, min.z, 1};
-		points[6] = max;
-		points[7] = {min.x, max.y, max.z, 1};
+		points[3] = min;
+		points[2] = {max.x, min.y, min.z, 1};
+		points[7] = {max.x, min.y, max.z, 1};
+		points[6] = {min.x, min.y, max.z, 1};
+		points[1] = {min.x, max.y, min.z, 1};
+		points[0] = {max.x, max.y, min.z, 1};
+		points[4] = max;
+		points[5] = {min.x, max.y, max.z, 1};
 	}
 
 	Bounds::Bounds(const glm::vec4 &min, const glm::vec4 &max) : min(min), max(max), points(8) {

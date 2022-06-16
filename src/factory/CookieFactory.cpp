@@ -24,16 +24,23 @@
 #include "EGLCookieFactory.h"
 #endif
 #if COOKIE_OPENGL
+
 #include "OpenGLCookieFactory.h"
+
 #endif
 
 #include <memory>
+#include "BoundsRenderer.h"
+#include "DebugRenderer.h"
+#include "Material.h"
+#include "Texture.hpp"
 
 namespace cookie {
 
 	std::unique_ptr<CookieFactory> CookieFactory::instance;
 	std::mutex CookieFactory::mutex;
 	std::unique_ptr<FileManager> CookieFactory::fileManager;
+	std::shared_ptr<Shader> CookieFactory::uberShader;
 
 	void CookieFactory::init(CgAPI api, std::unique_ptr<FileManager> manager) {
 		std::lock_guard<std::mutex> lock(mutex);
@@ -56,7 +63,6 @@ namespace cookie {
 	}
 
 	CookieFactory &CookieFactory::getFactory() {
-		std::lock_guard<std::mutex> lock(mutex);
 		return *instance;
 	}
 
@@ -64,16 +70,28 @@ namespace cookie {
 		return *fileManager;
 	}
 
-	CookieFactory::CookieFactory(CgAPI api) {
-		cgApi = api;
+	std::shared_ptr<Shader> CookieFactory::getUberShader() {
+		std::lock_guard<std::mutex> lick(mutex);
+		if (uberShader == nullptr) {
+			uberShader = provideShader(
+					R"(D:\Hope\Projects\CookieEngine\assets\shader\vertex\vertex.glsl)",
+					R"(D:\Hope\Projects\CookieEngine\assets\shader\fragment\fragment.glsl)"
+			);
+		}
+		return uberShader;
+	}
+
+	CookieFactory::CookieFactory(CgAPI api) : cgApi(api) {
 	}
 
 	std::unique_ptr<cookie::Time> CookieFactory::provideTimeManager() {
 		return getFactory().provideTimeManagerImpl();
 	}
 
-	std::unique_ptr<cookie::Shader>
-	CookieFactory::provideShader(const std::string &vertexPath, const std::string &fragmentPath) {
+	std::unique_ptr<cookie::Shader> CookieFactory::provideShader(
+			const std::string &vertexPath,
+			const std::string &fragmentPath
+	) {
 		return getFactory().provideShaderImpl(vertexPath, fragmentPath);
 	}
 
@@ -106,5 +124,30 @@ namespace cookie {
 			const Bounds &bounds
 	) {
 		return std::make_unique<cookie::SceneSectorManager>(sectorSize, bounds);
+	}
+
+	std::unique_ptr<cookie::BoundsRenderer> CookieFactory::provideBoundsRenderer() {
+		std::vector<Texture> a{};
+		return std::make_unique<BoundsRenderer>(
+				std::make_unique<Material>(
+						"bound",
+						glm::vec4(),
+						glm::vec4(),
+						0.0f,
+						0.0f,
+						0.0f,
+						0.0f,
+						false,
+						a,
+						CookieFactory::provideShader(
+								R"(D:\Hope\Projects\CookieEngine\assets\shader\vertex\points_vertex_shader.glsl)",
+								R"(D:\Hope\Projects\CookieEngine\assets\shader\fragment\points_fragment_shader.glsl)"
+						)
+				)
+		);
+	}
+
+	std::unique_ptr<cookie::DebugRenderer> CookieFactory::provideDebugRenderer() {
+		return std::make_unique<DebugRenderer>();
 	}
 }
