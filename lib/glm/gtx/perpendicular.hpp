@@ -15,7 +15,7 @@
 
 // Dependency:
 #include "../glm.hpp"
-#include "../gtx/projection.hpp"
+#include "projection.hpp"
 
 #if GLM_MESSAGES == GLM_ENABLE && !defined(GLM_EXT_INCLUDED)
 #	ifndef GLM_ENABLE_EXPERIMENTAL

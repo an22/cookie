@@ -18,7 +18,7 @@
 #include "../common.hpp"
 #include "../trigonometric.hpp"
 #include "../geometric.hpp"
-#include "../ext/scalar_constants.hpp"
+#include "scalar_constants.hpp"
 
 #if GLM_MESSAGES == GLM_ENABLE && !defined(GLM_EXT_INCLUDED)
 #	pragma message("GLM: GLM_EXT_quaternion_exponential extension included")

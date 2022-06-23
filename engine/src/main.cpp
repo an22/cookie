@@ -3,7 +3,6 @@
 //
 
 
-#include <iostream>
 #include "Cookie.hpp"
 #include "CookieFactory.hpp"
 #include "DefaultFileManager.hpp"
@@ -12,7 +11,7 @@
 int main() {
 	try {
 		cookie::CookieFactory::init(CgAPI::OpenGL, std::make_unique<cookie::DefaultFileManager>());
-		cookie::Cookie& engine = cookie::Cookie::getInstance(CgAPI::OpenGL);
+		cookie::Cookie& engine = cookie::Cookie::getInstance();
 		engine.startRendering();
 	} catch (std::exception &e) {
 		LOG_E(e.what());

@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 add_executable( toktx
-    ${PROJECT_SOURCE_DIR}/lib/basisu/encoder/jpgd.cpp
-    ${PROJECT_SOURCE_DIR}/lib/basisu/encoder/jpgd.h
+        ../../lib/basisu/encoder/jpgd.cpp
+        ../../lib/basisu/encoder/jpgd.h
         image.cc
         image.hpp
         jpgimage.cc
@@ -24,7 +24,7 @@ PRIVATE
     $<TARGET_PROPERTY:ktx,INCLUDE_DIRECTORIES>
     $<TARGET_PROPERTY:objUtil,INTERFACE_INCLUDE_DIRECTORIES>
         ../../lib
-    ${PROJECT_SOURCE_DIR}/lib/basisu
+        ../../lib/basisu
     ${PROJECT_SOURCE_DIR}/other_include
 )
 

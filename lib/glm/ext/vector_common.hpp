@@ -14,7 +14,7 @@
 #pragma once
 
 // Dependency:
-#include "../ext/scalar_common.hpp"
+#include "scalar_common.hpp"
 #include "../common.hpp"
 
 #if GLM_MESSAGES == GLM_ENABLE && !defined(GLM_EXT_INCLUDED)

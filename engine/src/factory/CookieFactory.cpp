@@ -74,8 +74,8 @@ namespace cookie {
 		std::lock_guard<std::mutex> lick(mutex);
 		if (uberShader == nullptr) {
 			uberShader = provideShader(
-					R"(D:\Hope\Projects\CookieEngine\assets\shader\vertex\vertex.glsl)",
-					R"(D:\Hope\Projects\CookieEngine\assets\shader\fragment\fragment.glsl)"
+					R"(D:\Cookie\Projects\CookieEngine\assets\shader\vertex\vertex.glsl)",
+					R"(D:\Cookie\Projects\CookieEngine\assets\shader\fragment\fragment.glsl)"
 			);
 		}
 		return uberShader;
@@ -140,8 +140,8 @@ namespace cookie {
 						false,
 						a,
 						CookieFactory::provideShader(
-								R"(D:\Hope\Projects\CookieEngine\assets\shader\vertex\points_vertex_shader.glsl)",
-								R"(D:\Hope\Projects\CookieEngine\assets\shader\fragment\points_fragment_shader.glsl)"
+								R"(D:\Cookie\Projects\CookieEngine\assets\shader\vertex\points_vertex_shader.glsl)",
+								R"(D:\Cookie\Projects\CookieEngine\assets\shader\fragment\points_fragment_shader.glsl)"
 						)
 				)
 		);

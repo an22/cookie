@@ -23,7 +23,7 @@
 // Dependency:
 #include "../detail/qualifier.hpp"
 #include "../gtc/quaternion.hpp"
-#include "../gtx/dual_quaternion.hpp"
+#include "dual_quaternion.hpp"
 
 namespace glm
 {

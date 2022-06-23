@@ -14,8 +14,8 @@
 #pragma once
 
 // Dependency:
-#include "../gtc/constants.hpp"
-#include "../gtc/matrix_transform.hpp"
+#include "constants.hpp"
+#include "matrix_transform.hpp"
 #include "../ext/vector_relational.hpp"
 #include "../ext/quaternion_common.hpp"
 #include "../ext/quaternion_float.hpp"

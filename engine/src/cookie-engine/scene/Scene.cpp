@@ -85,7 +85,7 @@ namespace cookie {
 	}
 
 	void Scene::fillScene() {
-		auto model = SceneObject::fromPath(R"(D:\Hope\Projects\CookieEngine\assets\adamHead\adamHead.gltf)");
+		auto model = SceneObject::fromPath(R"(D:\Cookie\Projects\CookieEngine\assets\adamHead\adamHead.gltf)");
 		addObject(model);
 	}
 
