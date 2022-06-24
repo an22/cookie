@@ -6,7 +6,7 @@
 /// is preserved.
 
 #include "../detail/type_float.hpp"
-#include "../ext/scalar_constants.hpp"
+#include "scalar_constants.hpp"
 #include <cmath>
 #include <cfloat>
 

@@ -17,8 +17,8 @@
 // Dependency:
 #include "../glm.hpp"
 #include "../gtc/epsilon.hpp"
-#include "../gtx/quaternion.hpp"
-#include "../gtx/rotate_vector.hpp"
+#include "quaternion.hpp"
+#include "rotate_vector.hpp"
 
 #if GLM_MESSAGES == GLM_ENABLE && !defined(GLM_EXT_INCLUDED)
 #	ifndef GLM_ENABLE_EXPERIMENTAL

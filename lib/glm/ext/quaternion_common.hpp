@@ -21,8 +21,8 @@
 #pragma once
 
 // Dependency:
-#include "../ext/scalar_constants.hpp"
-#include "../ext/quaternion_geometric.hpp"
+#include "scalar_constants.hpp"
+#include "quaternion_geometric.hpp"
 #include "../common.hpp"
 #include "../trigonometric.hpp"
 #include "../exponential.hpp"

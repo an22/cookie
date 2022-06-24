@@ -14,7 +14,7 @@
 #pragma once
 
 // Dependency:
-#include "../gtx/transform.hpp"
+#include "transform.hpp"
 #include "../gtc/epsilon.hpp"
 #include "../ext/vector_relational.hpp"
 #include "../glm.hpp"

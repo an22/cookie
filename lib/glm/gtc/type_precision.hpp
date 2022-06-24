@@ -14,8 +14,8 @@
 #pragma once
 
 // Dependency:
-#include "../gtc/quaternion.hpp"
-#include "../gtc/vec1.hpp"
+#include "quaternion.hpp"
+#include "vec1.hpp"
 #include "../ext/scalar_int_sized.hpp"
 #include "../ext/scalar_uint_sized.hpp"
 #include "../detail/type_vec2.hpp"

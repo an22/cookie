@@ -15,7 +15,7 @@
 // Dependency:
 #include "../glm.hpp"
 #include "../gtc/integer.hpp"
-#include "../gtx/component_wise.hpp"
+#include "component_wise.hpp"
 
 #if GLM_MESSAGES == GLM_ENABLE && !defined(GLM_EXT_INCLUDED)
 #	ifndef GLM_ENABLE_EXPERIMENTAL
