@@ -30,7 +30,7 @@ namespace cookie {
 		void setupPointElementBuffer(const cookie::PointsData &pointsData) const;
 		void setupMatricesBuffer(const std::vector<glm::mat4> &matrices) const;
 		void setupMaterialBuffer(const cookie::MeshData &meshData) const;
-		void fillElementsBuffer(const std::vector<uint32_t>& indices) const;
+		void fillElementsBuffer(const std::vector<uint32_t> &indices) const;
 		void fillVertexBuffer(const std::vector<Vertex> &meshData) const;
 		void fillPointsBuffer(const std::vector<glm::vec4> &vertices) const;
 		static void setVertexAttributePointers();

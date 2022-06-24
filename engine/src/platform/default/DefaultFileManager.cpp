@@ -21,7 +21,7 @@ namespace cookie {
 		if (!ifs.is_open()) {
 			throw std::runtime_error("File not found at " + path);
 		}
-		return std::string {
+		return std::string{
 				std::istreambuf_iterator<char>(ifs),
 				std::istreambuf_iterator<char>()
 		};

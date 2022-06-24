@@ -18,9 +18,12 @@ namespace cookie {
 		int32_t _height = 0;
 	public:
 		virtual int32_t width() { return _width; };
-		virtual int32_t height()  { return _height; };
+
+		virtual int32_t height() { return _height; };
+
 		virtual void setWidth(int32_t width) { _width = width; };
-		virtual void setHeight(int32_t height)  { _height = height; };
+
+		virtual void setHeight(int32_t height) { _height = height; };
 		virtual ~PlatformSpecificData() = default;
 	};
 }

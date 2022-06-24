@@ -4,6 +4,7 @@
 
 #ifndef COOKIE_ALGORITHM_HPP
 #define COOKIE_ALGORITHM_HPP
+
 #include <vector>
 #include <glm/glm.hpp>
 

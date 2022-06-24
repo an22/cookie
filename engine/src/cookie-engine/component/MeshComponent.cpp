@@ -35,7 +35,7 @@ namespace cookie {
 		return meshData->indices;
 	}
 
-	const std::shared_ptr<Material>& MeshComponent::getMaterial() const {
+	const std::shared_ptr<Material> &MeshComponent::getMaterial() const {
 		return meshData->material;
 	}
 
@@ -48,11 +48,10 @@ namespace cookie {
 	}
 
 	const Bounds &MeshComponent::getTransformedBounds() {
-		auto& transformation = owner.lock()->getTransformation();
-		if(transformation->isChanged()) {
+		auto &transformation = owner.lock()->getTransformation();
+		if (transformation->isChanged()) {
 			updateMatrix(transformation->getGlobalTransformationMatrix());
 		}
 		return transformedBounds;
 	}
-
 }

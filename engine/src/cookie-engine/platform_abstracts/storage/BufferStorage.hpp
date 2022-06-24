@@ -24,7 +24,7 @@ namespace cookie {
 		virtual ~BufferStorage();
 
 		virtual void bind() const = 0;
-        virtual void unbind() const =  0;
+		virtual void unbind() const = 0;
 		virtual void saveToBuffer(
 				const MeshData &meshData,
 				const std::vector<glm::mat4> &matrices

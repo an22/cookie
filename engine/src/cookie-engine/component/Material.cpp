@@ -44,7 +44,6 @@ namespace cookie {
 			),
 			textures(std::move(mat.textures)),
 			name(std::move(mat.name)) {
-
 	}
 
 	Material::~Material() = default;

@@ -14,7 +14,7 @@ namespace cookie {
 	public:
 		explicit SubRenderable(const std::shared_ptr<Material> &material);
 		void saveToGPU() final;
-		virtual void saveToGPU(const std::list<std::shared_ptr<SceneObject>>& sceneObjects) = 0;
+		virtual void saveToGPU(const std::list<std::shared_ptr<SceneObject>> &sceneObjects) = 0;
 	};
 }
 

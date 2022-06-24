@@ -11,7 +11,14 @@ namespace cookie {
 			const glm::vec3 &position,
 			const glm::quat &rotation,
 			const glm::vec3 &scale
-	) : translation(position), rotation(rotation), scaling(scale), modelMat(glm::mat4(1.0f)), parentModelMat(glm::mat4(1.0f)), transformationMat(glm::mat4(1.0f)), _isChanged(true) {
+	)
+			: translation(position),
+			  rotation(rotation),
+			  scaling(scale),
+			  modelMat(glm::mat4(1.0f)),
+			  parentModelMat(glm::mat4(1.0f)),
+			  transformationMat(glm::mat4(1.0f)),
+			  _isChanged(true) {
 		regenerateModelMatrix();
 	}
 

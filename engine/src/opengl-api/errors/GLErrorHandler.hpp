@@ -32,7 +32,6 @@ namespace cookie {
 			}
 #endif
 		}
-
 	};
 }
 

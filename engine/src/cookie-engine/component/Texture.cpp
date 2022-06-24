@@ -8,8 +8,8 @@
 namespace cookie {
 
 	Texture::Texture(uint32_t id, std::string path, TextureType type) : id(id),
-																 path(std::move(path)),
-																 type(type) {
+																		path(std::move(path)),
+																		type(type) {
 	}
 
 	Texture::Texture(uint32_t id, std::string path) : id(id),

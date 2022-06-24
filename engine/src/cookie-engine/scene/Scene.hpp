@@ -28,14 +28,16 @@ namespace cookie {
 		std::unique_ptr<DrawUtils> drawUtils;
 		std::unique_ptr<BatchManager> batchManager;
 		std::unique_ptr<DebugRenderer> debugRenderer;
-        std::unique_ptr<GlobalBufferStorage> globalBufferStorage;
+		std::unique_ptr<GlobalBufferStorage> globalBufferStorage;
 		std::vector<std::shared_ptr<SceneObject>> sceneObjects;
 		FramerateInfo framerate;
 		glm::mat4 vMat;
 
 	protected:
-		virtual void display(const std::chrono::steady_clock::time_point &currentTime,
-							 const std::chrono::steady_clock::time_point &currentTimeDelta);
+		virtual void display(
+				const std::chrono::steady_clock::time_point &currentTime,
+				const std::chrono::steady_clock::time_point &currentTimeDelta
+		);
 
 	public:
 		Scene();

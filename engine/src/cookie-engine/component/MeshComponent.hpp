@@ -30,14 +30,18 @@ namespace cookie {
 		Bounds staticBounds;
 		Bounds transformedBounds;
 	public:
-		MeshComponent(const std::shared_ptr<SceneObject>& objPtr, std::unique_ptr<MeshData> meshData, const Bounds& _bounds);
+		MeshComponent(
+				const std::shared_ptr<SceneObject> &objPtr,
+				std::unique_ptr<MeshData> meshData,
+				const Bounds &_bounds
+		);
 		~MeshComponent() override = default;
 		[[nodiscard]] const Bounds &getBounds() const;
 		[[nodiscard]] const Bounds &getTransformedBounds();
 		[[nodiscard]] std::vector<Vertex> &getVertices() const;
 		[[nodiscard]] const std::vector<unsigned int> &getIndices() const;
-		[[nodiscard]] const std::shared_ptr<Material>& getMaterial() const;
-		void updateMatrix(const glm::mat4& transformation);
+		[[nodiscard]] const std::shared_ptr<Material> &getMaterial() const;
+		void updateMatrix(const glm::mat4 &transformation);
 	};
 }
 

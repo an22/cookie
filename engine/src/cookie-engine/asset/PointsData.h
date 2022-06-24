@@ -15,7 +15,6 @@ namespace cookie {
 
 		PointsData(std::vector<glm::vec4> points, std::vector<uint32_t> indices);
 	};
-
 }
 
 #endif //COOKIE_ENGINE_POINTSDATA_H

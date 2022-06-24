@@ -9,7 +9,6 @@
 #include <list>
 #include "glm/fwd.hpp"
 
-
 namespace cookie {
 	class BufferStorage;
 

@@ -16,8 +16,8 @@ namespace cookie {
 		Initializer() = default;
 		virtual ~Initializer() = default;
 
-		virtual void initGraphicsAPIResources(PlatformSpecificData& data) const = 0;
-		virtual void destroyGraphicsAPIResources(PlatformSpecificData& data) const = 0;
+		virtual void initGraphicsAPIResources(PlatformSpecificData &data) const = 0;
+		virtual void destroyGraphicsAPIResources(PlatformSpecificData &data) const = 0;
 	};
 }
 #endif /* Initializer_hpp */

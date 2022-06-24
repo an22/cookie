@@ -27,7 +27,7 @@ namespace cookie {
 	public:
 
 		explicit Batch(const std::shared_ptr<Material> &material);
-		Batch(Batch&& other) noexcept;
+		Batch(Batch &&other) noexcept;
 		~Batch() override;
 
 		void addObject(std::shared_ptr<SceneObject> sceneObject);
@@ -36,6 +36,5 @@ namespace cookie {
 		void render(const cookie::DrawUtils &drawUtils) override;
 	};
 }
-
 
 #endif //COOKIE_ENGINE_BATCH_HPP

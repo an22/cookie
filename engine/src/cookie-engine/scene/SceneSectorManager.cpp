@@ -12,9 +12,7 @@
 
 cookie::SceneSectorManager::SceneSectorManager(float sectorSize, const Bounds &bounds)
 		: sectorMap(), bounds(bounds), objects() {
-
 }
-
 
 void cookie::SceneSectorManager::update() {
 	std::shared_ptr<MeshComponent> mesh;
@@ -26,10 +24,13 @@ void cookie::SceneSectorManager::update() {
 		sectors = obj->getComponent<SectorComponent>();
 		if (obj->getTransformation()->isChanged() && mesh != nullptr && sectors != nullptr) {
 			sectors->clear();
-			const Bounds& objBounds = mesh->getTransformedBounds();
-			for (auto x = static_cast<int32_t>(floor(objBounds.min.x)); x <= static_cast<int32_t>(floor(objBounds.max.x)); x++) {
-				for (auto y = static_cast<int32_t>(floor(objBounds.min.y)); y <= static_cast<int32_t>(floor(objBounds.max.y)); y++) {
-					for (auto z = static_cast<int32_t>(floor(objBounds.min.z)); z <= static_cast<int32_t>(floor(objBounds.max.z)); z++) {
+			const Bounds &objBounds = mesh->getTransformedBounds();
+			for (auto x = static_cast<int32_t>(floor(objBounds.min.x));
+				 x <= static_cast<int32_t>(floor(objBounds.max.x)); x++) {
+				for (auto y = static_cast<int32_t>(floor(objBounds.min.y));
+					 y <= static_cast<int32_t>(floor(objBounds.max.y)); y++) {
+					for (auto z = static_cast<int32_t>(floor(objBounds.min.z));
+						 z <= static_cast<int32_t>(floor(objBounds.max.z)); z++) {
 						cell = {x, y, z};
 						auto sectorIt = sectorMap.find(cell);
 						if (sectorIt != sectorMap.end()) {

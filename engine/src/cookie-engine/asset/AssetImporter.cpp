@@ -323,12 +323,12 @@ namespace cookie {
 						bool hasTexCoords = outTexCoords.size() == outVertices.size();
 						bool hasNormals = outNormals.size() == outVertices.size();
 						for (auto &vertex: outVertices) {
-							if (min.x > vertex.position.x) min.x = vertex.position.x;
-							if (min.z > vertex.position.z) min.z = vertex.position.z;
-							if (min.y > vertex.position.y) min.y = vertex.position.y;
-							if (max.x < vertex.position.x) max.x = vertex.position.x;
-							if (max.z < vertex.position.z) max.z = vertex.position.z;
-							if (max.y < vertex.position.y) max.y = vertex.position.y;
+							if (min.x > vertex.position.x) { min.x = vertex.position.x; }
+							if (min.z > vertex.position.z) { min.z = vertex.position.z; }
+							if (min.y > vertex.position.y) { min.y = vertex.position.y; }
+							if (max.x < vertex.position.x) { max.x = vertex.position.x; }
+							if (max.z < vertex.position.z) { max.z = vertex.position.z; }
+							if (max.y < vertex.position.y) { max.y = vertex.position.y; }
 							if (hasTexCoords) {
 								vertex.texCoords = outTexCoords[i];
 							}

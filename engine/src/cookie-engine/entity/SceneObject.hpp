@@ -27,6 +27,7 @@ namespace cookie {
 	class SceneObject {
 		typedef std::vector<std::shared_ptr<SceneObject>> PtrSceneObjVector;
 		typedef std::unordered_map<std::type_index, std::shared_ptr<Component>> ComponentMap;
+
 	protected:
 		static std::atomic_uint32_t current_id;
 		uint32_t id;
@@ -37,11 +38,11 @@ namespace cookie {
 		PtrSceneObjVector children;
 
 		std::shared_ptr<Transformation> transformation;
-	public:
 
+	public:
 		SceneObject();
 		virtual ~SceneObject();
-		static std::shared_ptr<SceneObject> fromPath(const std::string& path);
+		static std::shared_ptr<SceneObject> fromPath(const std::string &path);
 
 		[[nodiscard]] const std::shared_ptr<Transformation> &getTransformation() const;
 		[[nodiscard]] const std::string &getName() const;
@@ -63,7 +64,6 @@ namespace cookie {
 		virtual void onCreate();
 		virtual void onUpdate();//TODO timestamp
 		virtual void onPostUpdate();
-
 
 		//Templates
 		template<class ComponentType>

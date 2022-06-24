@@ -18,7 +18,6 @@ namespace cookie {
 		) const override;
 		[[nodiscard]] std::string readStringFromFile(const std::string &path, bool isStringExpected) const override;
 	};
-
 } // cookie
 
 #endif //COOKIE_ENGINE_DEFAULTFILEMANAGER_HPP

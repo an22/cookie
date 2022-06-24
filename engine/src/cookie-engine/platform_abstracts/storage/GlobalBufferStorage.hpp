@@ -19,7 +19,7 @@ namespace cookie {
 		virtual void createFaceIndexHashesBuffer() = 0;
 		virtual void createFaceIndexesBuffer() = 0;
 		virtual void createMaterialsBuffer() = 0;
-		virtual void updateMatrices(const glm::mat4& projection, const glm::mat4& view) = 0;
+		virtual void updateMatrices(const glm::mat4 &projection, const glm::mat4 &view) = 0;
 	};
 }
 

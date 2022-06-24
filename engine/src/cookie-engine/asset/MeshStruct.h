@@ -48,5 +48,4 @@ namespace cookie {
 	};
 }
 
-
 #endif //COOKIE_ENGINE_MESHSTRUCT_H

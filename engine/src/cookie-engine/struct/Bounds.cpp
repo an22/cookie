@@ -6,19 +6,29 @@
 
 namespace cookie {
 	Bounds Bounds::transform(const glm::mat4 &transformation) {
-		min = {std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), 1};
-		max = {std::numeric_limits<float>::min(), std::numeric_limits<float>::min(), std::numeric_limits<float>::min(), 1};
+		min = {
+				std::numeric_limits<float>::max(),
+				std::numeric_limits<float>::max(),
+				std::numeric_limits<float>::max(),
+				1
+		};
+		max = {
+				std::numeric_limits<float>::min(),
+				std::numeric_limits<float>::min(),
+				std::numeric_limits<float>::min(),
+				1
+		};
 		glm::vec4 transformedPoint;
 		for (auto &point: points) {
 			transformedPoint = transformation * point;
-			if (min.x > transformedPoint.x) min.x = transformedPoint.x;
-			if (min.z > transformedPoint.z) min.z = transformedPoint.z;
-			if (min.y > transformedPoint.y) min.y = transformedPoint.y;
-			if (max.x < transformedPoint.x) max.x = transformedPoint.x;
-			if (max.z < transformedPoint.z) max.z = transformedPoint.z;
-			if (max.y < transformedPoint.y) max.y = transformedPoint.y;
+			if (min.x > transformedPoint.x) { min.x = transformedPoint.x; }
+			if (min.z > transformedPoint.z) { min.z = transformedPoint.z; }
+			if (min.y > transformedPoint.y) { min.y = transformedPoint.y; }
+			if (max.x < transformedPoint.x) { max.x = transformedPoint.x; }
+			if (max.z < transformedPoint.z) { max.z = transformedPoint.z; }
+			if (max.y < transformedPoint.y) { max.y = transformedPoint.y; }
 		}
-		return { min, max };
+		return {min, max};
 	}
 
 //1 - - - 0

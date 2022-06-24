@@ -17,7 +17,7 @@ namespace cookie {
 		MultiDrawConfig config;
 	public:
 		explicit BoundsRenderer(const std::shared_ptr<Material> &material);
-		void saveToGPU(const std::list<std::shared_ptr<SceneObject>>& sceneObjects) override;
+		void saveToGPU(const std::list<std::shared_ptr<SceneObject>> &sceneObjects) override;
 		void render(const cookie::DrawUtils &drawUtils) override;
 	};
 }

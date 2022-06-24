@@ -88,7 +88,7 @@ namespace cookie {
 
 	void Cookie::onWindowResized(int32_t width, int32_t height) {
 		std::lock_guard lock(localMutex);
-		if (terminate) return;
+		if (terminate) { return; }
 		platformData->setWidth(width);
 		platformData->setHeight(height);
 		if (currentScene) {

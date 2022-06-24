@@ -17,7 +17,7 @@ namespace cookie {
 	protected:
 		std::weak_ptr<SceneObject> owner;
 	public:
-		explicit Component(const std::shared_ptr<SceneObject>& objPtr);
+		explicit Component(const std::shared_ptr<SceneObject> &objPtr);
 		virtual ~Component() = default;
 	};
 }

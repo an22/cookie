@@ -16,7 +16,8 @@
 #include "FileManager.hpp"
 
 namespace cookie {
-	OpenGLShader::OpenGLShader(const std::string &vertexPath, const std::string &fragmentPath) : Shader(static_cast<uint32_t>(glCreateProgram())) {
+	OpenGLShader::OpenGLShader(const std::string &vertexPath, const std::string &fragmentPath)
+			: Shader(static_cast<uint32_t>(glCreateProgram())) {
 		auto vertex = loadShaderFrom(vertexPath, GL_VERTEX_SHADER);
 		auto fragment = loadShaderFrom(fragmentPath, GL_FRAGMENT_SHADER);
 		glAttachShader(id, vertex);
@@ -29,7 +30,7 @@ namespace cookie {
 		}
 	}
 
-	OpenGLShader::OpenGLShader(const std::string &computePath): Shader(static_cast<uint32_t>(glCreateProgram())) {
+	OpenGLShader::OpenGLShader(const std::string &computePath) : Shader(static_cast<uint32_t>(glCreateProgram())) {
 		auto compute = loadShaderFrom(computePath, GL_COMPUTE_SHADER);
 		glAttachShader(id, compute);
 		glLinkProgram(id);

@@ -43,17 +43,15 @@ namespace cookie {
 		);
 		[[nodiscard]] bool isChanged() const;
 		void setIsChanged(bool isChanged);
-		const glm::mat4& getModelMatrix();
-		const glm::mat4& getGlobalTransformationMatrix();
+		const glm::mat4 &getModelMatrix();
+		const glm::mat4 &getGlobalTransformationMatrix();
 		void setParent(const std::shared_ptr<Transformation> &transformation);
 		void setModelMatrix(const glm::mat4 &matModel);
 		void addChild(const std::shared_ptr<Transformation> &child);
 		void removeChild(const std::shared_ptr<Transformation> &child);
 		void regenerateModelMatrix();
 		void invalidateTransformation();
-
 	};
 }
-
 
 #endif //COOKIE_ENGINE_TRANSFORMATION_HPP

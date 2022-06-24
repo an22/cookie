@@ -6,6 +6,8 @@ cmake_minimum_required(VERSION 3.18.1)
 
 project(cookie-solution VERSION 0.0.1)
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 MACRO(HEADER_DIRECTORIES return_list)
     FILE(GLOB_RECURSE new_list src/*.h src/*.hpp)
     SET(dir_list "")

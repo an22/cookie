@@ -11,7 +11,7 @@
 int main() {
 	try {
 		cookie::CookieFactory::init(CgAPI::OpenGL, std::make_unique<cookie::DefaultFileManager>());
-		cookie::Cookie& engine = cookie::Cookie::getInstance();
+		cookie::Cookie &engine = cookie::Cookie::getInstance();
 		engine.startRendering();
 	} catch (std::exception &e) {
 		LOG_E(e.what());

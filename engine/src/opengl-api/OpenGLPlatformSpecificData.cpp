@@ -27,11 +27,11 @@ namespace cookie {
 		return _height;
 	}
 
-	GLFWwindow* OpenGLPlatformSpecificData::getWindow() {
+	GLFWwindow *OpenGLPlatformSpecificData::getWindow() {
 		return window;
 	}
 
-	void OpenGLPlatformSpecificData::setWindow(GLFWwindow* newWindow) {
+	void OpenGLPlatformSpecificData::setWindow(GLFWwindow *newWindow) {
 		window = newWindow;
 	}
 

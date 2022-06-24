@@ -27,5 +27,4 @@ namespace cookie {
 	};
 }
 
-
 #endif //COOKIE_ENGINE_TEXTUREPROCESSOR_HPP
