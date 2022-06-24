@@ -12,12 +12,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #Locate all files and headers
 HEADER_DIRECTORIES(HEADER_DIRS)
 
-file(GLOB_RECURSE SRC_LIST CONFIGURE_DEPENDS
-        "src/*.cpp"
-        "src/*.hpp"
-        "src/*.c"
-        "src/*.h"
-        )
+file(GLOB_RECURSE SRC_LIST CONFIGURE_DEPENDS "src/*.cpp" "src/*.hpp" "src/*.c" "src/*.h")
 
 if (ANDROID)
     find_library(log-lib log)
@@ -29,7 +24,7 @@ if (ANDROID)
     set_target_properties(libktx PROPERTIES IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/../jni/${ANDROID_ABI}/libktx.so)
 
     #cookie
-    add_library(cookie SHARED ${SRC_LIST})
+    add_library(cookie SHARED ${SRC_LIST} ${RESOURCES_LIST})
 
     target_include_directories(cookie PUBLIC ${HEADER_DIRS})
     target_link_libraries(cookie GLESv3)
@@ -39,6 +34,10 @@ if (ANDROID)
     target_link_libraries(cookie libktx)
 else ()
     add_executable(cookie ${SRC_LIST})
+
+    #Exclude main.cpp from libraries
+    list(FILTER SRC_LIST EXCLUDE REGEX ${PROJECT_SOURCE_DIR}/src/main.cpp)
+
     add_library(CookieEngine OBJECT ${SRC_LIST})
     add_library(CookieEngineShared SHARED $<TARGET_OBJECTS:CookieEngine>)
     add_library(CookieEngineStatic STATIC $<TARGET_OBJECTS:CookieEngine>)
@@ -53,6 +52,12 @@ else ()
     install_default_dependencies(CookieEngineShared)
     install_default_dependencies(CookieEngineStatic)
 
+    add_custom_target(
+            DeployResources ALL
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${PROJECT_SOURCE_DIR}/resources
+            ${PROJECT_BINARY_DIR}/resources
+    )
 
     # Export headers
     #    file(GLOB_RECURSE PUBLIC_HEADER_LIST CONFIGURE_DEPENDS "src/*.hpp" "src/*.h")
