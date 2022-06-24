@@ -6,6 +6,7 @@
 #include "SceneObject.hpp"
 #include "MeshComponent.hpp"
 #include "CookieFactory.hpp"
+#include <algorithm>
 #include <iterator>
 
 namespace cookie {
