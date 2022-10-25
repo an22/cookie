@@ -13,11 +13,12 @@
 #include <thread>
 #include <memory>
 #include "PlatformSpecificData.hpp"
-#include "Initializer.hpp"
 #include "Shader.hpp"
-#include "Scene.hpp"
 
 namespace cookie {
+
+	class Renderer;
+	class Scene;
 
 	class Cookie {
 	protected:
@@ -27,17 +28,15 @@ namespace cookie {
 		bool terminate = false;
 
 		std::mutex localMutex;
-		std::unique_ptr<std::thread> renderingLoop;
 		std::unique_ptr<PlatformSpecificData> platformData;
-		std::unique_ptr<Initializer> initializer;
-		std::unique_ptr<Scene> currentScene;
+		std::unique_ptr<Renderer> renderer;
 
 		explicit Cookie(CgAPI api);
 		void loopInternal();
 		void clearInternal();
-		void terminateInternal();
-		void prepareRendering();
 	public:
+		static Cookie &getInstance(CgAPI api = CgAPI::OpenGL);
+
 		CgAPI currentAPI;
 		Cookie(Cookie &other) = delete;
 		Cookie(Cookie &&other) = delete;
@@ -55,10 +54,7 @@ namespace cookie {
 			);
 			return dynamic_cast<T &>(*platformData);
 		}
-
-		Scene &getCurrentScene() const;
 		void setScene(std::unique_ptr<Scene> scene);
-		static Cookie &getInstance(CgAPI api = CgAPI::OpenGL);
 	};
 }
 #endif /* Cookie_hpp */

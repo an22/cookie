@@ -8,6 +8,8 @@
 #include "Cookie.hpp"
 #include "CookieFactory.hpp"
 #include "Macro.h"
+#include "Renderer.hpp"
+#include "Scene.hpp"
 
 namespace cookie {
 
@@ -15,12 +17,8 @@ namespace cookie {
 	std::unique_ptr<Cookie> Cookie::instance;
 
 	Cookie::Cookie(CgAPI api) : platformData(CookieFactory::createPlatformSpecificContainer()),
-								initializer(CookieFactory::provideInitializer()),
-								currentAPI(api) {
-	}
-
-	void Cookie::setScene(std::unique_ptr<Scene> scene) {
-		currentScene = std::move(scene);
+								currentAPI(api),
+								renderer(std::make_unique<Renderer>(*platformData)){
 	}
 
 	Cookie &Cookie::getInstance(CgAPI api) {
@@ -31,45 +29,24 @@ namespace cookie {
 		return *Cookie::instance;
 	}
 
-	void Cookie::prepareRendering() {
-		std::lock_guard lock(localMutex);
-		initializer->initGraphicsAPIResources(*platformData);
-		currentScene = std::make_unique<Scene>();//TODO DELETE
-		if (currentScene) {
-			currentScene->prepareRendering();
-		} else {
-			throw std::runtime_error("No scene to render. ABORT");
-		}
-	}
-
 	void Cookie::startRendering() {
-		renderingLoop = std::make_unique<std::thread>(&Cookie::loopInternal, this);
-#ifndef __ANDROID__
-		renderingLoop->join();
-#endif
+		loopInternal();
 	}
 
 	void Cookie::loopInternal() {
 		try {
-			prepareRendering();
+			renderer->prepare();
 			while (true) {
 				std::lock_guard lock(localMutex);
-				if (terminate || currentScene->isTerminateRequested()) {
-					terminateInternal();
+				if (terminate || renderer->isTerminateRequested()) {
 					break;
 				}
-				currentScene->renderFrame();
+				renderer->renderFrame();
 			}
 		} catch (const std::exception &e) {
 			LOG_E("%s", e.what());
 			clearInternal();
 		}
-	}
-
-	void Cookie::terminateInternal() {
-		terminate = false;
-		currentScene.reset();
-		initializer->destroyGraphicsAPIResources(*platformData);
 	}
 
 	void Cookie::clearInternal() {
@@ -79,11 +56,6 @@ namespace cookie {
 
 	void Cookie::clear() {
 		clearInternal();
-		renderingLoop->join();
-	}
-
-	Scene &Cookie::getCurrentScene() const {
-		return *currentScene;
 	}
 
 	void Cookie::onWindowResized(int32_t width, int32_t height) {
@@ -91,8 +63,12 @@ namespace cookie {
 		if (terminate) { return; }
 		platformData->setWidth(width);
 		platformData->setHeight(height);
-		if (currentScene) {
-			currentScene->resize(width, height);
+		if (renderer->hasScene()) {
+			renderer->getCurrentScene().resize(width, height);
 		}
+	}
+
+	void Cookie::setScene(std::unique_ptr<Scene> scene) {
+		renderer->setScene(std::move(scene));
 	}
 }

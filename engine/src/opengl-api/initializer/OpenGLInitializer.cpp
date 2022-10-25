@@ -30,7 +30,7 @@ namespace cookie {
 	void OpenGLInitializer::initGraphicsAPIResources(cookie::PlatformSpecificData &data) const {
 		if (!glfwInit()) { exit(EXIT_FAILURE); }
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwSetErrorCallback(errorCallback);
@@ -39,6 +39,7 @@ namespace cookie {
 		auto &platformData = dynamic_cast<OpenGLPlatformSpecificData &>(data);
 		platformData.setWindow(window);
 		glfwMakeContextCurrent(window);
+		LOG_D((const char *)glGetString(GL_VERSION));
 		if (glewInit() != GLEW_OK) { exit(EXIT_FAILURE); }
 		glfwSwapInterval(1);
 		GLErrorHandler::checkOpenGLError();

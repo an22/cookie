@@ -13,13 +13,18 @@
 
 namespace cookie {
 	struct SceneSettings {
-		unsigned int width, height;
+		uint32_t width, height;
 		float aspectRatio{};
-		glm::vec3 cameraPos;
-		glm::mat4 perspectiveMx{};
 		float FOV;
 		float nearZ;
 		float farZ;
+		uint32_t lightsPerMesh;
+		uint16_t objectsPerCell;
+		uint32_t maxLights;
+		uint32_t maxMeshes;
+		glm::mat4 perspectiveMx{};
+		glm::vec3 cameraPos;
+		glm::ivec3 grid;
 
 		SceneSettings(uint32_t width, uint32_t height, float x, float y, float z, float fov, float nearZ, float farZ);
 		void onWindowResized(uint32_t newWidth, uint32_t newHeight);

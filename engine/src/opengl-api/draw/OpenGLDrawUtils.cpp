@@ -6,6 +6,7 @@
 #if COOKIE_OPENGL
 
 #include <GL/glew.h>
+#include <vector>
 #include "OpenGLDrawUtils.h"
 #include "Cookie.hpp"
 #include "OpenGLPlatformSpecificData.h"
